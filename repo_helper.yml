@@ -1,0 +1,20 @@
+# Configuration for 'repo_helper' (https://github.com/repo-helper/repo_helper)
+---
+modname: 'cp2077-extractor'
+copyright_years: '2025'
+author: 'Dominic Davis-Foster'
+email: 'dominic@davis-foster.co.uk'
+username: 'domdfcoding'
+version: '0.0.0'
+license: 'MIT'
+short_desc: 'Work in progress audio/music extractor for Cyberpunk 2077.'
+
+enable_conda: false
+enable_docs: false
+enable_tests: false
+on_pypi: false
+
+python_versions:
+  '3.10':
+  '3.11':
+  '3.12':
