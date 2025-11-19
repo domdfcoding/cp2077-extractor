@@ -32,22 +32,43 @@ from types import MappingProxyType
 from typing import NamedTuple
 
 # 3rd party
-from domdf_python_tools.paths import PathPlus
+from domdf_python_tools.typing import PathLike
 from mutagen.id3 import ID3, TALB, TCMP, TCOM, TDRC, TIT2, TOA, TPE1, TPE2, Encoding
 
 __all__ = ["Track"]
 
 
 class Track(NamedTuple):
+	"""
+	Represents an audio track played on the radio etc.
+	"""
+
 	artist: str
 	title: str
 	wem_name: int
 	extra_ids: Sequence[int] = ()
 	writer: str = ''
 	real_artist: str = ''
-	other_uses: Mapping[int, str] = MappingProxyType({})  # Mapping of wem_name to usage.
 
-	def set_id3_metadata(self, mp3_filename: PathPlus, station: str) -> None:
+	#: Mapping of WEM file names to usage.
+	other_uses: Mapping[int, str] = MappingProxyType({})
+
+	@property
+	def filename_stub(self) -> str:
+		"""
+		Track filename (without suffix), comprising the artist and track title and made filename safe.
+		"""
+
+		return f"{self.artist} - {self.title}".replace('/', ' ')
+
+	def set_id3_metadata(self, mp3_filename: PathLike, station: str) -> None:
+		"""
+		Set ID3 tags on the file (artist, title, performer, writer/composer, album/station, etc.)
+
+		:param mp3_filename: The file to set metadata on.
+		:param station: The name of the radio station, used as the album name.
+		"""
+
 		tags = ID3(mp3_filename)
 		tags.add(TPE1(encoding=Encoding.UTF8, text=self.artist))
 		tags.add(TIT2(encoding=Encoding.UTF8, text=self.title))

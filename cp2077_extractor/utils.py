@@ -39,14 +39,7 @@ from typing import Any
 import sox  # type: ignore[import]
 from domdf_python_tools.paths import PathPlus
 
-__all__ = [
-		"id_from_wem_name",
-		"prepare_ids",
-		"remove_extra_files",
-		"set_id_filename_in_directory",
-		"transcode_file",
-		"wem_name_from_id"
-		]
+__all__ = ["prepare_ids", "remove_extra_files", "set_id_filename_in_directory", "transcode_file"]
 
 
 def prepare_ids(radio_stations: dict[str, Any], *other_ids) -> tuple[
@@ -80,6 +73,14 @@ def transcode_file(
 		mp3_filename: PathPlus,
 		length_range: tuple[int, int],
 		) -> None:
+	"""
+	Transcode a WWise ``.wem`` file to mp3 at 256kbps.
+
+	:param wem_filename:
+	:param mp3_filename:
+	:param length_range: Files with durations in seconds outside this range will be skipped.
+	"""
+
 	ogg_filename = wem_filename.with_suffix(".ogg")
 
 	wem_meta = subprocess.check_output(["./vgmstream-cli", "-m", wem_filename]).decode("UTF-8")
