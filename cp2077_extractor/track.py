@@ -33,7 +33,7 @@ from typing import NamedTuple
 
 # 3rd party
 from domdf_python_tools.typing import PathLike
-from mutagen.id3 import ID3, TALB, TCMP, TCOM, TDRC, TIT2, TOA, TPE1, TPE2, Encoding
+from mutagen.id3 import COMM, ID3, TALB, TCMP, TCOM, TDRC, TIT2, TOA, TPE1, TPE2, Encoding
 
 __all__ = ["Track"]
 
@@ -63,7 +63,7 @@ class Track(NamedTuple):
 
 	def set_id3_metadata(self, mp3_filename: PathLike, station: str) -> None:
 		"""
-		Set ID3 tags on the file (artist, title, performer, writer/composer, album/station, etc.)
+		Set ID3 tags on the file (artist, title, performer, writer/composer, album/station, etc.).
 
 		:param mp3_filename: The file to set metadata on.
 		:param station: The name of the radio station, used as the album name.
@@ -78,5 +78,6 @@ class Track(NamedTuple):
 		tags.add(TCMP(encoding=Encoding.UTF8, text='1'))
 		tags.add(TDRC(encoding=Encoding.UTF8, text="2023"))
 		tags.add(TPE2(encoding=Encoding.UTF8, text="Various Artists"))
+		tags.add(COMM(encoding=Encoding.UTF8, text="From Cyberpunk 2077"))
 		# TODO: only save if changes made from tags read in.
 		tags.save(mp3_filename)
