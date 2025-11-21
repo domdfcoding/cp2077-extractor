@@ -36,10 +36,17 @@ from collections import Counter
 from typing import Any
 
 # 3rd party
+import regex as re
 import sox  # type: ignore[import]
 from domdf_python_tools.paths import PathPlus
 
-__all__ = ["prepare_ids", "remove_extra_files", "set_id_filename_in_directory", "transcode_file"]
+__all__ = [
+		"prepare_ids",
+		"remove_extra_files",
+		"set_id_filename_in_directory",
+		"to_snake_case",
+		"transcode_file"
+		]
 
 
 def prepare_ids(radio_stations: dict[str, Any], *other_ids) -> tuple[
@@ -125,3 +132,18 @@ def set_id_filename_in_directory(
 	if mp3_filename.is_file():
 		mp3_filename.rename(new_filename)
 	return new_filename
+
+
+_case_boundary_re = re.compile("(\\p{Ll})(\\p{Lu})")
+_single_letters_re = re.compile("(\\p{Lu}|\\p{N})(\\p{Lu})(\\p{Ll})")
+
+
+def to_snake_case(value: str):
+	# Matches VSCode behaviour
+	case_boundary = _case_boundary_re.findall(value)
+	single_letters = _single_letters_re.findall(value)
+	if not case_boundary and not single_letters:
+		return value
+	value = _case_boundary_re.sub(r"\1_\2", value)
+	value = _case_boundary_re.sub(r"\1_\2\3", value)
+	return value.lower()

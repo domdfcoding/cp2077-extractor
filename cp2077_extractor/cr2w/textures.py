@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+#
+#  textures.py
+"""
+Texture extraction and conversion logic.
+"""
+#
+#  Copyright © 2025 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in all
+#  copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+#  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+#  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+#  OR OTHER DEALINGS IN THE SOFTWARE.
+#
+
+# stdlib
+from collections.abc import Callable
+from enum import Enum
+
+# 3rd party
+import texture2ddecoder
+
+# this package
+from cp2077_extractor.cr2w.enums import ETextureCompression
+
+__all__ = ["DDSFormat", "get_dds_decoder", "get_dds_format_from_compression"]
+
+
+class DDSFormat(Enum):
+	R8G8B8A8_UNORM = 0
+	BC1_UNORM = 1
+	BC3_UNORM = 2
+	BC7_UNORM = 7
+	BC4_UNORM = 4
+	BC5_UNORM = 5
+
+
+def get_dds_decoder(dds_format: DDSFormat) -> Callable:  # TODO: callable params
+	if dds_format == DDSFormat.R8G8B8A8_UNORM:
+		raise NotImplementedError
+	elif dds_format == DDSFormat.BC1_UNORM:
+		return texture2ddecoder.decode_bc1
+	elif dds_format == DDSFormat.BC3_UNORM:
+		return texture2ddecoder.decode_bc3
+	elif dds_format == DDSFormat.BC7_UNORM:
+		return texture2ddecoder.decode_bc7
+	elif dds_format == DDSFormat.BC4_UNORM:
+		return texture2ddecoder.decode_bc4
+	elif dds_format == DDSFormat.BC5_UNORM:
+		return texture2ddecoder.decode_bc5
+
+
+def get_dds_format_from_compression(compression: ETextureCompression):
+	if compression == ETextureCompression.TCM_None:
+		return DDSFormat.R8G8B8A8_UNORM
+
+	if compression == ETextureCompression.TCM_DXTNoAlpha:
+		pass
+	if compression == ETextureCompression.TCM_Normals:
+		return DDSFormat.BC1_UNORM
+
+	if compression == ETextureCompression.TCM_DXTAlpha:
+		pass
+	if compression == ETextureCompression.TCM_NormalsHigh:
+		pass
+	if compression == ETextureCompression.TCM_NormalsGloss:
+		return DDSFormat.BC3_UNORM
+
+	if compression == ETextureCompression.TCM_QualityColor:
+		return DDSFormat.BC7_UNORM
+
+	if compression == ETextureCompression.TCM_QualityR:
+		return DDSFormat.BC4_UNORM
+
+	if compression == ETextureCompression.TCM_QualityRG:
+		return DDSFormat.BC5_UNORM
+
+	if compression == ETextureCompression.TCM_DXTAlphaLinear:
+		pass
+	if compression == ETextureCompression.TCM_RGBE:
+		pass
+
+	else:
+		raise NotImplementedError
