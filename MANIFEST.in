@@ -1,5 +1,0 @@
-include LICENSE
-include requirements.txt
-prune **/__pycache__
-recursive-include cp2077_extractor *.pyi
-include cp2077_extractor/py.typed

@@ -27,7 +27,7 @@ lines_between_types = 0
 use_parentheses = true
 remove_redundant_aliases = true
 default_section = "THIRDPARTY"
-known_third_party = []
+known_third_party = [ "domdf_python_tools", "mutagen", "networkx", "regex", "sox", "texture2ddecoder",]
 known_first_party = [ "cp2077_extractor",]
 
 [config]

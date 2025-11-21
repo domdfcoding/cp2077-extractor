@@ -1,25 +1,14 @@
 [build-system]
-requires = [ "setuptools!=61.*,<=67.1.0,>=40.6.0", "wheel>=0.34.2",]
-build-backend = "setuptools.build_meta"
+requires = [ "whey",]
+build-backend = "whey"
 
 [project]
 name = "cp2077-extractor"
 version = "0.0.0"
 description = "Work in progress audio/music extractor for Cyberpunk 2077."
 readme = "README.rst"
-requires-python = ">=3.10"
 keywords = []
-classifiers = [
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: Implementation :: CPython",
-]
-dynamic = [ "dependencies",]
+dynamic = [ "requires-python", "classifiers", "dependencies",]
 
 [project.license]
 file = "LICENSE"

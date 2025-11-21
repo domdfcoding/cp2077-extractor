@@ -13,6 +13,7 @@ enable_conda: false
 enable_docs: false
 enable_tests: false
 on_pypi: false
+use_whey: true
 
 python_versions:
   '3.10':
