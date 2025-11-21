@@ -28,34 +28,24 @@ Classes to represent datatypes within CR2W/W2RC files.
 
 # stdlib
 import inspect
-import struct
 from dataclasses import dataclass, field
 from enum import Enum
-from io import BytesIO
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 # this package
-from cp2077_extractor.cr2w.enums import (
-		ECookingPlatform,
-		ETextureCompression,
-		ETextureRawFormat,
-		GpuWrapApieTextureGroup,
-		GpuWrapApieTextureType
-		)
-from cp2077_extractor.cr2w.io import read_c_name
-from cp2077_extractor.cr2w.textures import DDSFormat
+from cp2077_extractor.cr2w import enums
+from cp2077_extractor.cr2w.utils import get_chunk_variables
 from cp2077_extractor.utils import to_snake_case
 
-# this package
-from . import enums
+if TYPE_CHECKING:
+	# this package
+	from cp2077_extractor.cr2w.io import ParsingData
 
 __all__ = [
 		"CBitmapTexture",
 		"Chunk",
-		"Name",
 		"STextureGroupSetup",
 		"array_rendRenderTextureBlobMipMapInfo",
-		"get_chunk_variables",
 		"handle",
 		"instantiate_type",
 		"lookup_type",
@@ -70,17 +60,10 @@ __all__ = [
 		]
 
 
-class Name:
-
-	@classmethod
-	def lookup(cls, value: bytes, names_list: list[bytes]):
-		return names_list[uint(value)]
-
-
 class Chunk:
 
 	@classmethod
-	def from_cr2w_kwargs(cls, kwargs: dict[bytes, Any]):
+	def from_cr2w_kwargs(cls, kwargs: dict[bytes, Any]) -> "Chunk":
 		new_kwargs: dict[str, Any] = {
 				to_snake_case(arg_name.decode("UTF-8")): arg_value
 				for arg_name, arg_value in kwargs.items()
@@ -88,12 +71,12 @@ class Chunk:
 		return cls(**new_kwargs)
 
 	@classmethod
-	def from_chunk(cls, chunk: bytes, names_list: list[bytes], chunks: list[bytes]):
-		kwargs = parse_chunk(chunk, names_list, chunks)
+	def from_chunk(cls, chunk: bytes, parsing_data: "ParsingData") -> "Chunk":
+		kwargs = parse_chunk(chunk, parsing_data)
 		return cls.from_cr2w_kwargs(kwargs)
 
 
-def uint(value: bytes):
+def uint(value: bytes) -> int:
 	return int.from_bytes(value, byteorder="little")
 
 
@@ -106,80 +89,54 @@ def lookup_type(red_type_name: bytes) -> type:
 		raise NotImplementedError(red_type_name)
 
 
-def get_chunk_variables(chunk: bytes, names_list: list[bytes]) -> list[tuple[bytes, bytes, Any]]:
-	variables: list[tuple[bytes, bytes, Any]] = []
-	buffer = BytesIO(chunk)
-	zero = buffer.read(1)
-	assert zero == b"\0", f"Tried parsing a CVariable: zero read {zero}."
-	while buffer.tell() < len(chunk) - 1:
-		try:
-			var_c_name = read_c_name(buffer, names_list)
-			red_type_name = read_c_name(buffer, names_list)
-			size = struct.unpack("<I", buffer.read(4))[0] - 4
-			value = buffer.read(size)
-			variables.append((var_c_name, red_type_name, value))
-		except:
-			# Run out of buffer
-			break
+def parse_chunk(chunk: bytes, parsing_data: "ParsingData") -> dict[bytes, Any]:
 
-	return variables
-
-
-def parse_chunk(chunk: bytes, names_list: list[bytes], chunks: list[bytes]) -> dict[bytes, Any]:
-
-	variables = get_chunk_variables(chunk, names_list)
+	variables = get_chunk_variables(chunk, parsing_data.names_list)
 
 	kwargs: dict[bytes, Any] = {}
 	for (var_c_name, red_type_name, value) in variables:
-		kwargs[var_c_name] = instantiate_type(red_type_name, value, names_list, chunks)
+		kwargs[var_c_name] = instantiate_type(red_type_name, value, parsing_data)
 
 	return kwargs
 
 
-def instantiate_type(red_type_name: bytes, value: bytes, names_list: list[bytes], chunks: list[bytes]):
+def instantiate_type(red_type_name: bytes, value: bytes, parsing_data: "ParsingData") -> object:
 	var_type = lookup_type(red_type_name)
 
-	if var_type is Name:
-		# print(f"{var_c_name} =", Name.lookup(value, names_list))
-		return (red_type_name, Name.lookup(value, names_list))
-	elif inspect.isclass(var_type) and issubclass(var_type, Enum):
-		return var_type.from_red_name(Name.lookup(value, names_list))
+	if inspect.isclass(var_type) and issubclass(var_type, Enum):
+		return var_type.from_red_name(parsing_data.names_list[uint(value)])
 	elif var_type is Chunk:
-		return (red_type_name, parse_chunk(value, names_list, chunks))
+		return (red_type_name, parse_chunk(value, parsing_data))
 	elif inspect.isclass(var_type) and issubclass(var_type, Chunk):
-		return var_type.from_chunk(value, names_list, chunks)
-	elif var_type is handle:
-		return var_type(value, names_list, chunks)
+		return var_type.from_chunk(value, parsing_data)
+	elif var_type in {handle, serialization_deferred_data_buffer}:
+		return var_type(value, parsing_data)
 	else:
-		# print(f"{var_c_name} =",  var_type(value))
 		return var_type(value)
 
 
 class array_rendRenderTextureBlobMipMapInfo(bytes):
 	# TODO: parse the array
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return f"array:rendRenderTextureBlobMipMapInfo({super().__repr__()})"
 
 	__str__ = __repr__
 
 
-def handle(handle: bytes, names_list: list[bytes], chunks: list[bytes]):
+def handle(handle: bytes, parsing_data: "ParsingData") -> dict[str, Any]:  # TODO: TypedDict or class
 	handle_idx = int.from_bytes(handle, "little") - 1
-	return instantiate_type(chunks[handle_idx][1], chunks[handle_idx][0], names_list, chunks)
+	chunk = parsing_data.chunks[handle_idx]
+	return {"handle_id": handle_idx, "data": instantiate_type(chunk[1], chunk[0], parsing_data)}
 
 
-class serializationDeferredDataBuffer(bytes):
+def serialization_deferred_data_buffer(
+		buffer_id: bytes,
+		parsing_data: "ParsingData",
+		) -> dict[str, Any]:  # TODO: TypedDict or class
 	# TODO: Two bytes. With one buffer it's 1 0.
-	# Maybe number of buffers and indices?
-	# Find buffer itself in file_info.buffer_info
-	def __repr__(self):
-		return f"serializationDeferredDataBuffer({super().__repr__()})"
-
-	def get_buffer_idx(self):
-		# TODO
-		return 0
-
-	__str__ = __repr__
+	buffer_idx = 0  # TODO: proper lookup implementation
+	buffer, buffer_info = parsing_data.buffers[buffer_idx]
+	return {"buffer_id": buffer_idx, "flags": buffer_info.flags, "bytes": buffer}
 
 
 @dataclass
@@ -189,7 +146,7 @@ class rendRenderTextureBlobTextureInfo(Chunk):
 	data_alignment: int
 	slice_count: int
 	mip_count: int
-	type: GpuWrapApieTextureType = GpuWrapApieTextureType.TEXTYPE_2D
+	type: enums.GpuWrapApieTextureType = enums.GpuWrapApieTextureType.TEXTYPE_2D
 
 
 @dataclass
@@ -212,20 +169,20 @@ class rendRenderTextureBlobHeader(Chunk):
 @dataclass
 class rendRenderTextureBlobPC(Chunk):
 	header: rendRenderTextureBlobHeader
-	texture_data: serializationDeferredDataBuffer  # TODO: lookup data
+	texture_data: bytes  # TODO: Type to cover this, buffer_id, & flags
 
 
 @dataclass
 class STextureGroupSetup(Chunk):
-	compression: ETextureCompression
+	compression: enums.ETextureCompression
 	is_gamma: bool
 	platform_mip_bias_pc: int = 0
 	platform_mip_bias_console: int = 0
 	is_streamable: bool = True
 	has_mipchain: bool = True
 	allow_texture_downgrade: bool = True
-	group: GpuWrapApieTextureGroup = GpuWrapApieTextureGroup.TEXG_Generic_Color
-	raw_format: ETextureRawFormat = ETextureRawFormat.TRF_TrueColor
+	group: enums.GpuWrapApieTextureGroup = enums.GpuWrapApieTextureGroup.TEXG_Generic_Color
+	raw_format: enums.ETextureRawFormat = enums.ETextureRawFormat.TRF_TrueColor
 
 
 @dataclass
@@ -237,7 +194,7 @@ class rendRenderTextureResource(Chunk):
 
 @dataclass
 class CBitmapTexture(Chunk):
-	cooking_platform: ECookingPlatform
+	cooking_platform: enums.ECookingPlatform
 	width: int
 	height: int
 	# render_resource_blob: Any  # RenderResourceBlob  # TODO: check resolved type
@@ -249,14 +206,14 @@ class CBitmapTexture(Chunk):
 
 
 _red_type_lookup = {
-		b"ECookingPlatform": Name,
+		b"ECookingPlatform": enums.ECookingPlatform,
 		b"Uint32": uint,
 		b"Uint16": uint,
 		b"Uint8": uint,
 		b"STextureGroupSetup": STextureGroupSetup,
 		b"rendRenderTextureResource": rendRenderTextureResource,
 		b"rendRenderTextureBlobHeader": rendRenderTextureBlobHeader,
-		b"serializationDeferredDataBuffer": serializationDeferredDataBuffer,
+		b"serializationDeferredDataBuffer": serialization_deferred_data_buffer,
 		# b"handle:IRenderResourceBlob": handle_IRenderResourceBlob,
 		b"handle:IRenderResourceBlob": handle,
 		b"Bool": bool,

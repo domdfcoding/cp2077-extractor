@@ -25,23 +25,3 @@ Partial parser for CR2W/W2RC files.
 #  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
-
-# this package
-from cp2077_extractor.cr2w.header_structs import CR2WFileInfo
-
-__all__ = ["get_names_list"]
-
-
-def get_names_list(file_info: CR2WFileInfo) -> list[bytes]:
-	"""
-	Returns the name lookup table for the file.
-
-	:param file_info:
-	"""
-
-	_names_list: list[bytes] = []
-	for a_name_info in file_info.name_info:
-		assert a_name_info.offset in file_info.string_dict
-		_names_list.append(file_info.string_dict[a_name_info.offset])
-
-	return _names_list

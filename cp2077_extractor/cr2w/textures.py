@@ -29,12 +29,18 @@ Texture extraction and conversion logic.
 # stdlib
 from collections.abc import Callable
 from enum import Enum
+from typing import TYPE_CHECKING
 
 # 3rd party
 import texture2ddecoder
+from PIL import Image
 
 # this package
 from cp2077_extractor.cr2w.enums import ETextureCompression
+
+if TYPE_CHECKING:
+	# this package
+	from cp2077_extractor.cr2w.datatypes import CBitmapTexture
 
 __all__ = ["DDSFormat", "get_dds_decoder", "get_dds_format_from_compression"]
 
@@ -63,7 +69,7 @@ def get_dds_decoder(dds_format: DDSFormat) -> Callable:  # TODO: callable params
 		return texture2ddecoder.decode_bc5
 
 
-def get_dds_format_from_compression(compression: ETextureCompression):
+def get_dds_format_from_compression(compression: ETextureCompression) -> DDSFormat:
 	if compression == ETextureCompression.TCM_None:
 		return DDSFormat.R8G8B8A8_UNORM
 
@@ -95,3 +101,16 @@ def get_dds_format_from_compression(compression: ETextureCompression):
 
 	else:
 		raise NotImplementedError
+
+
+def texture_to_image(texture: "CBitmapTexture") -> Image.Image:
+
+	texture_data = texture.render_texture_resource.render_resource_blob_pc["data"].texture_data["bytes"]
+	size = (texture.width, texture.height)
+	decoder = get_dds_decoder(get_dds_format_from_compression(texture.setup.compression))
+
+	decoded_data = decoder(texture_data, *size)
+
+	# TODO: check params against other formats
+	img = Image.frombytes("RGBA", size, decoded_data, "raw", ("BGRA")).transpose(Image.FLIP_TOP_BOTTOM)
+	return img

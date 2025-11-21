@@ -31,21 +31,29 @@ import binascii
 import struct
 import warnings
 from collections.abc import Iterator
-from typing import IO, TypeVar
+from typing import IO, NamedTuple, TypeVar
+
+# 3rd party
+from domdf_python_tools.paths import PathPlus
+from domdf_python_tools.typing import PathLike
 
 # this package
-from cp2077_extractor.cr2w import get_names_list
+from cp2077_extractor.cr2w.datatypes import Chunk, lookup_type
+from cp2077_extractor.cr2w.utils import get_names_list
 
 # this package
 from .header_structs import (
 		CR2WBufferInfo,
 		CR2WEmbeddedInfo,
 		CR2WExportInfo,
+		CR2WFile,
 		CR2WFileHeader,
 		CR2WFileInfo,
 		CR2WImport,
 		CR2WImportInfo,
+		CR2WMetadata,
 		CR2WNameInfo,
+		CR2WProperty,
 		CR2WPropertyInfo,
 		CR2WTable,
 		Struct
@@ -196,10 +204,10 @@ def read_chunk(fp: IO, chunk_index: int, file_info: CR2WFileInfo) -> tuple[bytes
 	:returns: A tuple of the raw chunk data and the chunk's datatype.
 	"""
 
-	_names_list = get_names_list(file_info)
+	names_list = get_names_list(file_info)
 
 	info = file_info.export_info[chunk_index]
-	red_type_name = _names_list[info.class_name]
+	red_type_name = names_list[info.class_name]
 
 	assert fp.tell() == info.data_offset
 	data = fp.read(info.data_size)
@@ -209,3 +217,98 @@ def read_chunk(fp: IO, chunk_index: int, file_info: CR2WFileInfo) -> tuple[bytes
 		fp.seek(info.data_offset + info.data_size)
 
 	return data, red_type_name
+
+
+def read_buffer(fp: IO, info: CR2WBufferInfo) -> bytes:
+	assert fp.tell() == info.offset
+	# buffer = fp.read(info.disk_size)
+	buffer = fp.read(info.mem_size)
+	# TODO: decompress buffer if it is compressed with oodle
+	assert buffer[:4] != b"KARK"
+	# TODO: check crc32 (figure out what the input data is)
+	# crc32 = binascii.crc32(buffer)
+	# assert crc32 == info.crc32, (crc32, info.crc32)
+	# buffer_data.append((info.buffer_info[i], buffer))
+	return buffer
+
+
+class ParsingData(NamedTuple):
+	"""
+	Working data for parsing CR2W/W2RC files.
+	"""
+
+	#: Name lookup table for the file.
+	names_list: list[bytes]
+
+	#: List of tuples of the raw chunk data and the chunk's datatype
+	chunks: list[tuple[bytes, bytes]]
+
+	#: List of tuples of the raw buffer data and the buffer metadata
+	buffers: list[bytes, CR2WBufferInfo]
+
+
+def parse_cr2w_file(filename: PathLike) -> CR2WFile:
+
+	filename_p = PathPlus(filename)
+	with filename_p.open("rb") as fp:
+		info = read_file_info(fp)
+		assert info.string_dict, "Malformed file"
+
+		# # TODO:
+		# # use 1st string as field 0 is always empty
+		# hash_version = identify_hash(info.string_dict[1], info.name_info[1].hash)
+		# if (hash_version == HashVersion.Unknown):
+		# 	raise ValueError("Failed to identify hash version")
+
+		properties: list[CR2WProperty] = []
+		for property_info in info.property_info:
+			# TODO: properties.append(read_property(property_info))
+			properties.append(CR2WProperty())
+
+		if not property_info:
+			raise ValueError("Found unsupported PropertyInfo")
+
+		# TODO: ensure CHandle/CWeakHandle can be resolved
+
+		chunks: list[tuple[bytes, bytes]] = []
+
+		for i in range(len(info.export_info)):
+			chunks.append(read_chunk(fp, i, info))
+
+		buffer_data: list[bytes, CR2WBufferInfo] = []
+
+		for i in range(len(info.buffer_info)):
+			buffer_info = info.buffer_info[i]
+			buffer_data.append((read_buffer(fp, buffer_info), buffer_info))
+
+		parsing_data = ParsingData(get_names_list(info), chunks, buffer_data)
+
+		root_chunk_type = chunks[0][1]
+		var_type = lookup_type(root_chunk_type)
+		assert issubclass(var_type, Chunk)
+		root_chunk = var_type.from_chunk(chunks[0][0], parsing_data)
+
+		# TODO: read embedded files
+		embedded_files = []
+		# for embedded_info in info.embedded_info:
+		# 	embedded_files.Add(read_embedded(embedded_info))
+
+		# TODO: check fp.tell() against header field giving file length (if there is one)
+		rem = fp.read(999999)
+		assert len(rem) == 0, f"{len(rem)} bytes remaining in file!"
+
+	metadata = CR2WMetadata(
+			file_name=filename_p.abspath().as_posix(),  # TODO
+			version=info.file_header.version,
+			build_version=info.file_header.build_version,
+			objects_end=info.file_header.objects_end,
+			hash_version=None  # TODO: hash_version,
+			)
+
+	return CR2WFile(
+			info=info,
+			metadata=metadata,
+			properties=properties,
+			root_chunk=root_chunk,
+			embedded_files=embedded_files,
+			)

@@ -27,17 +27,24 @@ Classes to represent header data in CR2W/W2RC files.
 #
 
 # stdlib
-from typing import NamedTuple, Protocol
+from typing import TYPE_CHECKING, Any, NamedTuple, Protocol
+
+if TYPE_CHECKING:
+	# this package
+	from cp2077_extractor.cr2w.datatypes import Chunk
 
 __all__ = [
 		"CR2WBufferInfo",
 		"CR2WEmbeddedInfo",
 		"CR2WExportInfo",
+		"CR2WFile",
 		"CR2WFileHeader",
 		"CR2WFileInfo",
 		"CR2WImport",
 		"CR2WImportInfo",
+		"CR2WMetadata",
 		"CR2WNameInfo",
+		"CR2WProperty",
 		"CR2WPropertyInfo",
 		"CR2WTable",
 		"Struct"
@@ -175,3 +182,25 @@ class CR2WFileInfo(NamedTuple):
 			result.append(self.string_dict[import_info.offset])
 
 		return result
+
+
+class CR2WProperty:
+	# TODO
+	pass
+
+
+class CR2WMetadata(NamedTuple):
+	# WolvenKit order is file_name, version, build_version, hash_version, objects_end
+	file_name: str | None
+	hash_version: Any  # TODO: HashVersion
+	objects_end: int
+	version: int = 195
+	build_version: int = 0
+
+
+class CR2WFile(NamedTuple):
+	info: CR2WFileInfo
+	metadata: CR2WMetadata
+	properties: list[CR2WProperty]
+	root_chunk: "Chunk"
+	embedded_files: list[Any]  # TODO: list[CR2WEmbeddedFile]
