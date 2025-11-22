@@ -27,10 +27,11 @@ Classes to represent datatypes within CR2W/W2RC files.
 #
 
 # stdlib
+import functools
 import inspect
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from enum import Enum
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypedDict, cast
 
 # this package
 from cp2077_extractor.cr2w import enums
@@ -44,6 +45,8 @@ if TYPE_CHECKING:
 __all__ = [
 		"CBitmapTexture",
 		"Chunk",
+		"DeferredBufferData",
+		"HandleData",
 		"STextureGroupSetup",
 		"array_rendRenderTextureBlobMipMapInfo",
 		"handle",
@@ -55,8 +58,7 @@ __all__ = [
 		"rendRenderTextureBlobSizeInfo",
 		"rendRenderTextureBlobTextureInfo",
 		"rendRenderTextureResource",
-		"serializationDeferredDataBuffer",
-		"uint"
+		"serialization_deferred_data_buffer"
 		]
 
 
@@ -76,11 +78,19 @@ class Chunk:
 		return cls.from_cr2w_kwargs(kwargs)
 
 
-def uint(value: bytes) -> int:
-	return int.from_bytes(value, byteorder="little")
+# def uint(value: bytes) -> int:
+# 	return int.from_bytes(value, byteorder="little")
+
+uint = functools.partial(int.from_bytes, byteorder="little")
 
 
-def lookup_type(red_type_name: bytes) -> type:
+def lookup_type(red_type_name: bytes) -> type | Callable[..., object]:
+	"""
+	Lookup a Python type from its REDengine equivalent's name.
+
+	:param red_type_name:
+	"""
+
 	if red_type_name in _red_type_lookup:
 		# print("Looked up", red_type_name, "as", _red_type_lookup[red_type_name])
 		return _red_type_lookup[red_type_name]
@@ -90,6 +100,12 @@ def lookup_type(red_type_name: bytes) -> type:
 
 
 def parse_chunk(chunk: bytes, parsing_data: "ParsingData") -> dict[bytes, Any]:
+	"""
+	Parse the given chunk of data and return a mapping of variable names to values.
+
+	:param chunk:
+	:param parsing_data:
+	"""
 
 	variables = get_chunk_variables(chunk, parsing_data.names_list)
 
@@ -101,9 +117,17 @@ def parse_chunk(chunk: bytes, parsing_data: "ParsingData") -> dict[bytes, Any]:
 
 
 def instantiate_type(red_type_name: bytes, value: bytes, parsing_data: "ParsingData") -> object:
+	"""
+	Create a Python class instance for the given REDengine type and the given value.
+
+	:param red_type_name:
+	:param value:
+	:param parsing_data:
+	"""
+
 	var_type = lookup_type(red_type_name)
 
-	if inspect.isclass(var_type) and issubclass(var_type, Enum):
+	if inspect.isclass(var_type) and issubclass(var_type, enums.REDEnum):
 		return var_type.from_red_name(parsing_data.names_list[uint(value)])
 	elif var_type is Chunk:
 		return (red_type_name, parse_chunk(value, parsing_data))
@@ -123,16 +147,49 @@ class array_rendRenderTextureBlobMipMapInfo(bytes):
 	__str__ = __repr__
 
 
-def handle(handle: bytes, parsing_data: "ParsingData") -> dict[str, Any]:  # TODO: TypedDict or class
+class HandleData(TypedDict):
+	"""
+	Return type of :func:`~.handle`.
+	"""
+
+	handle_id: int
+	data: Chunk
+
+
+def handle(handle: bytes, parsing_data: "ParsingData") -> HandleData:
+	"""
+	A handle points to the data in another chunk. Read that chunk and return the resulting data.
+
+	:param handle: Raw bytes of the handle (the value of a ``handle:Ixxxxxx`` type), referring to the target chunk.
+	:param parsing_data:
+	"""
+
 	handle_idx = int.from_bytes(handle, "little") - 1
 	chunk = parsing_data.chunks[handle_idx]
-	return {"handle_id": handle_idx, "data": instantiate_type(chunk[1], chunk[0], parsing_data)}
+	return {"handle_id": handle_idx, "data": cast(Chunk, instantiate_type(chunk[1], chunk[0], parsing_data))}
+
+
+class DeferredBufferData(TypedDict):
+	"""
+	Return type of :func:`~.serialization_deferred_data_buffer`.
+	"""
+
+	buffer_id: int
+	flags: int
+	bytes: bytes
 
 
 def serialization_deferred_data_buffer(
 		buffer_id: bytes,
 		parsing_data: "ParsingData",
-		) -> dict[str, Any]:  # TODO: TypedDict or class
+		) -> DeferredBufferData:
+	"""
+	A ``serializationDeferredDataBuffer`` points to a buffer in the CR2W/W2RC file, containing the actual data e.g. a texture.
+
+	:param buffer_id: The ID of the buffer. Unknown format. Currently ignored and assumed to point to the first buffer.
+	:param parsing_data:
+	"""
+
 	# TODO: Two bytes. With one buffer it's 1 0.
 	buffer_idx = 0  # TODO: proper lookup implementation
 	buffer, buffer_info = parsing_data.buffers[buffer_idx]
@@ -169,7 +226,7 @@ class rendRenderTextureBlobHeader(Chunk):
 @dataclass
 class rendRenderTextureBlobPC(Chunk):
 	header: rendRenderTextureBlobHeader
-	texture_data: bytes  # TODO: Type to cover this, buffer_id, & flags
+	texture_data: DeferredBufferData
 
 
 @dataclass
@@ -188,8 +245,7 @@ class STextureGroupSetup(Chunk):
 @dataclass
 class rendRenderTextureResource(Chunk):
 
-	# render_resource_blob_pc: handle_IRenderResourceBlob  # CHandle
-	render_resource_blob_pc: dict[bytes, Any]  # CHandle
+	render_resource_blob_pc: HandleData  # CHandle
 
 
 @dataclass
@@ -199,13 +255,13 @@ class CBitmapTexture(Chunk):
 	height: int
 	# render_resource_blob: Any  # RenderResourceBlob  # TODO: check resolved type
 	render_texture_resource: rendRenderTextureResource  # TODO: default is new rendRenderTextureResource
-	setup: STextureGroupSetup = field(default_factory=STextureGroupSetup)
+	setup: STextureGroupSetup = field(default_factory=STextureGroupSetup)  # type: ignore[arg-type]
 	depth: int = 1
 	hist_bias_mul_coef: tuple[float, float, float] = (1.0, 1.0, 1.0)  # Vector3
 	hist_bias_add_coef: tuple[float, float, float] = (0.0, 0.0, 0.0)  # Vector3
 
 
-_red_type_lookup = {
+_red_type_lookup: dict[bytes, type | Callable[..., object]] = {
 		b"ECookingPlatform": enums.ECookingPlatform,
 		b"Uint32": uint,
 		b"Uint16": uint,

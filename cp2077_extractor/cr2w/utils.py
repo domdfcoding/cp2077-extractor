@@ -57,10 +57,11 @@ def get_chunk_variables(chunk: bytes, names_list: list[bytes]) -> list[tuple[byt
 	# this package
 	from cp2077_extractor.cr2w.io import read_c_name
 
-	variables: list[tuple[bytes, bytes, Any]] = []
 	buffer = BytesIO(chunk)
-	zero = buffer.read(1)
-	assert zero == b"\0", f"Tried parsing a CVariable: zero read {zero}."
+	zero = buffer.read(1)[0]
+	assert zero == 0, f"Tried parsing a CVariable: zero read {zero}."
+
+	variables: list[tuple[bytes, bytes, Any]] = []
 	while buffer.tell() < len(chunk) - 1:
 		try:
 			var_c_name = read_c_name(buffer, names_list)

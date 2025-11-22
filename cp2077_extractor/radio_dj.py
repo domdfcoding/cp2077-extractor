@@ -177,12 +177,11 @@ def parse_radio_scene_graph(scene_json: dict[str, Any]) -> tuple[Graph, dict[int
 
 	root_chunk = scene_json["Data"]["RootChunk"]
 
-	screenplay_store_lines = root_chunk["screenplayStore"]["lines"]
 	screenplay_store_dict = {}
 
-	for line in screenplay_store_lines:
-		screenplay_store_dict[line["itemId"]["id"]
-								] = (line["femaleLipsyncAnimationName"]["$value"], line["locstringId"]["ruid"])
+	for line in root_chunk["screenplayStore"]["lines"]:
+		line_data = (line["femaleLipsyncAnimationName"]["$value"], line["locstringId"]["ruid"])
+		screenplay_store_dict[line["itemId"]["id"]] = line_data
 
 	scene_graph_json = root_chunk["sceneGraph"]
 	graph = networkx.DiGraph()

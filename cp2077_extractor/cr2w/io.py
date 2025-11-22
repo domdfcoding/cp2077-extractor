@@ -28,10 +28,11 @@ File IO operations.
 
 # stdlib
 import binascii
+import inspect
 import struct
 import warnings
 from collections.abc import Iterator
-from typing import IO, NamedTuple, TypeVar
+from typing import IO, Any, NamedTuple, TypeVar
 
 # 3rd party
 from domdf_python_tools.paths import PathPlus
@@ -254,7 +255,7 @@ class ParsingData(NamedTuple):
 	chunks: list[tuple[bytes, bytes]]
 
 	#: List of tuples of the raw buffer data and the buffer metadata
-	buffers: list[bytes, CR2WBufferInfo]
+	buffers: list[tuple[bytes, CR2WBufferInfo]]
 
 
 def parse_cr2w_file(filename: PathLike) -> CR2WFile:
@@ -290,7 +291,7 @@ def parse_cr2w_buffer(fp: IO, filename: PathLike | None = None) -> CR2WFile:
 	for i in range(len(info.export_info)):
 		chunks.append(read_chunk(fp, i, info))
 
-	buffer_data: list[bytes, CR2WBufferInfo] = []
+	buffer_data: list[tuple[bytes, CR2WBufferInfo]] = []
 
 	for i in range(len(info.buffer_info)):
 		buffer_info = info.buffer_info[i]
@@ -300,11 +301,12 @@ def parse_cr2w_buffer(fp: IO, filename: PathLike | None = None) -> CR2WFile:
 
 	root_chunk_type = chunks[0][1]
 	var_type = lookup_type(root_chunk_type)
+	assert inspect.isclass(var_type)
 	assert issubclass(var_type, Chunk)
 	root_chunk = var_type.from_chunk(chunks[0][0], parsing_data)
 
 	# TODO: read embedded files
-	embedded_files = []
+	embedded_files: list[Any] = []  # TODO: value type
 	# for embedded_info in info.embedded_info:
 	# 	embedded_files.Add(read_embedded(embedded_info))
 
@@ -313,7 +315,7 @@ def parse_cr2w_buffer(fp: IO, filename: PathLike | None = None) -> CR2WFile:
 	assert len(rem) == 0, f"{len(rem)} bytes remaining in file!"
 
 	if filename:
-		meta_filename = PathPlus(filename).abspath().as_posix(),
+		meta_filename = PathPlus(filename).abspath().as_posix()
 	else:
 		meta_filename = None
 

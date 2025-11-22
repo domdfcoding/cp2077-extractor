@@ -168,6 +168,7 @@ class InfiniteList(Generic[_T]):
 			# 		continue
 			choices = []
 			for item in remaining_items:
+				assert self._recent.maxlen is not None
 				if len(self._working_items) < self._recent.maxlen:
 					if item in self._recent:
 						continue
@@ -194,7 +195,13 @@ _case_boundary_re = re.compile("(\\p{Ll})(\\p{Lu})")
 _single_letters_re = re.compile("(\\p{Lu}|\\p{N})(\\p{Lu})(\\p{Ll})")
 
 
-def to_snake_case(value: str):
+def to_snake_case(value: str) -> str:
+	"""
+	Convert the given string into ``snake_case``.
+
+	:param value:
+	"""
+
 	# Matches VSCode behaviour
 	case_boundary = _case_boundary_re.findall(value)
 	single_letters = _single_letters_re.findall(value)

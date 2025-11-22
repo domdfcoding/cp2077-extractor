@@ -29,13 +29,14 @@ Texture extraction and conversion logic.
 # stdlib
 from collections.abc import Callable
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 # 3rd party
 import texture2ddecoder
 from PIL import Image
 
 # this package
+from cp2077_extractor.cr2w.datatypes import rendRenderTextureBlobPC
 from cp2077_extractor.cr2w.enums import ETextureCompression
 
 if TYPE_CHECKING:
@@ -54,7 +55,7 @@ class DDSFormat(Enum):
 	BC5_UNORM = 5
 
 
-def get_dds_decoder(dds_format: DDSFormat) -> Callable:  # TODO: callable params
+def get_dds_decoder(dds_format: DDSFormat) -> Callable[[bytes, int, int], bytes]:
 	if dds_format == DDSFormat.R8G8B8A8_UNORM:
 		raise NotImplementedError
 	elif dds_format == DDSFormat.BC1_UNORM:
@@ -67,21 +68,23 @@ def get_dds_decoder(dds_format: DDSFormat) -> Callable:  # TODO: callable params
 		return texture2ddecoder.decode_bc4
 	elif dds_format == DDSFormat.BC5_UNORM:
 		return texture2ddecoder.decode_bc5
+	else:
+		raise ValueError(f"Unknown format {dds_format!r}")
 
 
 def get_dds_format_from_compression(compression: ETextureCompression) -> DDSFormat:
 	if compression == ETextureCompression.TCM_None:
 		return DDSFormat.R8G8B8A8_UNORM
 
-	if compression == ETextureCompression.TCM_DXTNoAlpha:
-		pass
+	# if compression == ETextureCompression.TCM_DXTNoAlpha:
+	# 	pass
 	if compression == ETextureCompression.TCM_Normals:
 		return DDSFormat.BC1_UNORM
 
-	if compression == ETextureCompression.TCM_DXTAlpha:
-		pass
-	if compression == ETextureCompression.TCM_NormalsHigh:
-		pass
+	# if compression == ETextureCompression.TCM_DXTAlpha:
+	# 	pass
+	# if compression == ETextureCompression.TCM_NormalsHigh:
+	# 	pass
 	if compression == ETextureCompression.TCM_NormalsGloss:
 		return DDSFormat.BC3_UNORM
 
@@ -94,10 +97,10 @@ def get_dds_format_from_compression(compression: ETextureCompression) -> DDSForm
 	if compression == ETextureCompression.TCM_QualityRG:
 		return DDSFormat.BC5_UNORM
 
-	if compression == ETextureCompression.TCM_DXTAlphaLinear:
-		pass
-	if compression == ETextureCompression.TCM_RGBE:
-		pass
+	# if compression == ETextureCompression.TCM_DXTAlphaLinear:
+	# 	pass
+	# if compression == ETextureCompression.TCM_RGBE:
+	# 	pass
 
 	else:
 		raise NotImplementedError
@@ -105,12 +108,15 @@ def get_dds_format_from_compression(compression: ETextureCompression) -> DDSForm
 
 def texture_to_image(texture: "CBitmapTexture") -> Image.Image:
 
-	texture_data = texture.render_texture_resource.render_resource_blob_pc["data"].texture_data["bytes"]
+	texture_data = cast(
+			rendRenderTextureBlobPC,
+			texture.render_texture_resource.render_resource_blob_pc["data"],
+			).texture_data["bytes"]
 	size = (texture.width, texture.height)
 	decoder = get_dds_decoder(get_dds_format_from_compression(texture.setup.compression))
 
 	decoded_data = decoder(texture_data, *size)
 
 	# TODO: check params against other formats
-	img = Image.frombytes("RGBA", size, decoded_data, "raw", ("BGRA")).transpose(Image.FLIP_TOP_BOTTOM)
+	img = Image.frombytes("RGBA", size, decoded_data, "raw", ("BGRA")).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
 	return img
