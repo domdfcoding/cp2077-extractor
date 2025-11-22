@@ -59,7 +59,17 @@ from .header_structs import (
 		Struct
 		)
 
-__all__ = ["read_c_name", "read_chunk", "read_file_info", "read_struct", "read_tables"]
+__all__ = [
+		"ParsingData",
+		"parse_cr2w_buffer",
+		"parse_cr2w_file",
+		"read_buffer",
+		"read_c_name",
+		"read_chunk",
+		"read_file_info",
+		"read_struct",
+		"read_tables"
+		]
 
 _S = TypeVar("_S", bound=Struct)
 
@@ -251,58 +261,68 @@ def parse_cr2w_file(filename: PathLike) -> CR2WFile:
 
 	filename_p = PathPlus(filename)
 	with filename_p.open("rb") as fp:
-		info = read_file_info(fp)
-		assert info.string_dict, "Malformed file"
+		return parse_cr2w_buffer(fp, filename_p)
 
-		# # TODO:
-		# # use 1st string as field 0 is always empty
-		# hash_version = identify_hash(info.string_dict[1], info.name_info[1].hash)
-		# if (hash_version == HashVersion.Unknown):
-		# 	raise ValueError("Failed to identify hash version")
 
-		properties: list[CR2WProperty] = []
-		for property_info in info.property_info:
-			# TODO: properties.append(read_property(property_info))
-			properties.append(CR2WProperty())
+def parse_cr2w_buffer(fp: IO, filename: PathLike | None = None) -> CR2WFile:
+	info = read_file_info(fp)
+	assert info.string_dict, "Malformed file"
 
-		if not property_info:
-			raise ValueError("Found unsupported PropertyInfo")
+	# # TODO:
+	hash_version = None
+	# # use 1st string as field 0 is always empty
+	# hash_version = identify_hash(info.string_dict[1], info.name_info[1].hash)
+	# if (hash_version == HashVersion.Unknown):
+	# 	raise ValueError("Failed to identify hash version")
 
-		# TODO: ensure CHandle/CWeakHandle can be resolved
+	properties: list[CR2WProperty] = []
+	for property_info in info.property_info:
+		# TODO: properties.append(read_property(property_info))
+		properties.append(CR2WProperty())
 
-		chunks: list[tuple[bytes, bytes]] = []
+	if not property_info:
+		raise ValueError("Found unsupported PropertyInfo")
 
-		for i in range(len(info.export_info)):
-			chunks.append(read_chunk(fp, i, info))
+	# TODO: ensure CHandle/CWeakHandle can be resolved
 
-		buffer_data: list[bytes, CR2WBufferInfo] = []
+	chunks: list[tuple[bytes, bytes]] = []
 
-		for i in range(len(info.buffer_info)):
-			buffer_info = info.buffer_info[i]
-			buffer_data.append((read_buffer(fp, buffer_info), buffer_info))
+	for i in range(len(info.export_info)):
+		chunks.append(read_chunk(fp, i, info))
 
-		parsing_data = ParsingData(get_names_list(info), chunks, buffer_data)
+	buffer_data: list[bytes, CR2WBufferInfo] = []
 
-		root_chunk_type = chunks[0][1]
-		var_type = lookup_type(root_chunk_type)
-		assert issubclass(var_type, Chunk)
-		root_chunk = var_type.from_chunk(chunks[0][0], parsing_data)
+	for i in range(len(info.buffer_info)):
+		buffer_info = info.buffer_info[i]
+		buffer_data.append((read_buffer(fp, buffer_info), buffer_info))
 
-		# TODO: read embedded files
-		embedded_files = []
-		# for embedded_info in info.embedded_info:
-		# 	embedded_files.Add(read_embedded(embedded_info))
+	parsing_data = ParsingData(get_names_list(info), chunks, buffer_data)
 
-		# TODO: check fp.tell() against header field giving file length (if there is one)
-		rem = fp.read(999999)
-		assert len(rem) == 0, f"{len(rem)} bytes remaining in file!"
+	root_chunk_type = chunks[0][1]
+	var_type = lookup_type(root_chunk_type)
+	assert issubclass(var_type, Chunk)
+	root_chunk = var_type.from_chunk(chunks[0][0], parsing_data)
+
+	# TODO: read embedded files
+	embedded_files = []
+	# for embedded_info in info.embedded_info:
+	# 	embedded_files.Add(read_embedded(embedded_info))
+
+	# TODO: check fp.tell() against header field giving file length (if there is one)
+	rem = fp.read(999999)
+	assert len(rem) == 0, f"{len(rem)} bytes remaining in file!"
+
+	if filename:
+		meta_filename = PathPlus(filename).abspath().as_posix(),
+	else:
+		meta_filename = None
 
 	metadata = CR2WMetadata(
-			file_name=filename_p.abspath().as_posix(),  # TODO
+			file_name=meta_filename,
 			version=info.file_header.version,
 			build_version=info.file_header.build_version,
 			objects_end=info.file_header.objects_end,
-			hash_version=None  # TODO: hash_version,
+			hash_version=hash_version,
 			)
 
 	return CR2WFile(
