@@ -30,17 +30,18 @@ General utility functions.
 import itertools
 import os
 import pprint
-import re
+import random
 import subprocess
-from collections import Counter
-from typing import Any
+from collections import Counter, deque
+from typing import Any, Deque, Generic, TypeVar
 
 # 3rd party
-import regex as re
+import regex as re  # type: ignore[import]
 import sox  # type: ignore[import]
 from domdf_python_tools.paths import PathPlus
 
 __all__ = [
+		"InfiniteList",
 		"prepare_ids",
 		"remove_extra_files",
 		"set_id_filename_in_directory",
@@ -132,6 +133,61 @@ def set_id_filename_in_directory(
 	if mp3_filename.is_file():
 		mp3_filename.rename(new_filename)
 	return new_filename
+
+
+_T = TypeVar("_T")
+
+
+class InfiniteList(Generic[_T]):
+	"""
+	List-like object that refills with a random order once empty.
+	"""
+
+	_items: list[_T]
+	_recent: Deque[_T]
+	_working_items: list[_T]
+
+	def __init__(self, items: list[_T]) -> None:
+		self._items = items[:]
+		if items:
+			# self._recent = deque(maxlen=min(len(items) - 1, 5))
+			self._recent = deque(maxlen=min(len(items) - 1, 5))
+		else:
+			self._recent = deque()
+
+		self.repopulate()
+
+	def repopulate(self) -> None:
+		print("Starting repopulate")
+		self._working_items = []
+		remaining_items = self._items[:]
+		while remaining_items:
+			# item = random.choice(remaining_items)
+			# if len(self._working_items) < self._recent.maxlen:
+			# 	if item in self._recent:
+			# 		continue
+			choices = []
+			for item in remaining_items:
+				if len(self._working_items) < self._recent.maxlen:
+					if item in self._recent:
+						continue
+				choices.append(item)
+			if not choices:
+				choices = remaining_items
+			item = random.choice(choices)
+			self._working_items.append(item)
+			remaining_items.remove(item)
+
+		self._working_items.reverse()
+
+	def pop(self) -> _T:
+		if not self._working_items:
+			self.repopulate()
+
+		item = self._working_items.pop()
+		self._recent.append(item)
+
+		return item
 
 
 _case_boundary_re = re.compile("(\\p{Ll})(\\p{Lu})")
