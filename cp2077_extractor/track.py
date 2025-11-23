@@ -27,13 +27,16 @@ Track metadata.
 #
 
 # stdlib
+import os
+import pathlib
 from collections.abc import Mapping
 from types import MappingProxyType
 from typing import NamedTuple
 
 # 3rd party
+from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.typing import PathLike
-from mutagen.id3 import COMM, ID3, TALB, TCMP, TCOM, TDRC, TIT2, TOA, TPE1, TPE2, Encoding
+from mutagen.id3 import APIC, COMM, ID3, TALB, TCMP, TCOM, TDRC, TIT2, TOA, TPE1, TPE2, Encoding
 
 __all__ = ["Track"]
 
@@ -60,12 +63,18 @@ class Track(NamedTuple):
 
 		return f"{self.artist} - {self.title}".replace('/', ' ')
 
-	def set_id3_metadata(self, mp3_filename: PathLike, station: str) -> None:
+	def set_id3_metadata(
+			self,
+			mp3_filename: PathLike,
+			station: str,
+			album_art: str | pathlib.Path | os.PathLike[str] | bytes | None = None,
+			) -> None:
 		"""
 		Set ID3 tags on the file (artist, title, performer, writer/composer, album/station, etc.).
 
 		:param mp3_filename: The file to set metadata on.
 		:param station: The name of the radio station, used as the album name.
+		:param album_art: Either the path to the album art file or the raw bytes of the album art, in PNG format. Optional.
 		"""
 
 		tags = ID3(mp3_filename)
@@ -78,5 +87,15 @@ class Track(NamedTuple):
 		tags.add(TDRC(encoding=Encoding.UTF8, text="2023"))
 		tags.add(TPE2(encoding=Encoding.UTF8, text="Various Artists"))
 		tags.add(COMM(encoding=Encoding.UTF8, text="From Cyberpunk 2077"))
+
+		if album_art:
+			if isinstance(album_art, bytes):
+				album_art_bytes = album_art
+			else:
+				album_art_bytes = PathPlus(album_art).read_bytes()
+
+			tags.delall("APIC")
+			tags.add(APIC(encoding=0, mime="image/png", type=3, desc="Cover", data=album_art_bytes))
+
 		# TODO: only save if changes made from tags read in.
 		tags.save(mp3_filename)
