@@ -29,9 +29,13 @@ Partial parser for REDEngine ``.archive`` files.
 # stdlib
 import struct
 from dataclasses import dataclass
+from pathlib import PureWindowsPath
+from typing import IO
 
 # 3rd party
 from domdf_python_tools.typing import PathLike
+from fnvhash import fnv1a_64
+from kraken_decompressor import decompress
 
 __all__ = ["FileList", "FileRecord", "FileSegment", "REDArchive"]
 
@@ -109,6 +113,30 @@ class FileList:
 	file_records: list[FileRecord]
 	file_segments: list[FileSegment]
 	resource_dependencies: list[int]
+
+	def find_filename(self, filename: str) -> FileRecord:
+		"""
+		Find the record for the given filename, relative to the root of the archive (usually starting ``base``).
+
+		:param filename:
+		"""
+
+		# TODO: cache hashes and mapping of hash to records for speed
+		name_hash = fnv1a_64(bytes(PureWindowsPath(filename)))
+		for record in self.file_records:
+			if record.name_hash == name_hash:
+				return record
+
+		raise FileNotFoundError(filename)
+
+	def get_segments(self, file: FileRecord) -> list[FileSegment]:
+		"""
+		Returns the segments for the given file.
+
+		:param file:
+		"""
+
+		return self.file_segments[file.segs_start:file.segs_end]
 
 
 @dataclass
@@ -213,3 +241,31 @@ class REDArchive:
 					custom_data_length=custom_data_length,
 					file_list=file_list,
 					)
+
+	def extract_file(self, fp: IO, file: FileRecord) -> bytes:
+		"""
+		Extract a file from the archive.
+
+		:param fp: File handle for the opened archive.
+		:param file: The file to extract.
+		"""
+
+		segments = self.file_list.file_segments[file.segs_start:file.segs_end]
+
+		file_content = b''
+		for segment in segments:
+			fp.seek(segment.offset, 0)
+			signature = fp.read(4)
+			if signature == b"KARK":
+				# Compressed with kraken
+				size = struct.unpack("<i", fp.read(4))[0]
+				assert segment.size == size
+
+				file_content += decompress(fp.read(segment.zsize - 8), size)
+
+			else:
+				file_content += signature
+				assert segment.size == segment.zsize
+				file_content += fp.read(segment.zize)
+
+		return file_content
