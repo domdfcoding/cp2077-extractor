@@ -36,7 +36,7 @@ from typing import NamedTuple
 # 3rd party
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.typing import PathLike
-from mutagen.id3 import APIC, COMM, ID3, TALB, TCMP, TCOM, TDRC, TIT2, TOA, TPE1, TPE2, Encoding
+from mutagen.id3 import APIC, COMM, ID3, TALB, TCMP, TCOM, TDRC, TIT2, TOPE, TPE1, TPE2, Encoding
 
 __all__ = ["Track"]
 
@@ -78,15 +78,54 @@ class Track(NamedTuple):
 		"""
 
 		tags = ID3(mp3_filename)
-		tags.add(TPE1(encoding=Encoding.UTF8, text=self.artist))
-		tags.add(TIT2(encoding=Encoding.UTF8, text=self.title))
-		tags.add(TOA(encoding=Encoding.UTF8, text=self.real_artist))
-		tags.add(TCOM(encoding=Encoding.UTF8, text=self.writer))
-		tags.add(TALB(encoding=Encoding.UTF8, text=station))
-		tags.add(TCMP(encoding=Encoding.UTF8, text='1'))
-		tags.add(TDRC(encoding=Encoding.UTF8, text="2023"))
-		tags.add(TPE2(encoding=Encoding.UTF8, text="Various Artists"))
-		tags.add(COMM(encoding=Encoding.UTF8, text="From Cyberpunk 2077"))
+		tags_changed: bool = False
+
+		if "TPE1" not in tags or str(tags["TPE1"]) != self.artist:
+			tags.add(TPE1(encoding=Encoding.UTF8, text=self.artist))
+			# print("TPE1 changed")
+			tags_changed = True
+
+		if "TIT2" not in tags or str(tags["TIT2"]) != self.title:
+			tags.add(TIT2(encoding=Encoding.UTF8, text=self.title))
+			# print("TIT2 changed")
+			tags_changed = True
+
+		if self.real_artist:
+			if "TOPE" not in tags or str(tags["TOPE"]) != self.real_artist:
+				tags.add(TOPE(encoding=Encoding.UTF8, text=self.real_artist))
+				# print("TOA changed")
+				tags_changed = True
+
+		if self.writer:
+			if "TCOM" not in tags or str(tags["TCOM"]) != self.writer:
+				tags.add(TCOM(encoding=Encoding.UTF8, text=self.writer))
+				# print("TCOM changed")
+				tags_changed = True
+
+		if "TALB" not in tags or str(tags["TALB"]) != station:
+			tags.add(TALB(encoding=Encoding.UTF8, text=station))
+			# print("TALB changed")
+			tags_changed = True
+
+		if "TCMP" not in tags or str(tags["TCMP"]) != '1':
+			tags.add(TCMP(encoding=Encoding.UTF8, text='1'))
+			# print("TCMP changed")
+			tags_changed = True
+
+		if "TDRC" not in tags or str(tags["TDRC"]) != "2023":
+			tags.add(TDRC(encoding=Encoding.UTF8, text="2023"))
+			# print("TDRC changed")
+			tags_changed = True
+
+		if "TPE2" not in tags or str(tags["TPE2"]) != "Various Artists":
+			tags.add(TPE2(encoding=Encoding.UTF8, text="Various Artists"))
+			# print("TPE2 changed")
+			tags_changed = True
+
+		if "COMM::XXX" not in tags or str(tags["COMM::XXX"]) != "From Cyberpunk 2077":
+			tags.add(COMM(encoding=Encoding.UTF8, text="From Cyberpunk 2077"))
+			# print("COMM changed")
+			tags_changed = True
 
 		if album_art:
 			if isinstance(album_art, bytes):
@@ -94,8 +133,10 @@ class Track(NamedTuple):
 			else:
 				album_art_bytes = PathPlus(album_art).read_bytes()
 
-			tags.delall("APIC")
-			tags.add(APIC(encoding=0, mime="image/png", type=3, desc="Cover", data=album_art_bytes))
+			if "APIC:Cover" not in tags or tags["APIC:Cover"].data != album_art_bytes:
+				tags.delall("APIC")  # TODO: APCI:Cover?
+				tags.add(APIC(encoding=0, mime="image/png", type=3, desc="Cover", data=album_art_bytes))
+				tags_changed = True
 
-		# TODO: only save if changes made from tags read in.
-		tags.save(mp3_filename)
+		if tags_changed:
+			tags.save(mp3_filename)
