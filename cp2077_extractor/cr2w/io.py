@@ -37,6 +37,7 @@ from typing import IO, Any, NamedTuple, TypeVar
 # 3rd party
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.typing import PathLike
+from kraken_decompressor import decompress
 
 # this package
 from cp2077_extractor.cr2w.datatypes import Chunk, lookup_type
@@ -239,14 +240,19 @@ def read_buffer(fp: IO, info: CR2WBufferInfo) -> bytes:
 	"""
 
 	assert fp.tell() == info.offset
+
 	# buffer = fp.read(info.disk_size)
 	buffer = fp.read(info.mem_size)
-	# TODO: decompress buffer if it is compressed with oodle
-	assert buffer[:4] != b"KARK"
+
+	if buffer[:4] == b"KARK":
+		# Compressed with oodle
+		decompressed_size = int.from_bytes(buffer[4:8], "little")
+		buffer = decompress(buffer[8:], decompressed_size)
+
 	# TODO: check crc32 (figure out what the input data is)
 	# crc32 = binascii.crc32(buffer)
 	# assert crc32 == info.crc32, (crc32, info.crc32)
-	# buffer_data.append((info.buffer_info[i], buffer))
+
 	return buffer
 
 
