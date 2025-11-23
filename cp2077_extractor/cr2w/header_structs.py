@@ -64,6 +64,10 @@ class Struct(Protocol):
 
 
 class CR2WTable(NamedTuple):
+	"""
+	A table holds various data about the structure of the CR2W/W2RC file, such as :class:`~.CR2WNameInfo` or :class:`~.CR2WBufferInfo`.
+	"""
+
 	offset: int
 	item_count: int
 	crc32: int
@@ -73,6 +77,10 @@ class CR2WTable(NamedTuple):
 
 
 class CR2WNameInfo(NamedTuple):
+	"""
+	Metatada about a name in the name lookup table of a CR2W/W2RC file.
+	"""
+
 	offset: int
 	hash: int
 
@@ -80,7 +88,7 @@ class CR2WNameInfo(NamedTuple):
 	_size = 8  # type: ignore[misc]
 
 
-class CR2WImportInfo(NamedTuple):
+class CR2WImportInfo(NamedTuple):  # noqa: D101
 	offset: int
 	class_name: int  # ushort (H, 2 bytes)
 	flags: int  # ushort (H, 2 bytes)
@@ -89,7 +97,7 @@ class CR2WImportInfo(NamedTuple):
 	_size = 8  # type: ignore[misc]
 
 
-class CR2WPropertyInfo(NamedTuple):
+class CR2WPropertyInfo(NamedTuple):  # noqa: D101
 	class_name: int  # ushort (H, 2 bytes)
 	class_flags: int  # ushort (H, 2 bytes)
 	property_name: int  # ushort (H, 2 bytes)
@@ -100,7 +108,7 @@ class CR2WPropertyInfo(NamedTuple):
 	_size = 16  # type: ignore[misc]
 
 
-class CR2WExportInfo(NamedTuple):
+class CR2WExportInfo(NamedTuple):  # noqa: D101
 	class_name: int  # ushort (H, 2 bytes)  # needs to be registered upon new creation and updated on file write!
 	object_flags: int  # ushort (H, 2 bytes)  #  0 means uncooked, 8192 is cooked
 	parent_id: int
@@ -114,6 +122,10 @@ class CR2WExportInfo(NamedTuple):
 
 
 class CR2WBufferInfo(NamedTuple):
+	"""
+	Metadata about a buffer in a CR2W/W2RC file.
+	"""
+
 	flags: int
 	index: int  # type: ignore[assignment]  # TODO (make into class with tuple interface (dataclass/attrs))
 
@@ -133,7 +145,7 @@ class CR2WBufferInfo(NamedTuple):
 	_size = 24  # type: ignore[misc]
 
 
-class CR2WEmbeddedInfo(NamedTuple):
+class CR2WEmbeddedInfo(NamedTuple):  # noqa: D101
 	import_index: int
 	chunk_index: int
 	path_hash: int  # ulong (C# version Q, 8 bytes)
@@ -142,13 +154,17 @@ class CR2WEmbeddedInfo(NamedTuple):
 	_size = 16  # type: ignore[misc]
 
 
-class CR2WImport(NamedTuple):
+class CR2WImport(NamedTuple):  # noqa: D101
 	depot_path: bytes
 	class_name: bytes
 	flags: int
 
 
 class CR2WFileHeader(NamedTuple):
+	"""
+	Represents the header of a CR2W/W2RC file.
+	"""
+
 	version: int
 	flags: int
 	time_stamp: int  # ulong (C# version Q, 8 bytes)
@@ -162,7 +178,15 @@ class CR2WFileHeader(NamedTuple):
 	_size = 36  # type: ignore[misc]
 
 
+# TODO: actual type
+ResourcePath = bytes
+
+
 class CR2WFileInfo(NamedTuple):
+	"""
+	Data about the file structure of a CR2W/W2RC file.
+	"""
+
 	file_header: CR2WFileHeader
 	string_dict: dict[int, bytes]
 	name_info: list[CR2WNameInfo]
@@ -174,22 +198,25 @@ class CR2WFileInfo(NamedTuple):
 
 	imports: list[CR2WImport]
 
-	def get_imports(self) -> list[bytes]:  # list[ResourcePath]
+	def get_imports(self) -> list[ResourcePath]:  # noqa: D102
 
-		result: list[bytes] = []  # list[ResourcePath]
+		result: list[ResourcePath] = []
 		for import_info in self.import_info:
-			# result.append((ResourcePath)StringDict[importInfo.offset]);
-			result.append(self.string_dict[import_info.offset])
+			result.append(ResourcePath(self.string_dict[import_info.offset]))
 
 		return result
 
 
-class CR2WProperty:
+class CR2WProperty:  # noqa: D101
 	# TODO
 	pass
 
 
 class CR2WMetadata(NamedTuple):
+	"""
+	Metadata about the CR2W/W2RC file.
+	"""
+
 	# WolvenKit order is file_name, version, build_version, hash_version, objects_end
 	file_name: str | None
 	hash_version: Any  # TODO: HashVersion
@@ -199,6 +226,10 @@ class CR2WMetadata(NamedTuple):
 
 
 class CR2WFile(NamedTuple):
+	"""
+	Represents a read and parsed CR2W/W2RC file.
+	"""
+
 	info: CR2WFileInfo
 	metadata: CR2WMetadata
 	properties: list[CR2WProperty]

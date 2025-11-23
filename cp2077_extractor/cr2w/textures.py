@@ -47,6 +47,10 @@ __all__ = ["DDSFormat", "get_dds_decoder", "get_dds_format_from_compression"]
 
 
 class DDSFormat(Enum):
+	"""
+	Enum of different formats for DirectDraw Surface ``.dds`` files.
+	"""
+
 	R8G8B8A8_UNORM = 0
 	BC1_UNORM = 1
 	BC3_UNORM = 2

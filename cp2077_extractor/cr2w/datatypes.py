@@ -63,9 +63,15 @@ __all__ = [
 
 
 class Chunk:
+	"""
+	Base class for chunks in CR2W/W2RC files; packed data containing variable names, types and values.
+	"""
 
 	@classmethod
 	def from_cr2w_kwargs(cls, kwargs: dict[bytes, Any]) -> "Chunk":
+		"""
+		Construct from a mapping of REDengine variable names and values (as Python types).
+		"""
 		new_kwargs: dict[str, Any] = {
 				to_snake_case(arg_name.decode("UTF-8")): arg_value
 				for arg_name, arg_value in kwargs.items()
@@ -74,6 +80,13 @@ class Chunk:
 
 	@classmethod
 	def from_chunk(cls, chunk: bytes, parsing_data: "ParsingData") -> "Chunk":
+		"""
+		Parse raw bytes.
+
+		:param chunk: The raw bytes.
+		:param parsing_data:
+		"""
+
 		kwargs = parse_chunk(chunk, parsing_data)
 		return cls.from_cr2w_kwargs(kwargs)
 
@@ -139,7 +152,7 @@ def instantiate_type(red_type_name: bytes, value: bytes, parsing_data: "ParsingD
 		return var_type(value)
 
 
-class array_rendRenderTextureBlobMipMapInfo(bytes):
+class array_rendRenderTextureBlobMipMapInfo(bytes):  # noqa: D101
 	# TODO: parse the array
 	def __repr__(self) -> str:
 		return f"array:rendRenderTextureBlobMipMapInfo({super().__repr__()})"
@@ -197,7 +210,7 @@ def serialization_deferred_data_buffer(
 
 
 @dataclass
-class rendRenderTextureBlobTextureInfo(Chunk):
+class rendRenderTextureBlobTextureInfo(Chunk):  # noqa: D101
 	texture_data_size: int
 	slice_size: int
 	data_alignment: int
@@ -208,6 +221,10 @@ class rendRenderTextureBlobTextureInfo(Chunk):
 
 @dataclass
 class rendRenderTextureBlobSizeInfo(Chunk):
+	"""
+	Size info for a texture.
+	"""
+
 	width: int
 	height: int
 	depth: int = 1
@@ -215,6 +232,10 @@ class rendRenderTextureBlobSizeInfo(Chunk):
 
 @dataclass
 class rendRenderTextureBlobHeader(Chunk):
+	"""
+	Header for texture data and associated properties.
+	"""
+
 	version: int
 	size_info: rendRenderTextureBlobSizeInfo
 	texture_info: rendRenderTextureBlobTextureInfo
@@ -224,13 +245,17 @@ class rendRenderTextureBlobHeader(Chunk):
 
 
 @dataclass
-class rendRenderTextureBlobPC(Chunk):
+class rendRenderTextureBlobPC(Chunk):  # noqa: D101
 	header: rendRenderTextureBlobHeader
 	texture_data: DeferredBufferData
 
 
 @dataclass
 class STextureGroupSetup(Chunk):
+	"""
+	Properties of a texture file.
+	"""
+
 	compression: enums.ETextureCompression
 	is_gamma: bool
 	platform_mip_bias_pc: int = 0
@@ -243,13 +268,17 @@ class STextureGroupSetup(Chunk):
 
 
 @dataclass
-class rendRenderTextureResource(Chunk):
+class rendRenderTextureResource(Chunk):  # noqa: D101
 
 	render_resource_blob_pc: HandleData  # CHandle
 
 
 @dataclass
 class CBitmapTexture(Chunk):
+	"""
+	A texture file.
+	"""
+
 	cooking_platform: enums.ECookingPlatform
 	width: int
 	height: int
