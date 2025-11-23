@@ -53,6 +53,14 @@ def get_names_list(file_info: CR2WFileInfo) -> list[bytes]:
 
 
 def get_chunk_variables(chunk: bytes, names_list: list[bytes]) -> list[tuple[bytes, bytes, Any]]:
+	"""
+	Parse variables from the given chunk.
+
+	:param chunk:
+	:param names_list: Name lookup table for the file.
+
+	:returns: List of variables, as tuples of variable name, variable REDengine type, variable value.
+	"""
 
 	# this package
 	from cp2077_extractor.cr2w.io import read_c_name

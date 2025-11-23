@@ -158,6 +158,10 @@ class InfiniteList(Generic[_T]):
 		self.repopulate()
 
 	def repopulate(self) -> None:
+		"""
+		Repopulate the list with a new random order, avoiding recent items occuring soon.
+		"""
+
 		print("Starting repopulate")
 		self._working_items = []
 		remaining_items = self._items[:]
@@ -182,6 +186,10 @@ class InfiniteList(Generic[_T]):
 		self._working_items.reverse()
 
 	def pop(self) -> _T:
+		"""
+		Get the next item from the back of the list.
+		"""
+
 		if not self._working_items:
 			self.repopulate()
 

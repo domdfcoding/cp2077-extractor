@@ -1422,6 +1422,12 @@ class REDEnum(Enum):
 
 	@classmethod
 	def from_red_name(cls, red_name: bytes) -> "REDEnum":
+		"""
+		Get an enum member by its REDengine name.
+
+		:param red_name:
+		"""
+
 		return cls[red_name.decode("UTF-8")]
 
 

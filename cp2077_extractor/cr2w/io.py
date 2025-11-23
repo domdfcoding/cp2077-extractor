@@ -231,6 +231,13 @@ def read_chunk(fp: IO, chunk_index: int, file_info: CR2WFileInfo) -> tuple[bytes
 
 
 def read_buffer(fp: IO, info: CR2WBufferInfo) -> bytes:
+	"""
+	Read a buffer from the CR2W/W2RC file.
+
+	:param fp:
+	:param info: Metadata about the buffer
+	"""
+
 	assert fp.tell() == info.offset
 	# buffer = fp.read(info.disk_size)
 	buffer = fp.read(info.mem_size)
@@ -259,6 +266,11 @@ class ParsingData(NamedTuple):
 
 
 def parse_cr2w_file(filename: PathLike) -> CR2WFile:
+	"""
+	Parse a CR2W/W2RC file from the given path.
+
+	:param filename:
+	"""
 
 	filename_p = PathPlus(filename)
 	with filename_p.open("rb") as fp:
@@ -266,6 +278,13 @@ def parse_cr2w_file(filename: PathLike) -> CR2WFile:
 
 
 def parse_cr2w_buffer(fp: IO, filename: PathLike | None = None) -> CR2WFile:
+	"""
+	Parse a CR2W/W2RC file from an opened file.
+
+	:param fp:
+	:param filename: Optionally, the path of the opened file for inclusion in metadata.
+	"""
+
 	info = read_file_info(fp)
 	assert info.string_dict, "Malformed file"
 

@@ -56,6 +56,12 @@ class DDSFormat(Enum):
 
 
 def get_dds_decoder(dds_format: DDSFormat) -> Callable[[bytes, int, int], bytes]:
+	"""
+	Returns the function to decode a DDS texture, for use with :meth:`PIL.Image.frombytes`.
+
+	:param dds_format:
+	"""
+
 	if dds_format == DDSFormat.R8G8B8A8_UNORM:
 		raise NotImplementedError
 	elif dds_format == DDSFormat.BC1_UNORM:
@@ -73,6 +79,12 @@ def get_dds_decoder(dds_format: DDSFormat) -> Callable[[bytes, int, int], bytes]
 
 
 def get_dds_format_from_compression(compression: ETextureCompression) -> DDSFormat:
+	"""
+	Find the DDS format for the given texture compression type.
+
+	:param compression
+	"""
+
 	if compression == ETextureCompression.TCM_None:
 		return DDSFormat.R8G8B8A8_UNORM
 
