@@ -34,7 +34,7 @@ from typing import IO
 
 # 3rd party
 from domdf_python_tools.typing import PathLike
-from fnvhash import fnv1a_64
+from fnvhash import fnv1a_64  # type: ignore[import]
 from kraken_decompressor import decompress
 
 __all__ = ["FileList", "FileRecord", "FileSegment", "REDArchive"]
@@ -266,6 +266,6 @@ class REDArchive:
 			else:
 				file_content += signature
 				assert segment.size == segment.zsize
-				file_content += fp.read(segment.zize)
+				file_content += fp.read(segment.zsize)
 
 		return file_content
