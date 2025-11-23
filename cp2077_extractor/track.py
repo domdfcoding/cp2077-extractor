@@ -27,7 +27,7 @@ Track metadata.
 #
 
 # stdlib
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from types import MappingProxyType
 from typing import NamedTuple
 
@@ -46,7 +46,6 @@ class Track(NamedTuple):
 	artist: str
 	title: str
 	wem_name: int
-	extra_ids: Sequence[int] = ()
 	writer: str = ''
 	real_artist: str = ''
 

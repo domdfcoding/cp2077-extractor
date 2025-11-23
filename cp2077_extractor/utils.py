@@ -27,53 +27,18 @@ General utility functions.
 #
 
 # stdlib
-import itertools
 import os
-import pprint
 import random
 import subprocess
-from collections import Counter, deque
-from typing import Any, Deque, Generic, TypeVar
+from collections import deque
+from typing import Deque, Generic, TypeVar
 
 # 3rd party
 import regex as re  # type: ignore[import]
 import sox  # type: ignore[import]
 from domdf_python_tools.paths import PathPlus
 
-__all__ = [
-		"InfiniteList",
-		"prepare_ids",
-		"remove_extra_files",
-		"set_id_filename_in_directory",
-		"to_snake_case",
-		"transcode_file"
-		]
-
-
-def prepare_ids(radio_stations: dict[str, Any], *other_ids) -> tuple[
-		set[int],
-		set[int],
-		set[int],
-		]:
-	target_file_ids: set[int] = set(itertools.chain(*(station.keys() for station in radio_stations.values())))
-	extra_file_ids: set[int] = set()
-	for station in radio_stations.values():
-		for track_data in station.values():
-			try:
-				extra_file_ids.update(track_data[3])
-			except:
-				print(track_data)
-				raise
-
-	all_ids: list[int] = [int(i) for i in (*target_file_ids, *extra_file_ids) if i]
-	for id_set in other_ids:
-		all_ids.extend(map(int, id_set))
-
-	res = {num: freq for num, freq in Counter(all_ids).items() if freq > 1}
-	if res:
-		raise ValueError(f"Error: duplicated IDs (with frequency)\n{pprint.pformat(res)}")
-
-	return target_file_ids, extra_file_ids, set(all_ids)
+__all__ = ["InfiniteList", "remove_extra_files", "set_id_filename_in_directory", "to_snake_case", "transcode_file"]
 
 
 def transcode_file(
@@ -120,8 +85,8 @@ def transcode_file(
 
 
 def remove_extra_files(directory: PathPlus, target_ids: set[int]) -> None:
-	for file_id in {int(x.stem) for x in directory.iterdir()} - target_ids:
-		directory.joinpath(str(file_id) + ".mp3").unlink()
+	for file_id in {str(x.stem) for x in directory.iterdir()} - set(map(str, target_ids)):
+		directory.joinpath(file_id + ".mp3").unlink()
 
 
 def set_id_filename_in_directory(
