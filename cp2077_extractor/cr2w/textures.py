@@ -92,15 +92,15 @@ def get_dds_format_from_compression(compression: ETextureCompression) -> DDSForm
 	if compression == ETextureCompression.TCM_None:
 		return DDSFormat.R8G8B8A8_UNORM
 
-	# if compression == ETextureCompression.TCM_DXTNoAlpha:
-	# 	pass
+	if compression == ETextureCompression.TCM_DXTNoAlpha:
+		return DDSFormat.BC1_UNORM
 	if compression == ETextureCompression.TCM_Normals:
 		return DDSFormat.BC1_UNORM
 
-	# if compression == ETextureCompression.TCM_DXTAlpha:
-	# 	pass
-	# if compression == ETextureCompression.TCM_NormalsHigh:
-	# 	pass
+	if compression == ETextureCompression.TCM_DXTAlpha:
+		return DDSFormat.BC3_UNORM
+	if compression == ETextureCompression.TCM_NormalsHigh:
+		return DDSFormat.BC3_UNORM
 	if compression == ETextureCompression.TCM_NormalsGloss:
 		return DDSFormat.BC3_UNORM
 
@@ -112,6 +112,8 @@ def get_dds_format_from_compression(compression: ETextureCompression) -> DDSForm
 
 	if compression == ETextureCompression.TCM_QualityRG:
 		return DDSFormat.BC5_UNORM
+	if compression == ETextureCompression.TCM_Normalmap:
+		return DDSFormat.BC5_UNORM
 
 	# if compression == ETextureCompression.TCM_DXTAlphaLinear:
 	# 	pass
@@ -119,7 +121,7 @@ def get_dds_format_from_compression(compression: ETextureCompression) -> DDSForm
 	# 	pass
 
 	else:
-		raise NotImplementedError
+		raise NotImplementedError(compression)
 
 
 def texture_to_image(texture: "CBitmapTexture") -> Image.Image:
