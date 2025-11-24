@@ -32,12 +32,12 @@ from collections.abc import Collection, Iterator
 from typing import TYPE_CHECKING, Any, NamedTuple
 
 # 3rd party
-import networkx  # type: ignore[import]
+import networkx  # type: ignore[import-untyped]
 from networkx import Graph, all_simple_paths
 
 if TYPE_CHECKING:
 	# 3rd party
-	from matplotlib.figure import Figure  # type: ignore[import]  # nodep
+	from matplotlib.figure import Figure  # nodep
 
 __all__ = [
 		"EventData",
@@ -112,8 +112,8 @@ def plot_graph(graph: Graph) -> "Figure":
 	"""
 
 	# 3rd party
-	from matplotlib import pyplot as plt  # type: ignore[import]  # nodep
-	from networkx.drawing.nx_agraph import graphviz_layout  # type: ignore[import]
+	from matplotlib import pyplot as plt  # nodep
+	from networkx.drawing.nx_agraph import graphviz_layout  # type: ignore[import-untyped]
 
 	pos = graphviz_layout(graph, "dot")
 	fig, ax1 = plt.subplots()

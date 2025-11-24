@@ -34,8 +34,8 @@ from collections import deque
 from typing import Deque, Generic, TypeVar
 
 # 3rd party
-import regex as re  # type: ignore[import]
-import sox  # type: ignore[import]
+import regex as re  # type: ignore[import-untyped]
+import sox  # type: ignore[import-untyped]
 from domdf_python_tools.paths import PathPlus
 
 __all__ = ["InfiniteList", "remove_extra_files", "set_id_filename_in_directory", "to_snake_case", "transcode_file"]
