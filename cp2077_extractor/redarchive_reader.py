@@ -266,6 +266,6 @@ class REDArchive:
 			else:
 				file_content += signature
 				assert segment.size == segment.zsize
-				file_content += fp.read(segment.zsize)
+				file_content += fp.read(segment.zsize - 4)
 
 		return file_content
