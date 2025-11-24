@@ -337,7 +337,8 @@ def parse_cr2w_buffer(fp: IO, filename: PathLike | None = None) -> CR2WFile:
 
 	# TODO: check fp.tell() against header field giving file length (if there is one)
 	rem = fp.read(999999)
-	assert len(rem) == 0, f"{len(rem)} bytes remaining in file!"
+	if len(rem) != 0:
+		warnings.warn(f"{len(rem)} bytes remaining in file!")
 
 	if filename:
 		meta_filename = PathPlus(filename).abspath().as_posix()
