@@ -257,7 +257,7 @@ class STextureGroupSetup(Chunk):
 	"""
 
 	compression: enums.ETextureCompression
-	is_gamma: bool
+	is_gamma: bool = False
 	platform_mip_bias_pc: int = 0
 	platform_mip_bias_console: int = 0
 	is_streamable: bool = True
