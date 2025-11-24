@@ -27,6 +27,7 @@ Partial parser for REDEngine ``.archive`` files.
 #
 
 # stdlib
+import hashlib
 import struct
 from dataclasses import dataclass
 from pathlib import PureWindowsPath
@@ -67,7 +68,7 @@ class FileRecord:
 	#: Index of the last resource dependency
 	res_deps_end: int
 
-	#: SHA1 hash of the file
+	#: SHA1 hash of the file  # TODO: compressed files?
 	sha1_hash: bytes
 
 
@@ -250,13 +251,15 @@ class REDArchive:
 		:param file: The file to extract.
 		"""
 
-		segments = self.file_list.file_segments[file.segs_start:file.segs_end]
+		segments = self.file_list.get_segments(file)
+		compressed = False
 
 		file_content = b''
 		for segment in segments:
 			fp.seek(segment.offset, 0)
 			signature = fp.read(4)
 			if signature == b"KARK":
+				compressed = True
 				# Compressed with kraken
 				size = struct.unpack("<i", fp.read(4))[0]
 				assert segment.size == size
@@ -267,5 +270,10 @@ class REDArchive:
 				file_content += signature
 				assert segment.size == segment.zsize
 				file_content += fp.read(segment.zsize - 4)
+
+		if not compressed:
+			# TODO: is it the sha1 of the compressed data?
+			sha1_hash = hashlib.sha1(file_content).digest()
+			assert sha1_hash == file.sha1_hash, (sha1_hash, file.sha1_hash)
 
 		return file_content
