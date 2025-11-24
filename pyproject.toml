@@ -21,6 +21,7 @@ email = "dominic@davis-foster.co.uk"
 Homepage = "https://github.com/domdfcoding/cp2077-extractor"
 "Issue Tracker" = "https://github.com/domdfcoding/cp2077-extractor/issues"
 "Source Code" = "https://github.com/domdfcoding/cp2077-extractor"
+Documentation = "https://cp2077-extractor.readthedocs.io/en/latest"
 
 [tool.setuptools]
 zip-safe = false
@@ -48,6 +49,10 @@ show_error_codes = true
 [tool.dependency-dash."requirements.txt"]
 order = 10
 
+[tool.dependency-dash."doc-source/requirements.txt"]
+order = 30
+include = false
+
 [tool.snippet-fmt]
 directives = [ "code-block",]
 
@@ -63,3 +68,80 @@ reformat = true
 
 [tool.dep_checker.name_mapping]
 pillow = "PIL"
+
+[tool.sphinx-pyproject]
+github_username = "domdfcoding"
+github_repository = "cp2077-extractor"
+author = "Dominic Davis-Foster"
+project = "cp2077-extractor"
+copyright = "2025 Dominic Davis-Foster"
+language = "en"
+package_root = "cp2077_extractor"
+extensions = [
+    "sphinx_toolbox",
+    "sphinx_toolbox.more_autodoc",
+    "sphinx_toolbox.more_autosummary",
+    "sphinx_toolbox.documentation_summary",
+    "sphinx_toolbox.tweaks.param_dash",
+    "sphinxcontrib.toctree_plus",
+    "sphinx_toolbox.tweaks.latex_layout",
+    "sphinx_toolbox.tweaks.latex_toc",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.mathjax",
+    "sphinxcontrib.extras_require",
+    "sphinx.ext.todo",
+    "notfound.extension",
+    "sphinx_copybutton",
+    "sphinxcontrib.default_values",
+    "sphinx_debuginfo",
+    "sphinx_licenseinfo",
+    "seed_intersphinx_mapping",
+    "html_section",
+]
+gitstamp_fmt = "%d %b %Y"
+templates_path = [ "_templates",]
+html_static_path = [ "_static",]
+source_suffix = ".rst"
+master_doc = "index"
+suppress_warnings = [ "image.nonlocal_uri",]
+pygments_style = "default"
+html_theme = "domdf_sphinx_theme"
+html_theme_path = [ "../..",]
+html_show_sourcelink = true
+toctree_plus_types = [
+    "class",
+    "confval",
+    "data",
+    "directive",
+    "enum",
+    "exception",
+    "flag",
+    "function",
+    "namedtuple",
+    "protocol",
+    "role",
+    "typeddict",
+]
+add_module_names = false
+hide_none_rtype = true
+all_typevars = true
+overloads_location = "bottom"
+html_codeblock_linenos_style = "table"
+autodoc_exclude_members = [
+    "__dict__",
+    "__class__",
+    "__dir__",
+    "__weakref__",
+    "__module__",
+    "__annotations__",
+    "__orig_bases__",
+    "__parameters__",
+    "__subclasshook__",
+    "__init_subclass__",
+    "__attrs_attrs__",
+    "__init__",
+    "__new__",
+    "__getnewargs__",
+    "__abstractmethods__",
+    "__hash__",
+]

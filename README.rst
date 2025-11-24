@@ -15,6 +15,8 @@ cp2077-extractor
 	:stub-columns: 1
 	:widths: 10 90
 
+	* - Docs
+	  - |docs| |docs_check|
 	* - Tests
 	  - |actions_linux| |actions_windows| |actions_macos|
 	* - Activity
@@ -23,6 +25,14 @@ cp2077-extractor
 	  - |codefactor| |actions_flake8| |actions_mypy|
 	* - Other
 	  - |license| |language| |requires|
+
+.. |docs| image:: https://img.shields.io/readthedocs/cp2077-extractor/latest?logo=read-the-docs
+	:target: https://cp2077-extractor.readthedocs.io/en/latest
+	:alt: Documentation Build Status
+
+.. |docs_check| image:: https://github.com/domdfcoding/cp2077-extractor/workflows/Docs%20Check/badge.svg
+	:target: https://github.com/domdfcoding/cp2077-extractor/actions?query=workflow%3A%22Docs+Check%22
+	:alt: Docs Check Status
 
 .. |actions_linux| image:: https://github.com/domdfcoding/cp2077-extractor/workflows/Linux/badge.svg
 	:target: https://github.com/domdfcoding/cp2077-extractor/actions?query=workflow%3A%22Linux%22

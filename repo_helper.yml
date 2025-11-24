@@ -10,7 +10,6 @@ license: 'MIT'
 short_desc: 'Work in progress audio/music extractor for Cyberpunk 2077.'
 
 enable_conda: false
-enable_docs: false
 enable_tests: false
 on_pypi: false
 use_whey: true
@@ -19,3 +18,14 @@ python_versions:
   '3.10':
   '3.11':
   '3.12':
+
+sphinx_conf_epilogue:
+  - from matplotlib.figure import Figure
+  - from cp2077_extractor.cr2w.io import ParsingData
+  - from cp2077_extractor.cr2w.datatypes import Chunk, CBitmapTexture
+  - from cp2077_extractor import radio_dj
+  - from cp2077_extractor.cr2w import header_structs, textures, datatypes
+  - radio_dj.Figure = Figure
+  - datatypes.ParsingData = ParsingData
+  - header_structs.Chunk = Chunk
+  - textures.CBitmapTexture = CBitmapTexture

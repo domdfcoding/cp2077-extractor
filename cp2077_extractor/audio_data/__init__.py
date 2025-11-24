@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 #
 #  __init__.py
-"""
+r"""
 Data for radio stations, ambient music, etc.
+
+Audio files are located in ``audio_2_soundbanks.archive`` at ``base\sound\soundbanks\media\{wem_name}.wem``
 """
 #
 #  Copyright © 2025 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -52,7 +54,8 @@ __all__ = [
 		"johnny_kerry_music_ids",
 		]
 
-intro_ids = {
+#: Mapping of wem file names to languages for the game intro audio.
+intro_ids: dict[int, str] = {
 		# Intros in foreign languages
 		193250534: "Korean",
 		212033934: "German",
@@ -68,7 +71,8 @@ intro_ids = {
 		}
 
 # mus_q114_nomad_bard_01_song_01, plays during We Gotta Live Together (Aldecaldos ending)
-nomad_bard_ids = {
+#: Mapping of wem file names to language (or the guitar part) for the bard playing during the quest *We Gotta Live Together*.
+nomad_bard_ids: dict[int, str] = {
 		422912739: "German",  # mus_q114_nomad_bard_01_song_01/mus_q114_nomad_bard_01_song
 		717901062: "Korean",  # mus_q114_nomad_bard_01_song_01/mus_q114_nomad_bard_01_song
 		788187980: "English",  # mus_q114_nomad_bard_01_song_01/mus_q114_nomad_bard_01_song
@@ -87,27 +91,39 @@ nomad_bard_ids = {
 		}
 
 # mus_q105_dollhouse
-clouds_music_ids = {
+#: Music that plays in Clouds.
+clouds_music_ids: dict[int, str] = {
 		394385544: "mus_q105_dollhouse_394385544",
 		643987762: "mus_q105_dollhouse_643987762",
 		}
 
-somewhat_damaged_flashback_ids = {
+#: Music that plays in the flashbacks during the quest *Somewhat Damaged*.
+somewhat_damaged_flashback_ids: dict[int, str] = {
 		180066973: "mus_q305_brooklyn_vinyl_01_180066973",
 		22001095: "mus_q305_brooklyn_party_22001095",
 		}
 
-sex_cutscene_music_ids = {
+#: Music that plays in the flashbacks during sex cutscenes.
+sex_cutscene_music_ids: dict[int, str] = {
 		415608881: "mus_generic_sexcs_01_415608881",  # Joytoy fire?
 		851644048: "mus_sq030_judy_csex_851644048",  # Guitar and drums and humming
 		176338671: "mus_stout_sexcs_01_176338671",  # Hole In The Sun (excerpt)
 		}
 
-hangout_music_ids = {}
-race_music_ids = {}
-mus_ow_phone_ids = {}
-dark_matter_music_ids = {}
-johnny_kerry_music_ids = {}
+#: Music that plays during the *I Really Wanna Stay At Your House* quest.
+hangout_music_ids: dict[int, str] = {}
+
+#: Music that plays during the *The Beast In Me* quests.
+race_music_ids: dict[int, str] = {}
+
+#: Unknown
+mus_ow_phone_ids: dict[int, str] = {}
+
+#: Music that plays in Dark Matter during the *Off the Leash* quest.
+dark_matter_music_ids: dict[int, str] = {}
+
+#:
+johnny_kerry_music_ids: dict[int, str] = {}
 
 for station, station_data in radio_stations.items():
 	for track in station_data:

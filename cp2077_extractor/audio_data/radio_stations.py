@@ -29,6 +29,9 @@ Data for songs that play on the in game radio.
 # TODO: generes (from tags in sounddb)
 # TODO: check in-game capitalisation of station names
 
+# stdlib
+from collections.abc import Sequence
+
 # this package
 from cp2077_extractor.track import Track
 
@@ -36,7 +39,6 @@ __all__ = [
 		"body_heat_radio",
 		"dark_star",
 		"growl_fm",
-		"impulse",
 		"misc",
 		"morro_rock_radio",
 		"night_fm",
@@ -64,8 +66,8 @@ CLOUDS_MUSIC = "mus_q105_dollhouse"
 DARK_MATTER = "mus_sq017_dark_matter_club_user_friendly"  # Dark Matter during Kerry quest
 JOHNNY_KERRY = "mus_q101_js_and_kerry_source"  # Love Like Fire quest Johnny & Kerry
 
-# 88.9 Pacific Dreams
-pacific_dreams = [
+#: 88.9 Pacific Dreams
+pacific_dreams: list[Track] = [
 		Track("Quantum Lovers", "Isometric Air", 253367813, "Brian Aspey", "Brian Aspey"),
 		Track("Quantum Lovers", "Practical Heart", 910852846, "Brian Aspey", "Brian Aspey"),
 		Track(
@@ -109,8 +111,8 @@ pacific_dreams = [
 		Track("Mona Mitchell", "Ice Maddox", 1017413855, "FOQL", "FOQL"),
 		]
 
-# 89.3 Radio Vexelstrom
-radio_vexelstrom = [
+#: 89.3 Radio Vexelstrom
+radio_vexelstrom: list[Track] = [
 		Track("The Cartesian Duelists", "Resist and Disorder", 308480891, "Jason Charles Miller", "Rezodrone"),
 		Track("The Cartesian Duelists", "Kill the Messenger", 525137074, "Jason Charles Miller", "Rezodrone"),
 		Track("Slavoj McAllister", "Makes Me Feel Better", 66952680, "Kevin Hastings", "OnenO"),
@@ -134,8 +136,8 @@ radio_vexelstrom = [
 		Track("N1v3Z", "Pig Dinner", 874085468, "Ho99o9, N8NOFACE", "Ho99o9, N8NOFACE"),
 		]
 
-# 89.7 Growl FM
-growl_fm = [
+#: 89.7 Growl FM
+growl_fm: list[Track] = [
 		Track(
 				"Coeur Noir",
 				"Let The Stars Die",
@@ -192,8 +194,8 @@ growl_fm = [
 				),
 		]
 
-# 91.9 Royal Blue Radio
-royal_blue_radio = [
+#: 91.9 Royal Blue Radio
+royal_blue_radio: list[Track] = [
 		Track("Miles Davis", "Black Satin/What If/Agharta Prelude Dub", 448263054, "Miles Davis"),
 		Track("Miles Davis", "Bitches Brew", 915057747, "Miles Davis"),
 		Track(
@@ -222,8 +224,8 @@ royal_blue_radio = [
 		Track("Trio of Doom", "Dark Prince", 449864253, "John Mclaughlin", other_uses={395786567: RACES}),
 		]
 
-# 92.9 Night FM
-night_fm = [
+#: 92.9 Night FM
+night_fm: list[Track] = [
 		Track("Perilous Futur", "Dirty Roses", 664992914, "Kevin Hastings", "OnenO"),
 		Track("The Unresolved", "Worlds", 188143271, "Sebastian Roberston; Daniel Davies", "SRDD"),
 		Track("The Unresolved", 'X', 52108015, "Sebastian Roberston; Daniel Davies", "SRDD"),
@@ -245,8 +247,8 @@ night_fm = [
 		Track("Cyber Coorayber", "Brain-Damaged", 239254618, "Nikola Nikita Jeremic", "Nikola Nikita Jeremic"),
 		]
 
-# 95.2 Samizdat Radio
-samizdat_radio = [
+#: 95.2 Samizdat Radio
+samizdat_radio: list[Track] = [
 		Track(
 				"Bara Nova",
 				"Pilling in my Head",
@@ -273,8 +275,8 @@ samizdat_radio = [
 		Track("Bara Nova", "Surprise Me, I'm Surprised Today", 822859958, "Nina Kraviz", "Nina Kraviz"),
 		]
 
-# 96.1 Ritual FM
-ritual_fm = [
+#: 96.1 Ritual FM
+ritual_fm: list[Track] = [
 		Track("V3RM1N", "Finis", 323048169, "Piotr Maciejewski (Drivealone)", "Piotr Maciejewski (Drivealone)"),
 		Track("Dread Soul", "The Accursed", 969984534, "Antre", "Antre"),
 		Track(
@@ -309,8 +311,8 @@ ritual_fm = [
 		Track("Shattered Void", "I Won't Let You Go", 643641585, "Converge", "Converge"),
 		]
 
-# 98.7 Body Heat Radio
-body_heat_radio = [
+#: 98.7 Body Heat Radio
+body_heat_radio: list[Track] = [
 		Track(
 				"Clockwork Venus",
 				"BM",
@@ -379,8 +381,8 @@ body_heat_radio = [
 		Track("IBDY", "Here's a Thought", 575003013, "RAT BOY", "RAT BOY", {825809386: JOHNNY_KERRY}),
 		]
 
-# # 99.9 Impulse
-# impulse = {
+# #: 99.9 Impulse
+# impulse: list[Track] = {
 # 		'': Track("Mr. Kipper", "Walk Of Shame", 0, "Idris Elba", "Idris Elba"),
 # 		'': Track("Private Press", "Dreamy", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
 # 		'': Track("Private Press", "DEEEEEEP", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
@@ -397,8 +399,8 @@ body_heat_radio = [
 # 		'': Track("Private Press", "ENERGEEHOUSE", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
 # 		}
 
-# 101.9 The Dirge
-the_dirge = [
+#: 101.9 The Dirge
+the_dirge: list[Track] = [
 		Track(
 				"Kill Trigger",
 				"The God Machines (feat. Paul Senai, KraKow)",
@@ -496,8 +498,8 @@ the_dirge = [
 		Track("PeCero", "Nose Bleed", 697396654, '', ''),  # TODO: not listed in the wiki; need credits
 		]
 
-# 103.5 Radio PEBKAC
-radio_pebkac = [
+#: 103.5 Radio PEBKAC
+radio_pebkac: list[Track] = [
 		Track("Error", "Bios", 254461336, "Jan Szarecki", "Louve"),
 		Track("Sao Mai", "Drained", 450630849, "Rhys Fulber", "Rhys Fulber"),
 		Track("Spoon Eater", "Subvert", 992013305, "Rhys Fulber", "Rhys Fulber"),
@@ -528,8 +530,8 @@ radio_pebkac = [
 		Track("Dukes of Azure", "Darkretro", 172754141, "Count", "Count"),
 		]
 
-# 106.9 30 Principales
-principales = [
+#: 106.9 30 Principales
+principales: list[Track] = [
 		Track("Kartel Sonoro", "Bamo", 505436507, "Konrad Abramowicz", "Konrad OldMoney feat. Frawst"),
 		Track(
 				"Kartel Sonoro",
@@ -567,8 +569,8 @@ principales = [
 		Track("DJ CholoZ", "Westcoast Til I Die", 711322898, "Konrad Abramowicz", "Konrad OldMoney feat. Cerbeus"),
 		]
 
-# 107.3 Morro Rock Radio
-morro_rock_radio = [
+#: 107.3 Morro Rock Radio
+morro_rock_radio: list[Track] = [
 		Track("Brutus Backlash", "Suffer Me", 360407664, "Chris Tapp", "The Cold Stares"),
 		Track(
 				"XerzeX",
@@ -642,8 +644,8 @@ morro_rock_radio = [
 				),
 		]
 
-# 107.5 Dark Star
-dark_star = [
+#: 107.5 Dark Star
+dark_star: list[Track] = [
 		Track(
 				"Mr. Kipper",
 				"Choke Hold",
@@ -683,7 +685,8 @@ dark_star = [
 		Track("Łotr", "Memories of Mzuzu", 617780730, '', "Połoz"),
 		]
 
-misc = [
+#: Other songs.
+misc: list[Track] = [
 		Track(
 				"P.T. Adamczyk & Sora Lion",
 				"Hardest To Be",
@@ -781,7 +784,8 @@ misc = [
 				),  # if copyrighted music disabled  # TODO: artist
 		]
 
-radio_stations = {
+#: Mapping of station names to tracklists.
+radio_stations: dict[str, list[Track]] = {
 		"88.9 Pacific Dreams": pacific_dreams,
 		"89.3 Radio Vexelstrom": radio_vexelstrom,
 		"89.7 Growl FM": growl_fm,
@@ -799,7 +803,7 @@ radio_stations = {
 		"misc": misc,
 		}
 
-radio_jingle_ids = {
+radio_jingle_ids: dict[str, Sequence[int]] = {
 		"101.9 The Dirge": (789210352, 53171054, 994411021),
 		"107.5 Dark Star": (165565468, 771183218, 478850173, 99989307),
 		"98.7 Body Heat Radio": (679337608, 936720723, 915927353),
@@ -812,3 +816,8 @@ radio_jingle_ids = {
 		"91.9 Royal Blue Radio": (197336484, 66052711, 272220110, 119313970, 712496434),
 		"103.5 Radio PEBKAC": (615874745, 493162163, 445903319),
 		}
+"""
+Wem file names for radio station jingles.
+
+Files are located in ``audio_2_soundbanks.archive`` at ``base\\sound\\soundbanks\\media\\{wem_name}.wem``
+"""

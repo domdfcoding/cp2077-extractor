@@ -44,7 +44,8 @@ class AdvertData(NamedTuple):
 	scene_file: str
 
 
-adverts = {
+#: Data for audio for adverts that play on animated billboards.
+adverts: dict[str, AdvertData] = {
 		"all_foods": AdvertData("ad_all_foods_ab_ad_caliente", "ab_q003_01_all_foods_meat_ad"),
 		"arasaka": AdvertData(
 				"ad_arasaka_ab_ad_caliente",
