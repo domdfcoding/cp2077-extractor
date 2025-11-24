@@ -44,7 +44,7 @@ __all__ = ["InfiniteList", "remove_extra_files", "set_id_filename_in_directory",
 def transcode_file(
 		wem_filename: PathPlus,
 		mp3_filename: PathPlus,
-		length_range: tuple[int, int],
+		length_range: tuple[int, int] | None = None,
 		) -> None:
 	"""
 	Transcode a WWise ``.wem`` file to mp3 at 256kbps.
@@ -61,7 +61,7 @@ def transcode_file(
 	if m:
 		length_mins, length_secs = map(float, m.group(1).split(':'))
 		length = length_mins * 60 + length_secs
-		if length < length_range[0] or length > length_range[1]:
+		if length_range and (length < length_range[0] or length > length_range[1]):
 			# print("Skip wem; too short or too long")
 			return
 
@@ -69,7 +69,7 @@ def transcode_file(
 	# TODO: subprocess
 	os.system(f"./vgmstream-cli -o {ogg_filename} {wem_filename}")
 	length = sox.file_info.duration(ogg_filename)
-	if length_range[1] >= length >= length_range[0]:
+	if not length_range or (length_range[1] >= length >= length_range[0]):
 		subprocess.check_output([
 				"ffmpeg",
 				"-i",
