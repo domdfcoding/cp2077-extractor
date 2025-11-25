@@ -66,8 +66,7 @@ def transcode_file(
 			return
 
 	print(wem_filename, "->", mp3_filename)
-	# TODO: subprocess
-	os.system(f"./vgmstream-cli -o {ogg_filename} {wem_filename}")
+	print(subprocess.check_output(["./vgmstream-cli", "-o", ogg_filename, wem_filename]))
 	length = sox.file_info.duration(ogg_filename)
 	if not length_range or (length_range[1] >= length >= length_range[0]):
 		subprocess.check_output([
