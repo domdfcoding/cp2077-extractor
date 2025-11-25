@@ -27,7 +27,6 @@ General utility functions.
 #
 
 # stdlib
-import os
 import random
 import subprocess
 from collections import deque
@@ -37,6 +36,7 @@ from typing import Deque, Generic, TypeVar
 import regex as re  # type: ignore[import-untyped]
 import sox  # type: ignore[import-untyped]
 from domdf_python_tools.paths import PathPlus
+from wem2ogg import wem_to_ogg
 
 __all__ = ["InfiniteList", "remove_extra_files", "set_id_filename_in_directory", "to_snake_case", "transcode_file"]
 
@@ -49,6 +49,8 @@ def transcode_file(
 	"""
 	Transcode a WWise ``.wem`` file to mp3 at 256kbps.
 
+	Requires ``ffmpeg`` to be installed.
+
 	:param wem_filename:
 	:param mp3_filename:
 	:param length_range: Files with durations in seconds outside this range will be skipped.
@@ -56,17 +58,10 @@ def transcode_file(
 
 	ogg_filename = wem_filename.with_suffix(".ogg")
 
-	wem_meta = subprocess.check_output(["./vgmstream-cli", "-m", wem_filename]).decode("UTF-8")
-	m = re.match(r": \d+ samples \((.*) seconds\)", wem_meta.split("play duration", 1)[1])
-	if m:
-		length_mins, length_secs = map(float, m.group(1).split(':'))
-		length = length_mins * 60 + length_secs
-		if length_range and (length < length_range[0] or length > length_range[1]):
-			# print("Skip wem; too short or too long")
-			return
+	# TODO: see how vgmstream gets length; probably in file header
 
 	print(wem_filename, "->", mp3_filename)
-	print(subprocess.check_output(["./vgmstream-cli", "-o", ogg_filename, wem_filename]))
+	ogg_filename.write_bytes(wem_to_ogg(wem_filename.read_bytes()))
 	length = sox.file_info.duration(ogg_filename)
 	if not length_range or (length_range[1] >= length >= length_range[0]):
 		subprocess.check_output([
