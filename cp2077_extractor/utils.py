@@ -28,14 +28,16 @@ General utility functions.
 
 # stdlib
 import random
-import subprocess
 from collections import deque
+from io import BytesIO
 from typing import Deque, Generic, TypeVar
 
 # 3rd party
+import lameenc
 import regex as re  # type: ignore[import-untyped]
-import sox  # type: ignore[import-untyped]
 from domdf_python_tools.paths import PathPlus
+from miniaudio import SoundFileInfo, vorbis_get_info, vorbis_read
+from mutagen.id3 import ID3, TLEN
 from wem2ogg import wem_to_ogg
 
 __all__ = ["InfiniteList", "remove_extra_files", "set_id_filename_in_directory", "to_snake_case", "transcode_file"]
@@ -56,24 +58,39 @@ def transcode_file(
 	:param length_range: Files with durations in seconds outside this range will be skipped.
 	"""
 
-	ogg_filename = wem_filename.with_suffix(".ogg")
-
 	# TODO: see how vgmstream gets length; probably in file header
 
 	print(wem_filename, "->", mp3_filename)
-	ogg_filename.write_bytes(wem_to_ogg(wem_filename.read_bytes()))
-	length = sox.file_info.duration(ogg_filename)
+	ogg_data = wem_to_ogg(wem_filename.read_bytes())
+	ogg_info: SoundFileInfo = vorbis_get_info(ogg_data)
+	# print("nchannels =", ogg_info.nchannels)
+	# print("sample_rate =", ogg_info.sample_rate)
+	# print("sample_width =", ogg_info.sample_width)
+	# print("num_frames =", ogg_info.num_frames)
+	# print("duration =", ogg_info.duration)  # Seconds
+	# print("sub_format =", ogg_info.sub_format)
+
+	length = ogg_info.duration
 	if not length_range or (length_range[1] >= length >= length_range[0]):
-		subprocess.check_output([
-				"ffmpeg",
-				"-i",
-				ogg_filename,
-				"-c:a",
-				"libmp3lame",
-				"-b:a",
-				"256k",
-				mp3_filename,
-				])
+
+		pcm_data = bytes(vorbis_read(data=ogg_data).samples)
+
+		encoder = lameenc.Encoder()
+		encoder.set_bit_rate(256)
+		# encoder.set_in_sample_rate(sample_rate)
+		# encoder.set_channels(2)
+		encoder.set_in_sample_rate(ogg_info.sample_rate)
+		encoder.set_channels(ogg_info.nchannels)
+		encoder.set_quality(2)  # 2-highest, 7-fastest
+		mp3_data = encoder.encode(pcm_data)
+		mp3_data += encoder.flush()  # Flush when finished encoding the entire stream
+
+		tags = ID3()
+		tags.add(TLEN(encoding=0, data=length * 1000))
+		data = tags._prepare_data(BytesIO(mp3_data), 0, 0, 4, '/', None)
+
+		mp3_filename.write_bytes(data + mp3_data)
+
 	# else:
 	# 	print("Skip ogg; too short or too long")
 

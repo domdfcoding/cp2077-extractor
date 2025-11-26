@@ -1,10 +1,11 @@
 domdf-python-tools>=3.10.0
 fnvhash>=0.2.1
 kraken-decompressor>=0.1.0
+lameenc>=1.8.1
+miniaudio>=1.61
 mutagen>=1.47.0
 networkx>=3.4.2
 pillow>=11.0.0
 regex>=2025.11.3
-sox>=1.5.0
 texture2ddecoder>=1.0.5
 wem2ogg>=0.1.0
