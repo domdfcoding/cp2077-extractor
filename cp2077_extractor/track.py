@@ -36,7 +36,22 @@ from typing import NamedTuple
 # 3rd party
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.typing import PathLike
-from mutagen.id3 import APIC, COMM, ID3, TALB, TCMP, TCOM, TDRC, TIT2, TOPE, TPE1, TPE2, Encoding, Frame
+from mutagen.id3 import (
+		APIC,
+		COMM,
+		ID3,
+		TALB,
+		TCMP,
+		TCOM,
+		TDRC,
+		TIT2,
+		TOPE,
+		TPE1,
+		TPE2,
+		Encoding,
+		Frame,
+		ID3NoHeaderError
+		)
 
 __all__ = ["Track"]
 
@@ -77,7 +92,10 @@ class Track(NamedTuple):
 		:param album_art: Either the path to the album art file or the raw bytes of the album art, in PNG format. Optional.
 		"""
 
-		tags = ID3(mp3_filename)
+		try:
+			tags = ID3(mp3_filename)
+		except ID3NoHeaderError:
+			tags = ID3()
 
 		tags_changed: bool = any([
 				set_tag(TPE1, self.artist, tags),
