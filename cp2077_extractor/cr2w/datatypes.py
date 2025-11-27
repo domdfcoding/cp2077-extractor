@@ -35,7 +35,7 @@ from typing import TYPE_CHECKING, Any, TypedDict, cast
 
 # this package
 from cp2077_extractor.cr2w import enums
-from cp2077_extractor.cr2w.utils import get_chunk_variables
+from cp2077_extractor.cr2w.utils import get_array_variables, get_chunk_variables
 from cp2077_extractor.utils import to_snake_case
 
 if TYPE_CHECKING:
@@ -43,15 +43,19 @@ if TYPE_CHECKING:
 	from cp2077_extractor.cr2w.io import ParsingData
 
 __all__ = [
+		"Array",
 		"CBitmapTexture",
 		"Chunk",
 		"DeferredBufferData",
 		"HandleData",
 		"STextureGroupSetup",
-		"array_rendRenderTextureBlobMipMapInfo",
+		"array_String",
 		"handle",
+		"inkCreditsResource",
+		"inkCreditsSectionEntry",
 		"instantiate_type",
 		"lookup_type",
+		"parse_array",
 		"parse_chunk",
 		"rendRenderTextureBlobHeader",
 		"rendRenderTextureBlobPC",
@@ -91,6 +95,11 @@ class Chunk:
 		return cls.from_cr2w_kwargs(kwargs)
 
 
+@dataclass
+class Array:
+	value_red_type_name: bytes
+
+
 # def uint(value: bytes) -> int:
 # 	return int.from_bytes(value, byteorder="little")
 
@@ -107,7 +116,8 @@ def lookup_type(red_type_name: bytes) -> type | Callable[..., object]:
 	if red_type_name in _red_type_lookup:
 		# print("Looked up", red_type_name, "as", _red_type_lookup[red_type_name])
 		return _red_type_lookup[red_type_name]
-
+	elif red_type_name.startswith(b"array:"):
+		return Array(red_type_name.split(b":", 1)[1])
 	else:
 		raise NotImplementedError(red_type_name)
 
@@ -129,6 +139,28 @@ def parse_chunk(chunk: bytes, parsing_data: "ParsingData") -> dict[bytes, Any]:
 	return kwargs
 
 
+def parse_array(chunk: bytes, parsing_data: "ParsingData") -> dict[bytes, Any]:
+	"""
+	Parse the given chunk of data as an array and return a list of mapping of variable names to values.
+
+	:param chunk:
+	:param parsing_data:
+	"""
+
+	variables = get_array_variables(chunk, parsing_data.names_list)
+
+	array_contents = []
+	for array_item in variables:
+
+		kwargs: dict[bytes, Any] = {}
+		for (var_c_name, red_type_name, value) in array_item:
+			kwargs[var_c_name] = instantiate_type(red_type_name, value, parsing_data)
+
+		array_contents.append(kwargs)
+
+	return array_contents
+
+
 def instantiate_type(red_type_name: bytes, value: bytes, parsing_data: "ParsingData") -> object:
 	"""
 	Create a Python class instance for the given REDengine type and the given value.
@@ -144,6 +176,15 @@ def instantiate_type(red_type_name: bytes, value: bytes, parsing_data: "ParsingD
 		return var_type.from_red_name(parsing_data.names_list[uint(value)])
 	elif var_type is Chunk:
 		return (red_type_name, parse_chunk(value, parsing_data))
+	elif isinstance(var_type, Array):
+		array_value_type = lookup_type(var_type.value_red_type_name)
+		if inspect.isclass(array_value_type) and issubclass(array_value_type, Chunk):
+			return (
+					red_type_name,
+					[array_value_type.from_cr2w_kwargs(av) for av in parse_array(value, parsing_data)]
+					)
+		else:
+			raise NotImplementedError(array_value_type)
 	elif inspect.isclass(var_type) and issubclass(var_type, Chunk):
 		return var_type.from_chunk(value, parsing_data)
 	elif var_type in {handle, serialization_deferred_data_buffer}:
@@ -152,10 +193,10 @@ def instantiate_type(red_type_name: bytes, value: bytes, parsing_data: "ParsingD
 		return var_type(value)
 
 
-class array_rendRenderTextureBlobMipMapInfo(bytes):  # noqa: D101
+class array_String(bytes):  # noqa: D101
 	# TODO: parse the array
 	def __repr__(self) -> str:
-		return f"array:rendRenderTextureBlobMipMapInfo({super().__repr__()})"
+		return f"array:String({super().__repr__()})"
 
 	__str__ = __repr__
 
@@ -290,23 +331,38 @@ class CBitmapTexture(Chunk):
 	hist_bias_add_coef: tuple[float, float, float] = (0.0, 0.0, 0.0)  # Vector3
 
 
+@dataclass
+class inkCreditsSectionEntry(Chunk):
+	names: list[bytes]
+	display_mode: enums.inkDisplayMode
+	section_title: bytes = ''
+
+
+@dataclass
+class inkCreditsResource(Chunk):
+	cooking_platform: enums.ECookingPlatform
+	sections: list[inkCreditsSectionEntry]
+
+
 _red_type_lookup: dict[bytes, type | Callable[..., object]] = {
-		b"ECookingPlatform": enums.ECookingPlatform,
-		b"Uint32": uint,
-		b"Uint16": uint,
-		b"Uint8": uint,
-		b"STextureGroupSetup": STextureGroupSetup,
-		b"rendRenderTextureResource": rendRenderTextureResource,
-		b"rendRenderTextureBlobHeader": rendRenderTextureBlobHeader,
-		b"serializationDeferredDataBuffer": serialization_deferred_data_buffer,
-		# b"handle:IRenderResourceBlob": handle_IRenderResourceBlob,
-		b"handle:IRenderResourceBlob": handle,
+		b"array:String": array_String,  # TODO
 		b"Bool": bool,
+		b"CBitmapTexture": CBitmapTexture,
+		b"ECookingPlatform": enums.ECookingPlatform,
+		b"handle:IRenderResourceBlob": handle,
+		b"inkCreditsResource": inkCreditsResource,
+		b"inkCreditsSectionEntry": inkCreditsSectionEntry,
+		b"rendRenderTextureBlobHeader": rendRenderTextureBlobHeader,
+		b"rendRenderTextureBlobPC": rendRenderTextureBlobPC,
 		b"rendRenderTextureBlobSizeInfo": rendRenderTextureBlobSizeInfo,
 		b"rendRenderTextureBlobTextureInfo": rendRenderTextureBlobTextureInfo,
-		b"array:rendRenderTextureBlobMipMapInfo": array_rendRenderTextureBlobMipMapInfo,
-		b"rendRenderTextureBlobPC": rendRenderTextureBlobPC,
-		b"CBitmapTexture": CBitmapTexture,
+		b"rendRenderTextureResource": rendRenderTextureResource,
+		b"serializationDeferredDataBuffer": serialization_deferred_data_buffer,
+		b"STextureGroupSetup": STextureGroupSetup,
+		b"String": bytes,
+		b"Uint16": uint,
+		b"Uint32": uint,
+		b"Uint8": uint,
 		}
 
 _red_enum_list = enums.__all__[:]

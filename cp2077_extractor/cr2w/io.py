@@ -95,6 +95,10 @@ def read_tables(fp: IO, table_struct: type[_S], header: CR2WTable) -> Iterator[_
 		yield table_struct(*struct.unpack(table_struct._struct_format, chunk))
 
 
+class CNameError(Exception):
+	pass
+
+
 def read_c_name(fp: IO, names_list: list[bytes]) -> bytes:
 	"""
 	Read a name from the open file.
@@ -109,7 +113,8 @@ def read_c_name(fp: IO, names_list: list[bytes]) -> bytes:
 	assert string_index < len(names_list)
 	c_name = names_list[string_index]
 	assert c_name
-	assert c_name != b"None"
+	if c_name == b"None":
+		raise CNameError()
 	return c_name
 
 

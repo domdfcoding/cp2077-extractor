@@ -34,7 +34,7 @@ from typing import Any
 # this package
 from cp2077_extractor.cr2w.header_structs import CR2WFileInfo
 
-__all__ = ["get_chunk_variables", "get_names_list"]
+__all__ = ["get_array_variables", "get_chunk_variables", "get_names_list"]
 
 
 def get_names_list(file_info: CR2WFileInfo) -> list[bytes]:
@@ -62,23 +62,53 @@ def get_chunk_variables(chunk: bytes, names_list: list[bytes]) -> list[tuple[byt
 	:returns: List of variables, as tuples of variable name, variable REDengine type, variable value.
 	"""
 
-	# this package
-	from cp2077_extractor.cr2w.io import read_c_name
+	return _read_class(BytesIO(chunk), len(chunk), names_list)
+
+
+def get_array_variables(chunk: bytes, names_list: list[bytes]) -> list[list[tuple[bytes, bytes, Any]]]:
+	"""
+	Parse variables for an array from the given chunk.
+
+	:param chunk:
+	:param names_list: Name lookup table for the file.
+
+	:returns: List of lists of variables, as tuples of variable name, variable REDengine type, variable value.
+	"""
 
 	buffer = BytesIO(chunk)
+	array_size = int.from_bytes(buffer.read(4), "little")
+	variables: list[list[tuple[bytes, bytes, Any]]] = []
+
+	for _ in range(array_size):
+		# variables.append(_read_class(buffer, len(chunk), names_list))
+		variables.append(_read_class(buffer, 0, names_list))
+		print(variables[-1])
+
+	assert buffer.tell() == len(chunk)
+
+	return variables
+
+
+def _read_class(buffer: BytesIO, chunk_size: int, names_list: list[bytes]) -> list[tuple[bytes, bytes, Any]]:
+	# this package
+	from cp2077_extractor.cr2w.io import CNameError, read_c_name
+
 	zero = buffer.read(1)[0]
 	assert zero == 0, f"Tried parsing a CVariable: zero read {zero}."
 
 	variables: list[tuple[bytes, bytes, Any]] = []
-	while buffer.tell() < len(chunk) - 1:
+	# while buffer.tell() < chunk_size:
+	while True:
 		try:
 			var_c_name = read_c_name(buffer, names_list)
-			red_type_name = read_c_name(buffer, names_list)
-			size = struct.unpack("<I", buffer.read(4))[0] - 4
-			value = buffer.read(size)
-			variables.append((var_c_name, red_type_name, value))
-		except:
-			# Run out of buffer
+		except CNameError:
 			break
+		red_type_name = read_c_name(buffer, names_list)
+		size = struct.unpack("<I", buffer.read(4))[0] - 4
+		value = buffer.read(size)
+		variables.append((var_c_name, red_type_name, value))
+
+	if chunk_size:
+		assert buffer.tell() == chunk_size, (buffer.tell(), chunk_size)
 
 	return variables
