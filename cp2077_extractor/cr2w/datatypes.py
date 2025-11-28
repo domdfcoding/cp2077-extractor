@@ -49,7 +49,6 @@ __all__ = [
 		"DeferredBufferData",
 		"HandleData",
 		"STextureGroupSetup",
-		"array_String",
 		"handle",
 		"inkCreditsResource",
 		"inkCreditsSectionEntry",
@@ -208,14 +207,6 @@ def instantiate_type(red_type_name: bytes, value: bytes, parsing_data: "ParsingD
 		return var_type(value)
 
 
-class array_String(bytes):  # noqa: D101
-	# TODO: parse the array
-	def __repr__(self) -> str:
-		return f"array:String({super().__repr__()})"
-
-	__str__ = __repr__
-
-
 class HandleData(TypedDict):
 	"""
 	Return type of :func:`~.handle`.
@@ -325,7 +316,6 @@ class STextureGroupSetup(Chunk):
 
 @dataclass
 class rendRenderTextureResource(Chunk):  # noqa: D101
-
 	render_resource_blob_pc: HandleData  # CHandle
 
 

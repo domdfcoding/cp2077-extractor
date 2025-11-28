@@ -102,22 +102,6 @@ def transcode_file(
 	# 	print("Skip ogg; too short or too long")
 
 
-def remove_extra_files(directory: PathPlus, target_ids: set[int]) -> None:
-	for file_id in {str(x.stem) for x in directory.iterdir()} - set(map(str, target_ids)):
-		directory.joinpath(file_id + ".mp3").unlink()
-
-
-def set_id_filename_in_directory(
-		directory: PathPlus,
-		mp3_filename: PathPlus,
-		file_id: str,
-		) -> PathPlus:
-	new_filename = directory.joinpath(str(file_id) + ".mp3")
-	if mp3_filename.is_file():
-		mp3_filename.rename(new_filename)
-	return new_filename
-
-
 _T = TypeVar("_T")
 
 
