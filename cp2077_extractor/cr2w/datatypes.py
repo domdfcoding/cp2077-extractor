@@ -36,7 +36,7 @@ from typing import TYPE_CHECKING, Any, TypedDict, cast
 # this package
 from cp2077_extractor.cr2w import enums
 from cp2077_extractor.cr2w.utils import get_array_variables, get_chunk_variables
-from cp2077_extractor.utils import to_snake_case
+from cp2077_extractor.utils import StringReader, to_snake_case
 
 if TYPE_CHECKING:
 	# this package
@@ -57,6 +57,8 @@ __all__ = [
 		"lookup_type",
 		"parse_array",
 		"parse_chunk",
+		"parse_string",
+		"parse_string_array",
 		"rendRenderTextureBlobHeader",
 		"rendRenderTextureBlobPC",
 		"rendRenderTextureBlobSizeInfo",
@@ -97,7 +99,27 @@ class Chunk:
 
 @dataclass
 class Array:
+	"""
+	Type of an array in a CR2W/W2RC file, with the name of the inner type.
+	"""
+
 	value_red_type_name: bytes
+
+	def __call__(self, value: bytes, parsing_data: ParsingData) -> list:
+		"""
+		Convert ``value`` (representing an array) into a Python list.
+
+		:param value:
+		:param parsing_data:
+		"""
+
+		array_value_type = lookup_type(self.value_red_type_name)
+		if inspect.isclass(array_value_type) and issubclass(array_value_type, Chunk):
+			return [array_value_type.from_cr2w_kwargs(av) for av in parse_array(value, parsing_data)]
+		elif self.value_red_type_name == b"String":
+			return parse_string_array(value)
+		else:
+			raise NotImplementedError(array_value_type)
 
 
 # def uint(value: bytes) -> int:
@@ -139,7 +161,7 @@ def parse_chunk(chunk: bytes, parsing_data: "ParsingData") -> dict[bytes, Any]:
 	return kwargs
 
 
-def parse_array(chunk: bytes, parsing_data: "ParsingData") -> dict[bytes, Any]:
+def parse_array(chunk: bytes, parsing_data: "ParsingData") -> list[dict[bytes, str]]:
 	"""
 	Parse the given chunk of data as an array and return a list of mapping of variable names to values.
 
@@ -177,14 +199,7 @@ def instantiate_type(red_type_name: bytes, value: bytes, parsing_data: "ParsingD
 	elif var_type is Chunk:
 		return (red_type_name, parse_chunk(value, parsing_data))
 	elif isinstance(var_type, Array):
-		array_value_type = lookup_type(var_type.value_red_type_name)
-		if inspect.isclass(array_value_type) and issubclass(array_value_type, Chunk):
-			return (
-					red_type_name,
-					[array_value_type.from_cr2w_kwargs(av) for av in parse_array(value, parsing_data)]
-					)
-		else:
-			raise NotImplementedError(array_value_type)
+		return var_type(value, parsing_data)
 	elif inspect.isclass(var_type) and issubclass(var_type, Chunk):
 		return var_type.from_chunk(value, parsing_data)
 	elif var_type in {handle, serialization_deferred_data_buffer}:
@@ -335,7 +350,7 @@ class CBitmapTexture(Chunk):
 class inkCreditsSectionEntry(Chunk):
 	names: list[bytes]
 	display_mode: enums.inkDisplayMode
-	section_title: bytes = ''
+	section_title: str = ''
 
 
 @dataclass
@@ -344,8 +359,29 @@ class inkCreditsResource(Chunk):
 	sections: list[inkCreditsSectionEntry]
 
 
+def parse_string(data: bytes) -> str:
+	"""
+	Parse a bytes string (which has a VLQ i32 size prefix) to a Python string.
+
+	:param
+	"""
+
+	return StringReader(data).parse_string()
+
+
+def parse_string_array(data: bytes) -> list[str]:
+	"""
+	Parse an array of strings.
+
+	:param data:
+	"""
+
+	array_size = int.from_bytes(data[:4], "little")
+	string_reader = StringReader(data[4:])
+	return [string_reader.parse_string() for _ in range(array_size)]
+
+
 _red_type_lookup: dict[bytes, type | Callable[..., object]] = {
-		b"array:String": array_String,  # TODO
 		b"Bool": bool,
 		b"CBitmapTexture": CBitmapTexture,
 		b"ECookingPlatform": enums.ECookingPlatform,
@@ -359,7 +395,7 @@ _red_type_lookup: dict[bytes, type | Callable[..., object]] = {
 		b"rendRenderTextureResource": rendRenderTextureResource,
 		b"serializationDeferredDataBuffer": serialization_deferred_data_buffer,
 		b"STextureGroupSetup": STextureGroupSetup,
-		b"String": bytes,
+		b"String": parse_string,
 		b"Uint16": uint,
 		b"Uint32": uint,
 		b"Uint8": uint,

@@ -82,7 +82,6 @@ def get_array_variables(chunk: bytes, names_list: list[bytes]) -> list[list[tupl
 	for _ in range(array_size):
 		# variables.append(_read_class(buffer, len(chunk), names_list))
 		variables.append(_read_class(buffer, 0, names_list))
-		print(variables[-1])
 
 	assert buffer.tell() == len(chunk)
 

@@ -33,14 +33,21 @@ from io import BytesIO
 from typing import Deque, Generic, TypeVar
 
 # 3rd party
-import lameenc
+import lameenc  # type: ignore[import-not-found]
 import regex as re  # type: ignore[import-untyped]
 from domdf_python_tools.paths import PathPlus
-from miniaudio import SoundFileInfo, vorbis_get_info, vorbis_read
+from miniaudio import SoundFileInfo, vorbis_get_info, vorbis_read  # type: ignore[import-untyped]
 from mutagen.id3 import ID3, TLEN
 from wem2ogg import wem_to_ogg
 
-__all__ = ["InfiniteList", "remove_extra_files", "set_id_filename_in_directory", "to_snake_case", "transcode_file"]
+__all__ = [
+		"InfiniteList",
+		"StringReader",
+		"remove_extra_files",
+		"set_id_filename_in_directory",
+		"to_snake_case",
+		"transcode_file"
+		]
 
 
 def transcode_file(
@@ -194,3 +201,91 @@ def to_snake_case(value: str) -> str:
 	value = _case_boundary_re.sub(r"\1_\2", value)
 	value = _case_boundary_re.sub(r"\1_\2\3", value)
 	return value.lower()
+
+
+class StringReader(BytesIO):
+	"""
+	Reader for REDengine sized strings.
+	"""
+
+	vlq_value_mask = 0b01111111
+	vlq_continuation = 0b10000000
+
+	def parse_string_and_size(self) -> tuple[int, str]:
+		"""
+		Parse a length-prefixed string (as bytes) to a Python string.
+
+		:param value: The string with a VLQ i32 length prefix.
+
+		:returns: Tuple of length prefix and the string.
+		"""
+
+		size_prefix = self.read_vlq_int32()
+
+		# The string length is the absolute value of the size prefix
+		string_length = abs(size_prefix)
+
+		if not string_length:
+			return size_prefix, ''
+
+		# Sign bit indicates whether UTF-16 (0) or UTF-8 (1)
+		if size_prefix > 0:
+			encoding = "UTF-16"
+		else:
+			encoding = "UTF-8"
+
+		return size_prefix, self.read(string_length).decode(encoding)
+
+	def parse_string(self) -> str:
+		"""
+		Parse a length-prefixed string (as bytes) to a Python string.
+
+		:param value: The string with a VLQ i32 length prefix.
+		"""
+
+		return self.parse_string_and_size()[1]
+
+	def read_vlq_int32(self) -> int:
+		"""
+		Parse modified 32 bit VLQ to int.
+
+		The first bit is the sign bit, the 2nd bit tells whether there are more octets to read,
+		and the next 6 bytes are the least significant bits of the number data.
+		Remaining octets are 1+7 continuation and data.
+		"""
+
+		b = self.read(1)[0]
+		is_negative = bool(b & 0b10000000)
+
+		# Take the initial value from the lower 6 bits
+		value = b & 0b00111111
+
+		# Is the value larger than 6 bits?
+		if (b & 0b01000000):  # The first octet stores the continuation flag in the 6th bit
+			b = self.read(1)[0]
+			# Mask and add the next 7 bits
+			value |= (b & self.vlq_value_mask) << 6
+
+			# Is the value larger than 13 bits?
+			if (b & self.vlq_continuation):
+				b = self.read(1)[0]
+				value |= (b & self.vlq_value_mask) << 13
+
+				# Is the value larger than 20 bits?
+				if (b & self.vlq_continuation):
+					b = self.read(1)[0]
+					value |= (b & self.vlq_value_mask) << 20
+
+					# Is the value larger than 27 bits?
+					if (b & self.vlq_continuation):
+						b = self.read(1)[0]
+						value |= (b & self.vlq_value_mask) << 27
+
+						# Is the value larger than 34 bits? That seems bad
+						if (b & self.vlq_continuation):
+							raise ValueError("Continuation bit set on 5th byte")
+
+		if is_negative:
+			return -value
+		else:
+			return value
