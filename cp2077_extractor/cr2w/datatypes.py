@@ -338,13 +338,25 @@ class CBitmapTexture(Chunk):
 
 @dataclass
 class inkCreditsSectionEntry(Chunk):
+	"""
+	A section in the game credits.
+	"""
+
+	#: The names to credit.
 	names: list[bytes]
+
 	display_mode: enums.inkDisplayMode
+
+	#: A heading (e.g. "Programming") or a role title (e.g. "Senior Programmer")
 	section_title: str = ''
 
 
 @dataclass
 class inkCreditsResource(Chunk):
+	"""
+	Data for the game's credits.
+	"""
+
 	cooking_platform: enums.ECookingPlatform
 	sections: list[inkCreditsSectionEntry]
 
