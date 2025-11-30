@@ -40,14 +40,7 @@ from miniaudio import SoundFileInfo, vorbis_get_info, vorbis_read  # type: ignor
 from mutagen.id3 import ID3, TLEN
 from wem2ogg import wem_to_ogg
 
-__all__ = [
-		"InfiniteList",
-		"StringReader",
-		"remove_extra_files",
-		"set_id_filename_in_directory",
-		"to_snake_case",
-		"transcode_file"
-		]
+__all__ = ["InfiniteList", "StringReader", "to_snake_case", "transcode_file"]
 
 
 def transcode_file(

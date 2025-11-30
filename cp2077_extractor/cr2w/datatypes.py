@@ -104,7 +104,7 @@ class Array:
 
 	value_red_type_name: bytes
 
-	def __call__(self, value: bytes, parsing_data: ParsingData) -> list:
+	def __call__(self, value: bytes, parsing_data: "ParsingData") -> list:
 		"""
 		Convert ``value`` (representing an array) into a Python list.
 
@@ -251,6 +251,7 @@ def serialization_deferred_data_buffer(
 	"""
 
 	# TODO: Two bytes. With one buffer it's 1 0.
+	assert buffer_id == b"\1\0"
 	buffer_idx = 0  # TODO: proper lookup implementation
 	buffer, buffer_info = parsing_data.buffers[buffer_idx]
 	return {"buffer_id": buffer_idx, "flags": buffer_info.flags, "bytes": buffer}

@@ -311,7 +311,7 @@ def parse_cr2w_buffer(fp: IO, filename: PathLike | None = None) -> CR2WFile:
 		# TODO: properties.append(read_property(property_info))
 		properties.append(CR2WProperty())
 
-	if not property_info:
+	if not properties:
 		raise ValueError("Found unsupported PropertyInfo")
 
 	# TODO: ensure CHandle/CWeakHandle can be resolved
@@ -323,8 +323,7 @@ def parse_cr2w_buffer(fp: IO, filename: PathLike | None = None) -> CR2WFile:
 
 	buffer_data: list[tuple[bytes, CR2WBufferInfo]] = []
 
-	for i in range(len(info.buffer_info)):
-		buffer_info = info.buffer_info[i]
+	for buffer_info in info.buffer_info:
 		buffer_data.append((read_buffer(fp, buffer_info), buffer_info))
 
 	parsing_data = ParsingData(get_names_list(info), chunks, buffer_data)
