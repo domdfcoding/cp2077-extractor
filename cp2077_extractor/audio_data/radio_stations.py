@@ -66,6 +66,7 @@ CLOUDS_MUSIC = "mus_q105_dollhouse"
 DARK_MATTER = "mus_sq017_dark_matter_club_user_friendly"  # Dark Matter during Kerry quest
 JOHNNY_KERRY = "mus_q101_js_and_kerry_source"  # Love Like Fire quest Johnny & Kerry
 
+# TODO: or is it 88.3, as in the credits data?
 #: 88.9 Pacific Dreams
 pacific_dreams: list[Track] = [
 		Track("Quantum Lovers", "Isometric Air", 253367813, "Brian Aspey", "Brian Aspey"),
@@ -81,11 +82,12 @@ pacific_dreams: list[Track] = [
 				"Pacific Avenue",
 				"Antagonistic",
 				190841656,
-				"Sebastian Roberston; Chris Cardena",
-				"Sebastian Roberston; Chris Cardena", {871197545: HANGOUT_QUEST}
+				"Sebastian Robertson and Chris Cardena",
+				"Chris Cardena & Sebastian Robertson",
+				{871197545: HANGOUT_QUEST},
 				),
 		Track(
-				"Jansens",
+				"Jänsens",
 				"Simple Pleasures",
 				803750564,
 				"Elena Charbila; Dimitris Mann",
@@ -116,15 +118,9 @@ radio_vexelstrom: list[Track] = [
 		Track("The Cartesian Duelists", "Resist and Disorder", 308480891, "Jason Charles Miller", "Rezodrone"),
 		Track("The Cartesian Duelists", "Kill the Messenger", 525137074, "Jason Charles Miller", "Rezodrone"),
 		Track("Slavoj McAllister", "Makes Me Feel Better", 66952680, "Kevin Hastings", "OnenO"),
-		Track("Keine", "Dead Pilot", 409198739, "Sebastian Roberston; Daniel Davies", "SRDD"),
-		Track("Keine", "Come Close", 303931745, "Sebastian Roberston; Daniel Davies", "SRDD"),
-		Track(
-				"Blue Stahli; Danny Cocke",
-				"Black Terminal (Upgrade)",
-				1065746543,
-				"Bret Autrey; Danny Cocke",
-				"Bret Autrey; Danny Cocke"
-				),
+		Track("Keine", "Dead Pilot", 409198739, "Sebastian Robertson; Daniel Davies", "SRDD (Sebastian Daniel)"),
+		Track("Keine", "Come Close", 303931745, "Sebastian Robertson; Daniel Davies", "SRDD (Sebastian Daniel)"),
+		Track("Upgrade", "Black Terminal", 1065746543, "Bret Autrey; Danny Cocke", "Black Terminal"),
 		Track("Alexei Brayko", "Reaktion", 49937168, "Jason Charles Miller", "Rezodrone"),
 		Track("Ego Affliction", "With Her", 257784898, "Steven Richard Davis", "Steven Richard Davis"),
 		Track("Den of Degenerates", "Never Stop Me", 811249141, "Steven Richard Davis", "Steven Richard Davis"),
@@ -132,10 +128,17 @@ radio_vexelstrom: list[Track] = [
 		Track("The Red Glare", "Pain", 365987976, "Kristina Michelle Olson", "Le Destroy"),
 		Track("Homeschool Dropouts", "Night City Aliens", 86209634, "The Armed", "The Armed"),
 		Track("Tainted Overlord", "A Caça", 420329756, "Deafkids", "Deafkids", {640742970: RACES}),
-		Track("Tainted Overlord", "Selva Pulsátil", 50379518, "Deafkids", "Deafkids"),  # Check spelling in game
-		Track("N1v3Z", "Pig Dinner", 874085468, "Ho99o9, N8NOFACE", "Ho99o9, N8NOFACE"),
+		Track("Tainted Overlord", "Selva Pulsátil", 50379518, "Deafkids", "Deafkids"),
+		Track(
+				"N1v3Z",
+				"Pig Dinner",
+				874085468,
+				"Ho99o9, N8NOFACE",
+				"Ho99o9, N8NOFACE",
+				),  # Not listed in credits data
 		]
 
+# TODO: check against credits
 #: 89.7 Growl FM
 growl_fm: list[Track] = [
 		Track(
@@ -196,11 +199,11 @@ growl_fm: list[Track] = [
 
 #: 91.9 Royal Blue Radio
 royal_blue_radio: list[Track] = [
-		Track("Miles Davis", "Black Satin/What If/Agharta Prelude Dub", 448263054, "Miles Davis"),
+		Track("Miles Davis", "Black Satin/What If/Agharta Prelude Dub", 448263054, "Miles Davis; Bill Laswell"),
 		Track("Miles Davis", "Bitches Brew", 915057747, "Miles Davis"),
 		Track(
 				"Miles Davis",
-				"Générique (from Ascenseur pour L'echafaud)",
+				"Générique (from Ascenseur pour L'échafaud)",
 				143859087,
 				"Miles Davis",
 				other_uses={987597831: HANGOUT_QUEST}
@@ -220,17 +223,23 @@ royal_blue_radio: list[Track] = [
 				"Gene Depaul; Don Raye",
 				other_uses={187092121: HANGOUT_QUEST, 397320180: "Konpeki Plaza Braindance"}
 				),
-		Track("Thelonius Monk", "'Round Midnight", 487426870, "Thelonious Monk; Bernie Hanighen; Cootie Williams"),
+		Track("Thelonious Monk", "Round Midnight", 487426870, "Thelonious Monk; Bernie Hanighen; Cootie Williams"),
 		Track("Trio of Doom", "Dark Prince", 449864253, "John Mclaughlin", other_uses={395786567: RACES}),
 		]
 
 #: 92.9 Night FM
 night_fm: list[Track] = [
 		Track("Perilous Futur", "Dirty Roses", 664992914, "Kevin Hastings", "OnenO"),
-		Track("The Unresolved", "Worlds", 188143271, "Sebastian Roberston; Daniel Davies", "SRDD"),
-		Track("The Unresolved", 'X', 52108015, "Sebastian Roberston; Daniel Davies", "SRDD"),
+		Track(
+				"The Unresolved",
+				"Worlds",
+				188143271,
+				"Sebastian Robertson, Daniel Davies",
+				"SRDD (Sebastian Daniel)"
+				),
+		Track("The Unresolved", 'X', 52108015, "Sebastian Robertson; Daniel Davies", "SRDD (Sebastian Daniel)"),
 		Track("Doctor Berserk", "Maniak", 592937823, "Fabian Velazquez", "Picasso"),
-		Track("Generating Dependencies", "Be Machine", 621649083, "Poly Face", "Poly Face"),
+		Track("Generating Dependencies", "Me Machine", 621649083, "Kuba Sojka", "Poly Face"),
 		Track("Lick Switch", "Like a Miracle", 791114400, "Earth Trax", "Earth Trax"),
 		Track("Kings of Collapse", "Run", 649255606, "Steven Richard Davis", "Steven Richard Davis"),
 		Track("Reviscerator", "Glitched Revelation", 521364565, "Procesor Plus", "Procesor Plus"),
@@ -251,7 +260,7 @@ night_fm: list[Track] = [
 samizdat_radio: list[Track] = [
 		Track(
 				"Bara Nova",
-				"Pilling in my Head",
+				"Piling in my Head",
 				185138126,
 				"Nina Kraviz",
 				"Nina Kraviz", {892337963: CLOUDS_MUSIC}
@@ -270,7 +279,8 @@ samizdat_radio: list[Track] = [
 				"My Lullaby for You",
 				740337697,
 				"Nina Kraviz",
-				"Nina Kraviz", {174026915: CLOUDS_MUSIC}
+				"Nina Kraviz",
+				{174026915: CLOUDS_MUSIC},
 				),
 		Track("Bara Nova", "Surprise Me, I'm Surprised Today", 822859958, "Nina Kraviz", "Nina Kraviz"),
 		]
@@ -290,23 +300,23 @@ ritual_fm: list[Track] = [
 		Track("Nuclear Aura", "Witches of the Harz Mountains", 670708886, "Marcin Rybicki", "Marcin Rybicki"),
 		Track("Weles", "The Loop", 381506730, "Deszcz", "Deszcz"),
 		Track("Hysteria", "Scrum", 516709760, "Totenmesse", "Totenmesse"),
-		Track("Inferno Corps", "Fueled by Poison", 532284261, "Antigama", "Antigama", {544955296: JOHNNY_KERRY}),
+		Track("Inferno Corps", "Fuelled by Poison", 532284261, "Antigama", "Antigama", {544955296: JOHNNY_KERRY}),
 		Track("Inferno Corps", "Kevin", 606018074, "Antigama", "Antigama"),
-		Track("heXXXer", "Future Drugs", 620624990, "Entropia", "Mord'A'Stigmata"),  # Check in-game spelling
+		Track("heXXXer", "Future Drugs", 620624990, "Entropia", "Entropia"),  # Or is the artist Mord'A'Stigmata?
 		Track("Wydech", "Żurawie", 101839488, "Ugory", "Ugory"),
 		Track(
 				"Fist of Satan",
 				"Abandoned Land",
 				957306104,
-				"Arthur Rumiński; Haldor Grunberg",
-				"Arthur Rumiński; Haldor Grunberg"
+				"Artur Rumiński; Haldor Grunberg",
+				"Artur Rumiński; Haldor Grunberg"
 				),
 		Track(
 				"Fist of Satan",
 				"Black Concrete",
 				114092930,
-				"Arthur Rumiński; Haldor Grunberg",
-				"Arthur Rumiński; Haldor Grunberg"
+				"Artur Rumiński; Haldor Grunberg",
+				"Artur Rumiński; Haldor Grunberg"
 				),
 		Track("Shattered Void", "I Won't Let You Go", 643641585, "Converge", "Converge"),
 		]
@@ -315,11 +325,11 @@ ritual_fm: list[Track] = [
 body_heat_radio: list[Track] = [
 		Track(
 				"Clockwork Venus",
-				"BM",
+				"SLIME",
 				1017973036,
-				"SOPHIE",
+				"SOPHIE; Shygirl; Sega Bodega; Kai Whiston",
 				"SOPHIE; Shygirl",
-				),  # Seems to be called SLIME outside the game.
+				),  # Also called BM - TODO: check which in game
 		Track("Neon Haze", "Circus Minimus", 903009003, "Jazelle Rodriguez; Deryk Mitchell; Erika Nuri", "Jvzel"),
 		Track(
 				"Window Weather",
@@ -332,20 +342,20 @@ body_heat_radio: list[Track] = [
 		Track("Artemis Delta", "Night City", 862539357, "Arielle Sitrick; Bill Burke", "R E L"),
 		Track(
 				"Hallie Coggins",
-				"I Really Want to Stay at Your House",
+				"I Really Want To Stay At Your House",
 				717186759,
 				"Rosa Walton",
-				"Rosa Walton",
+				"Rosa Walton (Let's Eat Grandma)",
 				{670626837: HANGOUT_QUEST, 881817538: "mus_q105_fingers_01_source", 890846657: DARK_MATTER}
 				),
 		Track(
 				"Point Break Candy",
-				"Hole in the Sun",
+				"Hole In The Sun",
 				698612311,
 				"Raney Shockne",
-				"Raney Shockne feat. COS; Conway"
+				"Raney Shockne feat. COS, Conway"
 				),
-		# TODO '': Track("American Medical Association", "Blind", '', "Raney Shockne", "Raney Shockne"),
+		# TODO: Track("American Medical Association", "Bliind", 0, "Raney Shockne", "Raney Shockne"),
 		Track(
 				"Trash Generation",
 				"History",
@@ -366,19 +376,20 @@ body_heat_radio: list[Track] = [
 				"Us Cracks",
 				"User Friendly",
 				503548262,
-				"Katarzyna Kraińska & Yuki Kawamura",
-				"Namakopuri", {386020430: DARK_MATTER}
+				"Katarzyna Kraińska; Yuki Kawamura; Kaito Sakuma",
+				"Namakopuri",
+				{386020430: DARK_MATTER},
 				),  # TODO: does this play on this station?
 		Track(
-				"Us Cracks",
-				"Off the Leash (feat. Kerry Eurodyne)",
+				"Us Cracks feat. Kerry Eurodyne",
+				"Off The Leash",
 				235217575,
-				"Kaito Sakuma aka Batic; Yuki Kawamura; Tomas Shimizu (American Dream Express)",
-				"Namakopuri; Damian Ukeje", {988042201: DARK_MATTER}
+				"Kaito Sakuma; Yuki Kawamura; Tomas Shimizu (American Dream Express)",
+				"Namakopuri & Damian Ukeje",
+				{988042201: DARK_MATTER},
 				),
-		Track("IBDY", "Who's Ready for Tomorrow", 881186580, "RAT BOY", "RAT BOY"),
-		Track("IBDY", "Crustpunk", 949985077, "RAT BOY", "RAT BOY", {675780732: RACES}),
-		Track("IBDY", "Here's a Thought", 575003013, "RAT BOY", "RAT BOY", {825809386: JOHNNY_KERRY}),
+		Track("IBDY", "Crustpunk", 949985077, "Rat Boy", "Rat Boy", {675780732: RACES}),
+		Track("IBDY", "Here's a Thought", 575003013, "Rat Boy", "Rat Boy", {825809386: JOHNNY_KERRY}),
 		]
 
 # #: 99.9 Impulse
@@ -399,68 +410,69 @@ body_heat_radio: list[Track] = [
 # 		'': Track("Private Press", "ENERGEEHOUSE", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
 # 		}
 
+# TODO: or is it 101.0 like in the credits data
 #: 101.9 The Dirge
 the_dirge: list[Track] = [
 		Track(
-				"Kill Trigger",
-				"The God Machines (feat. Paul Senai, KraKow)",
+				"Kill Trigger feat. Paul Senai, KraKow",
+				"The God Machines",
 				660406395,
-				"Sebastian Roberston; Daniel Davies; Tristan Calder; Brandon Hale; Michael Garcia",
-				"Sebastian Roberston; Kill the Computer; Indijinouz"
+				"Sebastian Robertson; Daniel Davies; Tristan Calder; Brandon Hale; Michael Garcia",
+				"Sebastian Robertson, Kill The Computer & Indijinouz"
 				),
 		Track(
 				"NC3",
 				"Blouses Blue",
 				777673336,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Cidro Onetoo; Perry Porter"
+				"Konrad OldMoney feat. Cidro Onetoo, Perry Porter"
 				),
 		Track("Young Kenny", "Problem Kids", 422374976, "Konrad Abramowicz", "Konrad OldMoney feat. Taelor Yung"),
 		Track("Droox", "Bigger Man", 305730733, "Konrad Abramowicz", "Konrad OldMoney feat. Taelor Yung"),
 		Track(
-				"DNE",
-				"Go Blaze (feat. G'Natt)",
+				"DNE feat. G'Natt",
+				"Go Blaze",
 				216704447,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Chanarah; Cidro Onetoo"
+				"Konrad OldMoney feat. Chanarah, Cidro Onetoo"
 				),
 		Track("ICHIBANCHI", "Dishonor", 495804559, "Konrad Abramowicz", "Konrad OldMoney feat. Brevner"),
 		Track("Yamete", "Frost", 433713094, "Konrad Abramowicz", "Konrad OldMoney feat. Frawst"),
 		Track(
-				"UMVN",
-				"High School Bully (feat. Imp Ra)",
+				"UMVN feat. Imp Ra",
+				"High School Bully",
 				384046700,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Cidro Onetoo; Perry Porter"
+				"Konrad OldMoney feat. Cidro Onetoo, Perry Porter"
 				),
 		Track(
 				"DAPxFLEM",
 				"NBOM",
 				749562071,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Cidro Onetoo; Perry Porter"
+				"Konrad OldMoney feat. Cidro Onetoo, Perry Porter"
 				),
 		Track("Code 137", "Suicide", 706423871, "Geno Lenardo", "Geno Lenardo feat. Zeale"),
 		Track("HAPS", "Day of Dead", 279160746, "Konrad Abramowicz", "Konrad OldMoney feat. Taelor Yung"),
 		Track("Knixit", "Bruzez", 960655358, "Konrad Abramowicz", "Konrad OldMoney feat. Johnny GR4VES"),
 		Track(
-				"Sugarcoob",
-				"Clip Boss (feat. ANAK KONDO)",
+				"Sugarcoob feat. ANAK KONDA",
+				"Clip Boss",
 				101795579,
 				"Konrad Abramowicz",
 				"Konrad OldMoney feat. Johnny GR4VES"
 				),
 		Track(
-				"Triple-B",
-				"PLUCK U (feat. Gun-Fu)",
+				"Triple-B feat. Gun-Fu",
+				"PLUCK U",
 				921768250,
 				"Konrad Abramowicz",
 				"Konrad OldMoney feat. Ded Stark"
 				),
 		Track("Pazoozu", "Hello Good Morning", 466119236, "Konrad Abramowicz", "Konrad OldMoney feat. S-God"),
 		Track(
-				"Bez Tatami",
-				"Run the Block (feat. Gully Foyle)",
+				"Bez Tatami feat. Gully Foyle",
+				"Run The Block",
 				39020019,
 				"Konrad Abramowicz",
 				"Konrad OldMoney feat. Taelor Yung"
@@ -477,10 +489,16 @@ the_dirge: list[Track] = [
 				"Warning Shots",
 				761987513,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Perry Porter; Cidro Onetoo"
+				"Konrad OldMoney feat. Perry Porter, Cidro Onetoo"
 				),
 		Track("Gorgon Madonna", "Metamorphosis", 274367834, "Yugen Blakrok", "Yugen Blakrok"),
-		Track("Yankee and the Brave", "No Save Point", 595318736, "Michael Render", "Run The Jewels"),
+		Track(
+				"Yankee and the Brave",
+				"No Save Point",
+				595318736,
+				"Michael Render",
+				"Aniyah's Music",
+				),  # Or is the artist Run The Jewels?
 		Track(
 				"TELO$",
 				"Flacko Locko",
@@ -492,10 +510,16 @@ the_dirge: list[Track] = [
 				"Cacimbo",
 				"CCC",
 				304807830,
-				'',
-				'',
-				),  # TODO: not listed in the wiki; need credits  # TODO: check 3506
-		Track("PeCero", "Nose Bleed", 697396654, '', ''),  # TODO: not listed in the wiki; need credits
+				"Marek Walaszek & Dunia Hejneman",
+				"Maro Music & Zuda",
+				),  # TODO: not listed in the wiki; credits data has it under other songs not the station; TODO: check in game  # TODO: check 3506
+		Track(
+				"PeCero",
+				"Nose Bleed",
+				697396654,
+				"Marek Walaszek & Okutama Akpan Etim",
+				"Maro Music & Razzy Razo",
+				),  # TODO: not listed in the wiki; credits data has it under other songs not the station; TODO: check in game
 		]
 
 #: 103.5 Radio PEBKAC
@@ -510,18 +534,19 @@ radio_pebkac: list[Track] = [
 				"Ivan Iusco; Elena Charbila",
 				"Kid Moxie; Ivan Iusco; Elena Charbila"
 				),
-		Track("IOshrine", "Fake Spook", 854232133, "Poly Face", "Poly Face"),
-		Track("[flesh]reactor", "Move Dat", 472230949, "Poly Face", "Poly Face"),
+		Track("IOshrine", "Fake Spook", 854232133, "Kuba Sojka", "Poly Face"),
+		Track("[flesh]reactor", "Move Dat", 472230949, "Kuba Sojka", "Poly Face"),
 		Track("Bullet in the Head", "CANNIBALISMUS", 361407323, "Lutto Lento", "Lutto Lento"),
 		Track("culteX", "La Canopée", 713386379, "Private Press", "Private Press"),
-		Track("Skindrifter", "Undertow Velocity", 104232706, "Private Press", "Private Press"),
-		Track("Yards of the Moon", "1101 Break", 573266683, "Private Press", "Private Press", {784816738: RACES}),
+		Track("Skin<>Drifter", "Undertow Velocity", 104232706, "Private Press", "Private Press"),
+		Track("Yards of the Moon", "II0I Break", 573266683, "Private Press", "Private Press", {784816738: RACES}),
 		Track(
 				"Retinal Scam",
 				"Across the Floor",
 				265347381,
 				"Private Press",
-				"Private Press", {252414463: JOHNNY_KERRY}
+				"Private Press",
+				{252414463: JOHNNY_KERRY},
 				),
 		Track("Retinal Scam", "Gridflow", 789246932, "Private Press", "Private Press"),
 		Track("Tar Hawk", "Vascular", 789477170, "Speed Dating", "Speed Dating feat. Horrid Charme"),
@@ -538,7 +563,7 @@ principales: list[Track] = [
 				"Dagga",
 				507913744,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Cerbeus; Johnny GR4VES"
+				"Konrad OldMoney feat. Cerbeus, Johnny GR4VES"
 				),  # TODO: Check 3807
 		Track("7 Facas", "Dinero", 7556210, "Konrad Abramowicz", "Konrad OldMoney feat. Cerbeus"),
 		Track(
@@ -546,11 +571,11 @@ principales: list[Track] = [
 				"Serpant",
 				200129727,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Cerbeus; Johnny GR4VES"
+				"Konrad OldMoney feat. Cerbeus, Johnny GR4VES"
 				),
 		Track(
 				"Don Mara",
-				"Tatted on my Face",
+				"Tatted On My Face",
 				626364837,
 				"Konrad Abramowicz",
 				"Konrad OldMoney feat. 37 Heartbreak"
@@ -560,28 +585,22 @@ principales: list[Track] = [
 		Track("ChickyChickas", "Only Son", 398402575, "Konrad Abramowicz", "Konrad OldMoney feat. 37 Heartbreak"),
 		Track(
 				"Papito Gringo",
-				"Muévelo Cumbia",
+				"Muévelo / Cumbia",
 				179243125,
 				"David Perez",
 				"David Rolas",
-				),  # TODO: one file or two? Check in-game spelling
-		Track("FKxU", "Muerto Thrash", 858828322, "Konrad Abramowicz", "Konrad OldMoney feat. Blackheart NC"),
+				),  # TODO: one file or two?
+		Track("FKxU", "Muerto Trash", 858828322, "Konrad Abramowicz", "Konrad OldMoney feat. Blackheart NC"),
 		Track("DJ CholoZ", "Westcoast Til I Die", 711322898, "Konrad Abramowicz", "Konrad OldMoney feat. Cerbeus"),
 		]
 
 #: 107.3 Morro Rock Radio
 morro_rock_radio: list[Track] = [
 		Track("Brutus Backlash", "Suffer Me", 360407664, "Chris Tapp", "The Cold Stares"),
-		Track(
-				"XerzeX",
-				"Heave Ho",
-				239971311,
-				"Konrad Abramowicz (aka Konrad OldMoney)",
-				"Konrad OldMoney feat. Frawst"
-				),
+		Track("XerzeX", "Heave Ho", 239971311, "Konrad Abramowicz", "Konrad OldMoney feat. Frawst"),
 		Track("Beached Tarantula", "I Will Follow", 216269337, "Snot Abundance", "Snot Abundance"),
-		Track("IBDY", "Who's Ready for Tomorrow", 688358243, "RAT BOY", "RAT BOY"),  # Pre 2.0 only?
-		Track("IBDY", "Likewise", 92260188, "RAT BOY", "RAT BOY"),
+		Track("IBDY", "Who's Ready for Tomorrow", 688358243, "Rat Boy", "Rat Boy"),  # Pre 2.0 only?
+		Track("IBDY", "Likewise", 92260188, "Rat Boy", "Rat Boy"),
 		Track(
 				"Rubicones",
 				"Friday Night Fire Fight",
@@ -598,11 +617,11 @@ morro_rock_radio: list[Track] = [
 				"Metz",
 				),  # Also called Heaven's Gate when not in the game.
 		Track(
-				"Kruschev's Ghosts",
+				"Krushchev's Ghosts",
 				"Testmaster / No Convenient Apocalypse",
 				826126133,
 				"Pissed Jeans",
-				"Pissed Jeans"
+				"Pissed Jeans",
 				),
 		Track("Cutthroat", "Sustain/Decay", 82962273, "Piotr Maciejewski", "Drivealone"),
 		Track("Artificial Kids", "To the Fullest", 521529624, "The Unfit", "The Unfit"),
@@ -611,21 +630,23 @@ morro_rock_radio: list[Track] = [
 				"SAMURAI",
 				"Never Fade Away",
 				230331069,
-				"David Sandström; Dennis Lyxzén",
-				"Refused", {904252670: "mus_q108_concert_glitch"}
+				"David Sandström; Kristofer Steen; P.T. Adamczyk; Dennis Lyxzén",
+				"Refused",
+				{904252670: "mus_q108_concert_glitch"},
 				),
 		Track(
 				"SAMURAI",
 				"Black Dog",
 				847868585,
-				"David Sandström; Dennis Lyxzén",
-				"Refused", {661946813: "mus_q204_js_apartment_vinyl_01, during New Dawn Fades"}
+				"David Sandström; Kristofer Steen; Mattias Bärj; Dennis Lyxzén",
+				"Refused",
+				{661946813: "mus_q204_js_apartment_vinyl_01, during New Dawn Fades"},
 				),
 		Track(
 				"SAMURAI",
 				"Chippin' In",
 				67866068,
-				"David Sandström; Dennis Lyxzén",
+				"David Sandström; Kristofer Steen; Dennis Lyxzén",
 				"Refused",
 				{
 						1062521678: "mus_q110_chippinin",
@@ -637,13 +658,15 @@ morro_rock_radio: list[Track] = [
 				),
 		Track(
 				"SAMURAI",
-				"The Ballad of Buck Ravers",
+				"The Ballad Of Buck Ravers",
 				336551383,
-				"David Sandström; Dennis Lyxzén",
-				"Refused", {47509183: JOHNNY_KERRY}
+				"David Sandström; Kristofer Steen; P.T. Adamczyk; Dennis Lyxzén",
+				"Refused",
+				{47509183: JOHNNY_KERRY},
 				),
 		]
 
+# TODO: check against credits
 #: 107.5 Dark Star
 dark_star: list[Track] = [
 		Track(
@@ -698,6 +721,7 @@ misc: list[Track] = [
 						},  # 1032568254: "mus_q304_alex_heart_to_heart",
 				),  # TODO: find correct main ID
 		Track("P.T. Adamczyk & Dawid Podsiadło", "Phantom Liberty", 904740609, "P.T. Adamczyk, Dawid Podsiadło"),
+		# TODO: Track("SAMURAI", "Archangel", 0, "David Sandström; Kristofer Steen; Dennis Lyxzén", "Refused"),
 		Track("Kerry Eurodyne", "Boat Song", 341588624, '', ''),  # TODO: credits
 		Track(
 				"Kerry Eurodyne",
@@ -707,9 +731,11 @@ misc: list[Track] = [
 				"Damian Ukeje; P.T. Adamczyk"
 				),
 		Track(
-				"Deadly Hunta, Maro Music & Footage Missing",
+				"Footage Missing",
 				"When It's War",
 				925140962,
+				"Trevor Samuels & Marek Walaszek",
+				"Deadly Hunta & Maro Music"
 				),  # TODO: check IDs; had extra ID but it was rain sounds
 		Track("Erik Satie", "Gymnopédie No. 1", 776355648, "Erik Satie"),
 		Track("Frédéric Chopin", "Nocturne Op. 55 No. 1", 768869823, "Frédéric Chopin"),
@@ -719,11 +745,18 @@ misc: list[Track] = [
 				"SAMURAI",
 				"A Like Supreme",
 				905498026,
-				'',
+				"David Sandström; Kristofer Steen; Dennis Lyxzén",
 				"Refused",
 				),  # 3965: mus_q204_js_apartment_vinyl_01, during New Dawn Fades
-		Track("Baron Black, Auer & Baron Celine", "RATATATA", 198353675, '', ''
+		# TODO: Track("Nomad Spirit", "Katarzyna Kraińska", 0, "P.T. Adamczyk"),
+		Track(
+				"Baron Celine",
+				"RATATATA",
+				198353675,
+				"Marek Aureliusz Teodoruk & Baron Black",
+				"Baron Black & Auer"
 				),  # mus_custom_radio_ratatata and mus_q110_voodooboys_market; plays on radio in Pacifica  # TODO: credits
+		# TODO: Track("Guilt Code", "Neuron", 0, "Marek Aureliusz Teodoruk", "Auer"),
 		Track(
 				"CD Projekt Red",
 				"Radio Synthwave GNH1",
@@ -749,7 +782,10 @@ misc: list[Track] = [
 				"Radio Synthwave GNH5",
 				718643010,
 				),  # TODO: find which station these play on (with copyrighted music disabled)
-		Track("Mr. Kipper", "99.9 Impulse DJ Set", 424884909
+		Track(
+				"Mr. Kipper",
+				"99.9 Impulse DJ Set",
+				424884909,
 				),  # TODO: songs list.  # mus_radio_14_impulse_djset, also mus_radio_14impls_djset_pyramid_edit
 		Track(
 				"CD Projekt Red",
