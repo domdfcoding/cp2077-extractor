@@ -662,7 +662,7 @@ morro_rock_radio: list[Track] = [
 				336551383,
 				"David Sandström; Kristofer Steen; P.T. Adamczyk; Dennis Lyxzén",
 				"Refused",
-				{47509183: JOHNNY_KERRY},
+				{47509183: JOHNNY_KERRY},  # Also mus_q204_js_apartment_vinyl_01, during New Dawn Fades
 				),
 		]
 
@@ -744,10 +744,10 @@ misc: list[Track] = [
 		Track(
 				"SAMURAI",
 				"A Like Supreme",
-				905498026,
+				905498026,  # mus_q204_js_apartment_vinyl_01, during New Dawn Fades
 				"David Sandström; Kristofer Steen; Dennis Lyxzén",
 				"Refused",
-				),  # 3965: mus_q204_js_apartment_vinyl_01, during New Dawn Fades
+				),
 		# TODO: Track("Nomad Spirit", "Katarzyna Kraińska", 0, "P.T. Adamczyk"),
 		Track(
 				"Baron Celine",
