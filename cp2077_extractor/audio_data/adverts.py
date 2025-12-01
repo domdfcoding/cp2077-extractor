@@ -37,7 +37,7 @@ class AdvertData(NamedTuple):
 	Data for an advert's sound files.
 	"""
 
-	#: The filenames in the game files for this advert all start with this string.
+	#: The filenames in the game files (in ``base/localization/en-us/vo``) for this advert all start with this string.
 	audio_filename_prefix: str
 
 	#: The name of the scene file in ``base/media/animated_billboards/scenes`` in the game files (with the suffix ``.scene``.)

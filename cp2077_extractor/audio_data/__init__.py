@@ -71,7 +71,7 @@ intro_ids: dict[int, str] = {
 		}
 
 # mus_q114_nomad_bard_01_song_01, plays during We Gotta Live Together (Aldecaldos ending)
-#: Mapping of wem file names to language (or the guitar part) for the bard playing during the quest *We Gotta Live Together*.
+#: Mapping of wem file names to language (or the guitar part) for Jake Scooter playing during the quest *We Gotta Live Together*.
 nomad_bard_ids: dict[int, str] = {
 		422912739: "German",  # mus_q114_nomad_bard_01_song_01/mus_q114_nomad_bard_01_song
 		717901062: "Korean",  # mus_q114_nomad_bard_01_song_01/mus_q114_nomad_bard_01_song
