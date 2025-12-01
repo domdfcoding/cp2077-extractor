@@ -1284,6 +1284,7 @@ __all__ = [
 		"scnEasingType",
 		"scnEndNodeNsType",
 		"scnEntityAcquisitionPlan",
+		"scnEventType",
 		"scnFastForwardMode",
 		"scnFastForwardStrategy",
 		"scnInterruptReturnLinesBehavior",
@@ -19398,3 +19399,7 @@ class worlduiEntryVisibility(REDEnum):
 	TierVisibility = 0
 	ForceShow = 1
 	ForceHide = 2
+
+
+class scnEventType(REDEnum):
+	pass

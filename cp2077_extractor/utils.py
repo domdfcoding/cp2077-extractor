@@ -174,7 +174,7 @@ def to_snake_case(value: str) -> str:
 	case_boundary = _case_boundary_re.findall(value)
 	single_letters = _single_letters_re.findall(value)
 	if not case_boundary and not single_letters:
-		return value
+		return value.lower()
 	value = _case_boundary_re.sub(r"\1_\2", value)
 	value = _case_boundary_re.sub(r"\1_\2\3", value)
 	return value.lower()
