@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #
-#  datatypes.py
+#  scn.py
 """
-Classes to represent datatypes within CR2W/W2RC files.
+Classes to represent scenes within CR2W/W2RC files (prefoxed ``scn``).
 """
 #
 #  Copyright © 2025 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -27,58 +27,17 @@ Classes to represent datatypes within CR2W/W2RC files.
 #
 
 # stdlib
-import functools
-import inspect
 import sys
-from collections.abc import Callable
 from dataclasses import dataclass, field
-from io import BytesIO
-from typing import TYPE_CHECKING, Any, TypedDict, cast
+from typing import Any
 
 # this package
 from cp2077_extractor.cr2w import enums
-from cp2077_extractor.cr2w.utils import get_array_variables, get_chunk_variables
-from cp2077_extractor.utils import StringReader, to_snake_case
-
-if TYPE_CHECKING:
-	# this package
-	from cp2077_extractor.cr2w.io import ParsingData
+from cp2077_extractor.cr2w.datatypes.base import Chunk, Transform
+from cp2077_extractor.cr2w.datatypes.game import gameEntityReference
+from cp2077_extractor.cr2w.datatypes.world import worldCompiledEffectInfo
 
 __all__ = [
-		"Array",
-		"CBitmapTexture",
-		"Chunk",
-		"DeferredBufferData",
-		"HandleData",
-		"Quaternion",
-		"STextureGroupSetup",
-		"Transform",
-		"entIBinding",
-		"entTagMask",
-		"entTemplateBindingOverride",
-		"entTemplateComponentBackendDataOverrideInfo",
-		"entTemplateComponentResolveSettings",
-		"entVisualTagsSchema",
-		"gameEntityReference",
-		"handle",
-		"inkCreditsResource",
-		"inkCreditsSectionEntry",
-		"instantiate_type",
-		"lookup_type",
-		"parse_array",
-		"parse_chunk",
-		"parse_handle_array",
-		"parse_string",
-		"parse_string_array",
-		"redTagList",
-		"rendRenderTextureBlobHeader",
-		"rendRenderTextureBlobMemoryLayout",
-		"rendRenderTextureBlobMipMapInfo",
-		"rendRenderTextureBlobPC",
-		"rendRenderTextureBlobPlacement",
-		"rendRenderTextureBlobSizeInfo",
-		"rendRenderTextureBlobTextureInfo",
-		"rendRenderTextureResource",
 		"scnActorDef",
 		"scnActorId",
 		"scnAdditionalSpeaker",
@@ -187,237 +146,13 @@ __all__ = [
 		"scnscreenplayItemId",
 		"scnscreenplayLineUsage",
 		"scnscreenplayOptionUsage",
-		"scnscreenplayStore",
-		"serialization_deferred_data_buffer",
-		"worldCompiledEffectEventInfo",
-		"worldCompiledEffectInfo",
-		"worldCompiledEffectPlacementInfo",
+		"scnscreenplayStore"
 		]
-
-_red_type_lookup: dict[bytes, type | Callable[..., object]] = {}
-
-_red_enum_list = enums.__all__[:]
-_red_enum_list.remove("REDEnum")
-for _class_name in _red_enum_list:
-	_red_type_lookup[_class_name.encode("UTF-8")] = getattr(enums, _class_name)
-
-
-class Chunk:
-	"""
-	Base class for chunks in CR2W/W2RC files; packed data containing variable names, types and values.
-	"""
-
-	def __init_subclass__(cls, *args, **kwargs):
-		_red_type_lookup[cls.__name__.encode("UTF-8")] = cls
-
-	@classmethod
-	def from_cr2w_kwargs(cls, kwargs: dict[bytes, Any]) -> "Chunk":
-		"""
-		Construct from a mapping of REDengine variable names and values (as Python types).
-		"""
-		new_kwargs: dict[str, Any] = {
-				to_snake_case(arg_name.decode("UTF-8")): arg_value
-				for arg_name, arg_value in kwargs.items()
-				}
-		return cls(**new_kwargs)
-
-	@classmethod
-	def from_chunk(cls, chunk: bytes, parsing_data: "ParsingData") -> "Chunk":
-		"""
-		Parse raw bytes.
-
-		:param chunk: The raw bytes.
-		:param parsing_data:
-		"""
-
-		kwargs = parse_chunk(chunk, parsing_data)
-		return cls.from_cr2w_kwargs(kwargs)
-
-
-@dataclass
-class Array:
-	"""
-	Type of an array in a CR2W/W2RC file, with the name of the inner type.
-	"""
-
-	value_red_type_name: bytes
-
-	def __call__(self, value: bytes, parsing_data: "ParsingData") -> list:
-		"""
-		Convert ``value`` (representing an array) into a Python list.
-
-		:param value:
-		:param parsing_data:
-		"""
-
-		array_value_type = lookup_type(self.value_red_type_name)
-		if inspect.isclass(array_value_type) and issubclass(array_value_type, Chunk):
-			return [array_value_type.from_cr2w_kwargs(av) for av in parse_array(value, parsing_data)]
-		elif self.value_red_type_name == b"String":
-			return parse_string_array(value)
-		elif self.value_red_type_name.startswith(b"handle:"):
-			return parse_handle_array(value, parsing_data)
-		else:
-			raise NotImplementedError(array_value_type)
-
-
-# def uint(value: bytes) -> int:
-# 	return int.from_bytes(value, byteorder="little")
-
-uint = functools.partial(int.from_bytes, byteorder="little")
-
-
-def lookup_type(red_type_name: bytes) -> type | Callable[..., object]:
-	"""
-	Lookup a Python type from its REDengine equivalent's name.
-
-	:param red_type_name:
-	"""
-
-	if red_type_name in _red_type_lookup:
-		# print("Looked up", red_type_name, "as", _red_type_lookup[red_type_name])
-		return _red_type_lookup[red_type_name]
-	elif red_type_name.startswith(b"array:"):
-		return Array(red_type_name.split(b":", 1)[1])
-	elif red_type_name.startswith(b"handle:"):
-		return handle
-	else:
-		raise NotImplementedError(red_type_name)
-
-
-def parse_chunk(chunk: bytes, parsing_data: "ParsingData") -> dict[bytes, Any]:
-	"""
-	Parse the given chunk of data and return a mapping of variable names to values.
-
-	:param chunk:
-	:param parsing_data:
-	"""
-
-	variables = get_chunk_variables(chunk, parsing_data.names_list)
-
-	kwargs: dict[bytes, Any] = {}
-	for (var_c_name, red_type_name, value) in variables:
-		kwargs[var_c_name] = instantiate_type(red_type_name, value, parsing_data)
-
-	return kwargs
-
-
-def parse_array(chunk: bytes, parsing_data: "ParsingData") -> list[dict[bytes, str]]:
-	"""
-	Parse the given chunk of data as an array and return a list of mapping of variable names to values.
-
-	:param chunk:
-	:param parsing_data:
-	"""
-
-	variables = get_array_variables(chunk, parsing_data.names_list)
-
-	array_contents = []
-	for array_item in variables:
-
-		kwargs: dict[bytes, Any] = {}
-		for (var_c_name, red_type_name, value) in array_item:
-			kwargs[var_c_name] = instantiate_type(red_type_name, value, parsing_data)
-
-		array_contents.append(kwargs)
-
-	return array_contents
-
-
-def instantiate_type(red_type_name: bytes, value: bytes, parsing_data: "ParsingData") -> object:
-	"""
-	Create a Python class instance for the given REDengine type and the given value.
-
-	:param red_type_name:
-	:param value:
-	:param parsing_data:
-	"""
-
-	# this package
-	from cp2077_extractor.cr2w.io import read_c_name
-
-	if red_type_name == b"CName":
-		return read_c_name(BytesIO(value), parsing_data.names_list)
-
-	var_type = lookup_type(red_type_name)
-
-	if inspect.isclass(var_type) and issubclass(var_type, enums.REDEnum):
-		return var_type.from_red_name(parsing_data.names_list[uint(value)])
-	elif var_type is Chunk:
-		return (red_type_name, parse_chunk(value, parsing_data))
-	elif isinstance(var_type, Array):
-		return var_type(value, parsing_data)
-	elif inspect.isclass(var_type) and issubclass(var_type, Chunk):
-		return var_type.from_chunk(value, parsing_data)
-	elif var_type in {handle, serialization_deferred_data_buffer}:
-		return var_type(value, parsing_data)
-	else:
-		return var_type(value)
-
-
-class HandleData(TypedDict):
-	"""
-	Return type of :func:`~.handle`.
-	"""
-
-	handle_id: int
-	data: Chunk
-
-
-def handle(handle: bytes, parsing_data: "ParsingData") -> HandleData:
-	"""
-	A handle points to the data in another chunk. Read that chunk and return the resulting data.
-
-	:param handle: Raw bytes of the handle (the value of a ``handle:xxxxxx`` type), referring to the target chunk.
-	:param parsing_data:
-	"""
-
-	handle_idx = int.from_bytes(handle, "little") - 1
-	chunk = parsing_data.chunks[handle_idx]
-	return {"handle_id": handle_idx, "data": cast(Chunk, instantiate_type(chunk[1], chunk[0], parsing_data))}
-
-
-class DeferredBufferData(TypedDict):
-	"""
-	Return type of :func:`~.serialization_deferred_data_buffer`.
-	"""
-
-	buffer_id: int
-	flags: int
-	bytes: bytes
-
-
-def serialization_deferred_data_buffer(
-		buffer_id: bytes,
-		parsing_data: "ParsingData",
-		) -> DeferredBufferData:
-	"""
-	A ``serializationDeferredDataBuffer`` points to a buffer in the CR2W/W2RC file, containing the actual data e.g. a texture.
-
-	:param buffer_id: The ID of the buffer. Unknown format. Currently ignored and assumed to point to the first buffer.
-	:param parsing_data:
-	"""
-
-	# TODO: Two bytes. With one buffer it's 1 0.
-	assert buffer_id == b"\1\0"
-	buffer_idx = 0  # TODO: proper lookup implementation
-	buffer, buffer_info = parsing_data.buffers[buffer_idx]
-	return {"buffer_id": buffer_idx, "flags": buffer_info.flags, "bytes": buffer}
 
 
 @dataclass
 class scnPerformerId(Chunk):
 	id: int = 4294967040
-
-
-@dataclass
-class gameEntityReference(Chunk):
-	type: enums.gameEntityReferenceType = enums.gameEntityReferenceType.EntityRef
-	reference: str = ''
-	names: list[str] = field(default_factory=list)
-	slot_name: str = ''
-	scene_actor_context_name: str = ''
-	dynamic_entity_unique_name: str = ''
 
 
 @dataclass
@@ -573,20 +308,6 @@ class scnFindEntityInContextParams(Chunk):
 	spec_record_id: int
 	context_actor_name: int = 0
 	force_max_visibility: bool = False
-
-
-@dataclass
-class Quaternion(Chunk):
-	i: float
-	j: float
-	k: float
-	r: float
-
-
-@dataclass
-class Transform(Chunk):
-	position: tuple[int, int, int, int]
-	orientation: Quaternion
 
 
 @dataclass
@@ -1114,32 +835,6 @@ class scnEffectInstanceId(Chunk):
 
 
 @dataclass
-class worldCompiledEffectPlacementInfo(Chunk):
-	placement_tag_index: int = 255
-	relative_position_index: int = 255
-	relative_rotation_index: int = 255
-	flags: int = 0
-
-
-@dataclass
-class worldCompiledEffectEventInfo(Chunk):
-	event_ruid: int = 0
-	placement_index_mask: int = 0
-	component_index_mask: int = 0
-	flags: int = 1
-
-
-@dataclass
-class worldCompiledEffectInfo(Chunk):
-	placement_tags: list[str] = field(default_factory=list)
-	component_names: list[str] = field(default_factory=list)
-	relative_positions: list[tuple[float, float, float]] = field(default_factory=list)
-	relative_rotations: list[Quaternion] = field(default_factory=list)
-	placement_infos: list[worldCompiledEffectPlacementInfo] = field(default_factory=list)
-	events_sorted_by_ruid: list[worldCompiledEffectEventInfo] = field(default_factory=list)
-
-
-@dataclass
 class scnEffectInstance(Chunk):
 	effect_instance_id: scnEffectInstanceId
 	compiled_effect: worldCompiledEffectInfo
@@ -1205,16 +900,6 @@ class scnSceneResource(Chunk):
 
 
 @dataclass
-class rendRenderTextureBlobTextureInfo(Chunk):  # noqa: D101
-	texture_data_size: int
-	slice_size: int
-	data_alignment: int
-	slice_count: int
-	mip_count: int
-	type: enums.GpuWrapApieTextureType = enums.GpuWrapApieTextureType.TEXTYPE_2D
-
-
-@dataclass
 class scnCheckSpeakersDistanceInterruptConditionParams(Chunk):
 	distance: float = 0.0
 	comparison_type: enums.EComparisonType = enums.EComparisonType.Greater
@@ -1238,211 +923,3 @@ class scnCheckSpeakersDistanceReturnCondition(Chunk):
 	params: scnCheckSpeakersDistanceReturnConditionParams = field(
 			default_factory=scnCheckSpeakersDistanceReturnConditionParams
 			)
-
-
-@dataclass
-class rendRenderTextureBlobSizeInfo(Chunk):
-	"""
-	Size info for a texture.
-	"""
-
-	width: int
-	height: int
-	depth: int = 1
-
-
-@dataclass
-class rendRenderTextureBlobHeader(Chunk):
-	"""
-	Header for texture data and associated properties.
-	"""
-
-	version: int
-	size_info: rendRenderTextureBlobSizeInfo
-	texture_info: rendRenderTextureBlobTextureInfo
-	flags: int
-	mip_map_info: list[Any] = field(default_factory=list)  # list[MipMapInfo]  # TODO: parse array
-	histogram_data: list[Any] = field(default_factory=list)  # list[HistogramData]
-
-
-@dataclass
-class rendRenderTextureBlobPC(Chunk):  # noqa: D101
-	header: rendRenderTextureBlobHeader
-	texture_data: DeferredBufferData
-
-
-@dataclass
-class STextureGroupSetup(Chunk):
-	"""
-	Properties of a texture file.
-	"""
-
-	compression: enums.ETextureCompression
-	is_gamma: bool = False
-	platform_mip_bias_pc: int = 0
-	platform_mip_bias_console: int = 0
-	is_streamable: bool = True
-	has_mipchain: bool = True
-	allow_texture_downgrade: bool = True
-	group: enums.GpuWrapApieTextureGroup = enums.GpuWrapApieTextureGroup.TEXG_Generic_Color
-	raw_format: enums.ETextureRawFormat = enums.ETextureRawFormat.TRF_TrueColor
-
-
-@dataclass
-class rendRenderTextureResource(Chunk):  # noqa: D101
-	render_resource_blob_pc: HandleData  # CHandle
-
-
-@dataclass
-class CBitmapTexture(Chunk):
-	"""
-	A texture file.
-	"""
-
-	cooking_platform: enums.ECookingPlatform
-	width: int
-	height: int
-	# render_resource_blob: Any  # RenderResourceBlob  # TODO: check resolved type
-	render_texture_resource: rendRenderTextureResource  # TODO: default is new rendRenderTextureResource
-	setup: STextureGroupSetup = field(default_factory=STextureGroupSetup)  # type: ignore[arg-type]
-	depth: int = 1
-	hist_bias_mul_coef: tuple[float, float, float] = (1.0, 1.0, 1.0)  # Vector3
-	hist_bias_add_coef: tuple[float, float, float] = (0.0, 0.0, 0.0)  # Vector3
-
-
-@dataclass
-class inkCreditsSectionEntry(Chunk):
-	"""
-	A section in the game credits.
-	"""
-
-	#: The names to credit.
-	names: list[bytes]
-
-	display_mode: enums.inkDisplayMode
-
-	#: A heading (e.g. "Programming") or a role title (e.g. "Senior Programmer")
-	section_title: str = ''
-
-
-@dataclass
-class inkCreditsResource(Chunk):
-	"""
-	Data for the game's credits.
-	"""
-
-	cooking_platform: enums.ECookingPlatform
-	sections: list[inkCreditsSectionEntry]
-
-
-@dataclass
-class rendRenderTextureBlobMemoryLayout(Chunk):  # noqa: D101
-	row_pitch: int = 0
-	slice_pitch: int = 0
-
-
-@dataclass
-class rendRenderTextureBlobPlacement(Chunk):  # noqa: D101
-	size: int = 0
-	offset: int = 0
-
-
-@dataclass
-class rendRenderTextureBlobMipMapInfo(Chunk):  # noqa: D101
-	layout: rendRenderTextureBlobMemoryLayout = field(default_factory=rendRenderTextureBlobMemoryLayout)
-	placement: rendRenderTextureBlobPlacement = field(default_factory=rendRenderTextureBlobPlacement)
-
-
-@dataclass
-class redTagList(Chunk):  # noqa: D101
-	tags: list[str]
-
-
-@dataclass
-class entVisualTagsSchema(Chunk):  # noqa: D101
-	visual_tags: redTagList
-	schema: str
-
-
-@dataclass
-class entTemplateComponentResolveSettings(Chunk):  # noqa: D101
-	component_name: str
-	name_param: str
-	mode: enums.entTemplateComponentResolveMode
-
-
-@dataclass
-class entTagMask(Chunk):  # noqa: D101
-	hard_tags: redTagList
-	soft_tags: redTagList
-	excluded_tags: redTagList
-
-
-@dataclass
-class entIBinding(Chunk):  # noqa: D101
-	enabled: bool
-	enable_mask: entTagMask
-	bind_name: str
-
-
-@dataclass
-class entTemplateBindingOverride(Chunk):  # noqa: D101
-	component_name: str
-	property_name: str
-	binding: entIBinding
-
-
-@dataclass
-class entTemplateComponentBackendDataOverrideInfo(Chunk):  # noqa: D101
-	component_name: str
-	offset: tuple[int, int]
-
-
-def parse_string(data: bytes) -> str:
-	"""
-	Parse a bytes string (which has a VLQ i32 size prefix) to a Python string.
-
-	:param
-	"""
-
-	return StringReader(data).parse_string()
-
-
-def parse_string_array(data: bytes) -> list[str]:
-	"""
-	Parse an array of strings.
-
-	:param data:
-	"""
-
-	array_size = int.from_bytes(data[:4], "little")
-	string_reader = StringReader(data[4:])
-	return [string_reader.parse_string() for _ in range(array_size)]
-
-
-def parse_handle_array(data: bytes, parsing_data: "ParsingData") -> list[HandleData]:
-	"""
-	Parse an array of handles (each 4 bytes long).
-
-	:param data:
-	"""
-
-	array_size = int.from_bytes(data[:4], "little")
-	array = [handle(data[4 + (4 * idx):8 + (4 * idx)], parsing_data) for idx in range(array_size)]
-	return array
-
-
-_red_type_lookup.update({
-		# b"DataBuffer": bytes,  # TODO
-		b"Bool": bool,
-		b"String": parse_string,
-		b"Uint16": uint,
-		b"Uint32": uint,
-		b"Uint64": uint,
-		b"Uint8": uint,
-		b"CRUID": uint,
-		b"TweakDBID": uint,
-		b"handle": handle,
-		b"raRef:animAnimSet": bytes,  # TODO
-		b"serializationDeferredDataBuffer": serialization_deferred_data_buffer,
-		})
