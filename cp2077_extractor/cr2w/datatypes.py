@@ -49,6 +49,12 @@ __all__ = [
 		"DeferredBufferData",
 		"HandleData",
 		"STextureGroupSetup",
+		"entIBinding",
+		"entTagMask",
+		"entTemplateBindingOverride",
+		"entTemplateComponentBackendDataOverrideInfo",
+		"entTemplateComponentResolveSettings",
+		"entVisualTagsSchema",
 		"handle",
 		"inkCreditsResource",
 		"inkCreditsSectionEntry",
@@ -58,8 +64,12 @@ __all__ = [
 		"parse_chunk",
 		"parse_string",
 		"parse_string_array",
+		"redTagList",
 		"rendRenderTextureBlobHeader",
+		"rendRenderTextureBlobMemoryLayout",
+		"rendRenderTextureBlobMipMapInfo",
 		"rendRenderTextureBlobPC",
+		"rendRenderTextureBlobPlacement",
 		"rendRenderTextureBlobSizeInfo",
 		"rendRenderTextureBlobTextureInfo",
 		"rendRenderTextureResource",
@@ -362,6 +372,69 @@ class inkCreditsResource(Chunk):
 	sections: list[inkCreditsSectionEntry]
 
 
+@dataclass
+class rendRenderTextureBlobMemoryLayout(Chunk):  # noqa: D101
+	row_pitch: int = 0
+	slice_pitch: int = 0
+
+
+@dataclass
+class rendRenderTextureBlobPlacement(Chunk):  # noqa: D101
+	size: int
+	offset: int = 0
+
+
+@dataclass
+class rendRenderTextureBlobMipMapInfo(Chunk):  # noqa: D101
+	layout: rendRenderTextureBlobMemoryLayout = field(default_factory=rendRenderTextureBlobMemoryLayout)
+	placement: rendRenderTextureBlobPlacement = field(default_factory=rendRenderTextureBlobPlacement)
+
+
+@dataclass
+class redTagList(Chunk):  # noqa: D101
+	tags: list[str]
+
+
+@dataclass
+class entVisualTagsSchema(Chunk):  # noqa: D101
+	visual_tags: redTagList
+	schema: str
+
+
+@dataclass
+class entTemplateComponentResolveSettings(Chunk):  # noqa: D101
+	component_name: str
+	name_param: str
+	mode: enums.entTemplateComponentResolveMode
+
+
+@dataclass
+class entTagMask(Chunk):  # noqa: D101
+	hard_tags: redTagList
+	soft_tags: redTagList
+	excluded_tags: redTagList
+
+
+@dataclass
+class entIBinding(Chunk):  # noqa: D101
+	enabled: bool
+	enable_mask: entTagMask
+	bind_name: str
+
+
+@dataclass
+class entTemplateBindingOverride(Chunk):  # noqa: D101
+	component_name: str
+	property_name: str
+	binding: entIBinding
+
+
+@dataclass
+class entTemplateComponentBackendDataOverrideInfo(Chunk):  # noqa: D101
+	component_name: str
+	offset: tuple[int, int]
+
+
 def parse_string(data: bytes) -> str:
 	"""
 	Parse a bytes string (which has a VLQ i32 size prefix) to a Python string.
@@ -388,11 +461,21 @@ _red_type_lookup: dict[bytes, type | Callable[..., object]] = {
 		b"Bool": bool,
 		b"CBitmapTexture": CBitmapTexture,
 		b"ECookingPlatform": enums.ECookingPlatform,
+		b"entIBinding": entIBinding,
+		b"entTagMask": entTagMask,
+		b"entTemplateBindingOverride": entTemplateBindingOverride,
+		b"entTemplateComponentBackendDataOverrideInfo": entTemplateComponentBackendDataOverrideInfo,
+		b"entTemplateComponentResolveSettings": entTemplateComponentResolveSettings,
+		b"entVisualTagsSchema": entVisualTagsSchema,
 		b"handle:IRenderResourceBlob": handle,
 		b"inkCreditsResource": inkCreditsResource,
 		b"inkCreditsSectionEntry": inkCreditsSectionEntry,
+		b"redTagList": redTagList,
 		b"rendRenderTextureBlobHeader": rendRenderTextureBlobHeader,
+		b"rendRenderTextureBlobMemoryLayout": rendRenderTextureBlobMemoryLayout,
+		b"rendRenderTextureBlobMipMapInfo": rendRenderTextureBlobMipMapInfo,
 		b"rendRenderTextureBlobPC": rendRenderTextureBlobPC,
+		b"rendRenderTextureBlobPlacement": rendRenderTextureBlobPlacement,
 		b"rendRenderTextureBlobSizeInfo": rendRenderTextureBlobSizeInfo,
 		b"rendRenderTextureBlobTextureInfo": rendRenderTextureBlobTextureInfo,
 		b"rendRenderTextureResource": rendRenderTextureResource,
