@@ -4,7 +4,7 @@ build-backend = "whey"
 
 [project]
 name = "cp2077-extractor"
-version = "0.0.0"
+version = "0.1.0"
 description = "Work in progress audio/music extractor for Cyberpunk 2077."
 readme = "README.rst"
 keywords = []
