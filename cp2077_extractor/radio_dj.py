@@ -41,13 +41,13 @@ if TYPE_CHECKING:
 
 __all__ = [
 		"EventData",
-		"load_events_dict",
 		"find_graph_entry_points",
 		"get_link_paths",
+		"load_events_dict",
 		"parse_radio_scene_graph",
 		"parse_subtitles",
 		"plot_graph",
-		"remove_intermediate_nodes"
+		"remove_intermediate_nodes",
 		]
 
 

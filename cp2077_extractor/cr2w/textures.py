@@ -43,7 +43,7 @@ if TYPE_CHECKING:
 	# this package
 	from cp2077_extractor.cr2w.datatypes import CBitmapTexture
 
-__all__ = ["DDSFormat", "get_dds_decoder", "get_dds_format_from_compression"]
+__all__ = ["DDSFormat", "get_dds_decoder", "get_dds_format_from_compression", "texture_to_image"]
 
 
 class DDSFormat(Enum):
@@ -125,6 +125,11 @@ def get_dds_format_from_compression(compression: ETextureCompression) -> DDSForm
 
 
 def texture_to_image(texture: "CBitmapTexture") -> Image.Image:
+	"""
+	Convert a texture to a PIL image.
+
+	:param texture:
+	"""
 
 	texture_data = cast(
 			rendRenderTextureBlobPC,

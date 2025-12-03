@@ -53,7 +53,7 @@ from mutagen.id3 import (
 		ID3NoHeaderError
 		)
 
-__all__ = ["Track"]
+__all__ = ["Track", "set_tag"]
 
 
 class Track(NamedTuple):

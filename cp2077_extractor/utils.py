@@ -60,7 +60,7 @@ def transcode_file(
 
 	# TODO: see how vgmstream gets length; probably in file header
 
-	print(wem_filename, "->", mp3_filename)
+	# print(wem_filename, "->", mp3_filename)
 	ogg_data = wem_to_ogg(wem_filename.read_bytes())
 	ogg_info: SoundFileInfo = vorbis_get_info(ogg_data)
 	# print("nchannels =", ogg_info.nchannels)

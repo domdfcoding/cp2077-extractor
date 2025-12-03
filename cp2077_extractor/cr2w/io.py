@@ -62,6 +62,7 @@ from .header_structs import (
 		)
 
 __all__ = [
+		"CNameError",
 		"ParsingData",
 		"parse_cr2w_buffer",
 		"parse_cr2w_file",
@@ -70,7 +71,7 @@ __all__ = [
 		"read_chunk",
 		"read_file_info",
 		"read_struct",
-		"read_tables"
+		"read_tables",
 		]
 
 _S = TypeVar("_S", bound=Struct)
@@ -96,7 +97,9 @@ def read_tables(fp: IO, table_struct: type[_S], header: CR2WTable) -> Iterator[_
 
 
 class CNameError(Exception):
-	pass
+	"""
+	Error raised when an invalid name is read.
+	"""
 
 
 def read_c_name(fp: IO, names_list: list[bytes]) -> bytes:
