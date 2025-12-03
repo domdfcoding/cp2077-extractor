@@ -103,5 +103,15 @@ from matplotlib.figure import Figure
 
 radio_dj.Figure = Figure
 datatypes.ParsingData = ParsingData
+datatypes.base.ParsingData = ParsingData
+datatypes.appearance.entEntityParametersBuffer = datatypes.ent.entEntityParametersBuffer
+datatypes.appearance.entEntityTemplate = datatypes.ent.entEntityTemplate
+datatypes.ent.worldEffect = datatypes.world.worldEffect
+datatypes.ent.WorldTransform = datatypes.world.WorldTransform
+datatypes.game.physicsFilterData = datatypes.physics.physicsFilterData
+datatypes.game.physicsMaterialReference = datatypes.physics.physicsMaterialReference
+datatypes.game.physicsQueryPreset = datatypes.physics.physicsQueryPreset
+datatypes.game.WorkspotMapperComponent = datatypes.work.WorkspotMapperComponent
+datatypes.game.WorldTransform = datatypes.world.WorldTransform
 header_structs.Chunk = Chunk
 textures.CBitmapTexture = CBitmapTexture

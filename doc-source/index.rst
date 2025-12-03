@@ -109,6 +109,7 @@ Contents
 	:glob:
 
 	api/*
+	api/cr2w/index.rst
 
 .. toctree::
 	:maxdepth: 3
