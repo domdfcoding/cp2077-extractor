@@ -1,6 +1,6 @@
 domdf-python-tools>=3.10.0
 fnvhash>=0.2.1
-kraken-decompressor>=0.1.0; platform_machine == "x86_64" and sys_platform != "darwin"
+kraken-decompressor>=0.1.0; platform_machine in "x86_64/AMD64" and sys_platform != "darwin"
 lameenc>=1.8.1
 miniaudio>=1.61
 mutagen>=1.47.0
