@@ -28,15 +28,22 @@ Classes to represent datatypes within CR2W/W2RC files.
 
 # stdlib
 from dataclasses import dataclass, field
+from typing import Any
 
 # this package
 from cp2077_extractor.cr2w import enums
+from cp2077_extractor.cr2w.datatypes.anim import *
+from cp2077_extractor.cr2w.datatypes.appearance import *
 from cp2077_extractor.cr2w.datatypes.base import *
 from cp2077_extractor.cr2w.datatypes.ent import *
 from cp2077_extractor.cr2w.datatypes.game import *
+from cp2077_extractor.cr2w.datatypes.graph import *
 from cp2077_extractor.cr2w.datatypes.ink import *
+from cp2077_extractor.cr2w.datatypes.physics import *
+from cp2077_extractor.cr2w.datatypes.quest import *
 from cp2077_extractor.cr2w.datatypes.rend import *
 from cp2077_extractor.cr2w.datatypes.scn import *
+from cp2077_extractor.cr2w.datatypes.work import *
 from cp2077_extractor.cr2w.datatypes.world import *
 
 __all__ = ["CBitmapTexture", "STextureGroupSetup"]
@@ -48,15 +55,15 @@ class STextureGroupSetup(Chunk):
 	Properties of a texture file.
 	"""
 
-	compression: enums.ETextureCompression
+	group: enums.GpuWrapApieTextureGroup = enums.GpuWrapApieTextureGroup.TEXG_Generic_Color
+	raw_format: enums.ETextureRawFormat = enums.ETextureRawFormat.TRF_TrueColor
+	compression: enums.ETextureCompression = enums.ETextureCompression.TCM_None
+	is_streamable: bool = True
+	has_mipchain: bool = True
 	is_gamma: bool = False
 	platform_mip_bias_pc: int = 0
 	platform_mip_bias_console: int = 0
-	is_streamable: bool = True
-	has_mipchain: bool = True
 	allow_texture_downgrade: bool = True
-	group: enums.GpuWrapApieTextureGroup = enums.GpuWrapApieTextureGroup.TEXG_Generic_Color
-	raw_format: enums.ETextureRawFormat = enums.ETextureRawFormat.TRF_TrueColor
 
 
 @dataclass
@@ -65,12 +72,12 @@ class CBitmapTexture(Chunk):
 	A texture file.
 	"""
 
-	cooking_platform: enums.ECookingPlatform
-	width: int
-	height: int
-	# render_resource_blob: Any  # RenderResourceBlob  # TODO: check resolved type
-	render_texture_resource: rendRenderTextureResource  # TODO: default is new rendRenderTextureResource
-	setup: STextureGroupSetup = field(default_factory=STextureGroupSetup)  # type: ignore[arg-type]
+	cooking_platform: enums.ECookingPlatform = enums.ECookingPlatform.PLATFORM_None
+	width: int = 0
+	height: int = 0
 	depth: int = 1
-	hist_bias_mul_coef: tuple[float, float, float] = (1.0, 1.0, 1.0)  # Vector3
-	hist_bias_add_coef: tuple[float, float, float] = (0.0, 0.0, 0.0)  # Vector3
+	setup: STextureGroupSetup = field(default_factory=STextureGroupSetup)
+	hist_bias_mul_coef: tuple[float, float, float] = (1.0, 1.0, 1.0)
+	hist_bias_add_coef: tuple[float, float, float] = (0.0, 0.0, 0.0)
+	render_resource_blob: Any = None  # TODO: IRenderResourceBlob = field(default_factory=IRenderResourceBlob) # TODO: check resolved type
+	render_texture_resource: rendRenderTextureResource = field(default_factory=rendRenderTextureResource)

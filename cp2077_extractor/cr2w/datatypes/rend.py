@@ -42,12 +42,13 @@ __all__ = [
 		"rendRenderTextureBlobPlacement",
 		"rendRenderTextureBlobSizeInfo",
 		"rendRenderTextureBlobTextureInfo",
-		"rendRenderTextureResource"
+		"rendRenderTextureResource",
+		"rendSLightFlickering",
 		]
 
 
 @dataclass
-class rendRenderTextureBlobTextureInfo(Chunk):  # noqa: D101
+class rendRenderTextureBlobTextureInfo(Chunk):
 	texture_data_size: int
 	slice_size: int
 	data_alignment: int
@@ -82,29 +83,36 @@ class rendRenderTextureBlobHeader(Chunk):
 
 
 @dataclass
-class rendRenderTextureBlobPC(Chunk):  # noqa: D101
+class rendRenderTextureBlobPC(Chunk):
 	header: rendRenderTextureBlobHeader
 	texture_data: DeferredBufferData
 
 
 @dataclass
-class rendRenderTextureResource(Chunk):  # noqa: D101
-	render_resource_blob_pc: HandleData  # CHandle
+class rendRenderTextureResource(Chunk):
+	render_resource_blob_pc: HandleData = field(default_factory=dict)  # type: ignore[assignment]  # CHandle
 
 
 @dataclass
-class rendRenderTextureBlobMemoryLayout(Chunk):  # noqa: D101
+class rendRenderTextureBlobMemoryLayout(Chunk):
 	row_pitch: int = 0
 	slice_pitch: int = 0
 
 
 @dataclass
-class rendRenderTextureBlobPlacement(Chunk):  # noqa: D101
+class rendRenderTextureBlobPlacement(Chunk):
 	size: int = 0
 	offset: int = 0
 
 
 @dataclass
-class rendRenderTextureBlobMipMapInfo(Chunk):  # noqa: D101
+class rendRenderTextureBlobMipMapInfo(Chunk):
 	layout: rendRenderTextureBlobMemoryLayout = field(default_factory=rendRenderTextureBlobMemoryLayout)
 	placement: rendRenderTextureBlobPlacement = field(default_factory=rendRenderTextureBlobPlacement)
+
+
+@dataclass
+class rendSLightFlickering(Chunk):
+	position_offset: float = 0.0
+	flicker_strength: float = 0.0
+	flicker_period: float = 0.2

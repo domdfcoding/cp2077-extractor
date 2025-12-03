@@ -30,7 +30,7 @@ Basic classes for representing datatypes within CR2W/W2RC files.
 import functools
 import inspect
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from io import BytesIO
 from typing import TYPE_CHECKING, Any, TypedDict, cast
 
@@ -45,10 +45,17 @@ if TYPE_CHECKING:
 
 __all__ = [
 		"Array",
+		"Box",
+		"CColor",
+		"CMatrix",
 		"Chunk",
 		"DeferredBufferData",
+		"EulerAngles",
 		"HandleData",
+		"Plane",
+		"QsTransform",
 		"Quaternion",
+		"Sphere",
 		"Transform",
 		"handle",
 		"instantiate_type",
@@ -59,7 +66,7 @@ __all__ = [
 		"parse_string",
 		"parse_string_array",
 		"redTagList",
-		"serialization_deferred_data_buffer"
+		"serialization_deferred_data_buffer",
 		]
 
 _red_type_lookup: dict[bytes, type | Callable[..., object]] = {}
@@ -303,21 +310,21 @@ def parse_handle_array(data: bytes, parsing_data: "ParsingData") -> list[HandleD
 
 @dataclass
 class Quaternion(Chunk):
-	i: float
-	j: float
-	k: float
-	r: float
+	i: float = 0.0
+	j: float = 0.0
+	k: float = 0.0
+	r: float = 1.0
 
 
 @dataclass
 class Transform(Chunk):
-	position: tuple[int, int, int, int]
-	orientation: Quaternion
+	position: tuple[float, float, float, float] = (0.0, 0.0, 0.0, 0.0)
+	orientation: Quaternion = field(default_factory=Quaternion)
 
 
 @dataclass
-class redTagList(Chunk):  # noqa: D101
-	tags: list[str]
+class redTagList(Chunk):
+	tags: list[str] = field(default_factory=list)
 
 
 # def uint(value: bytes) -> int:
@@ -339,3 +346,49 @@ _red_type_lookup.update({
 		b"raRef:animAnimSet": bytes,  # TODO
 		b"serializationDeferredDataBuffer": serialization_deferred_data_buffer,
 		})
+
+
+@dataclass
+class EulerAngles(Chunk):
+	pitch: float = 0.0
+	yaw: float = 0.0
+	roll: float = 0.0
+
+
+@dataclass
+class QsTransform(Chunk):
+	translation: tuple[float, float, float, float] = (0.0, 0.0, 0.0, 0.0)
+	rotation: Quaternion = field(default_factory=Quaternion)
+	scale: tuple[float, float, float, float] = (1.0, 1.0, 1.0, 1.0)
+
+
+@dataclass
+class CColor(Chunk):
+	red: int = 0
+	green: int = 0
+	blue: int = 0
+	alpha: int = 0
+
+
+@dataclass
+class Sphere(Chunk):
+	center_radius2: tuple[float, float, float, float] = (0.0, 0.0, 0.0, 0.0)
+
+
+@dataclass
+class CMatrix(Chunk):
+	x: tuple[float, float, float, float] = (1.0, 0.0, 0.0, 0.0)
+	y: tuple[float, float, float, float] = (0.0, 1.0, 0.0, 0.0)
+	z: tuple[float, float, float, float] = (0.0, 0.0, 1.0, 0.0)
+	w: tuple[float, float, float, float] = (0.0, 0.0, 0.0, 1.0)
+
+
+@dataclass
+class Box(Chunk):
+	min: tuple[float, float, float, float] = (0.0, 0.0, 0.0, 0.0)
+	max: tuple[float, float, float, float] = (0.0, 0.0, 0.0, 0.0)
+
+
+@dataclass
+class Plane(Chunk):
+	normal_distance: tuple[float, float, float, float] = (0.0, 0.0, 0.0, 0.0)

@@ -27,7 +27,7 @@ Enums for some datatypes within CR2W/W2RC files.
 #
 
 # stdlib
-from enum import Enum
+from enum import Enum, IntFlag
 
 __all__ = [
 		"AIArgumentType",
@@ -88,6 +88,7 @@ __all__ = [
 		"ButtonStatus",
 		"CasinoTableSlot",
 		"CasinoTableState",
+		"CensorshipFlags",
 		"CharacterScreenType",
 		"ChargeIndicatorWidgetType",
 		"ClueState",
@@ -132,8 +133,10 @@ __all__ = [
 		"EAITargetType",
 		"EAIThreatCalculationType",
 		"EAITicketStatus",
+		"EActionContext",
 		"EActionInactivityReson",
 		"EActionsSequencerMode",
+		"EActivationState",
 		"EAimAssistLevel",
 		"EAllowedTo",
 		"EAnimationBufferDataAvailable",
@@ -261,6 +264,8 @@ __all__ = [
 		"EMeleeAttackType",
 		"EMeleeAttacks",
 		"EMenuType",
+		"EMeshChunkFlags",
+		"EMeshChunkRenderMaIntFlag",
 		"EMeshParticleOrientationMode",
 		"EMeshShadowImportanceBias",
 		"EMeshStreamType",
@@ -347,6 +352,7 @@ __all__ = [
 		"ETelemetryData",
 		"ETextureAddressing",
 		"ETextureAnimationMode",
+		"ETextureChannel",
 		"ETextureComparisonFunction",
 		"ETextureCompression",
 		"ETextureFilteringMag",
@@ -505,6 +511,7 @@ __all__ = [
 		"RenderDecalNormalsBlendingMode",
 		"RenderDecalOrderPriority",
 		"RenderSceneLayer",
+		"RenderSceneLayerMask",
 		"RequestType",
 		"RipperdocFilter",
 		"RipperdocModes",
@@ -606,6 +613,7 @@ __all__ = [
 		"animMotionTableAction",
 		"animMotionTableType",
 		"animMotionTag",
+		"animMuteAnimEvents",
 		"animNPCVehicleDeathType",
 		"animNodeProfileTimerMode",
 		"animPendulumConstraintType",
@@ -690,8 +698,12 @@ __all__ = [
 		"entTemplateComponentResolveMode",
 		"entVertexAnimationMapperSourceType",
 		"entVisibilityParamSource",
+		"entdismembermentGoreTypeE",
+		"entdismembermentPlacementE",
 		"entdismembermentResourceSetE",
+		"entdismembermentResourceSetMask",
 		"entdismembermentSimulationTypeE",
+		"entdismembermentWoundTypeE",
 		"entragdollActivationRequestType",
 		"envUtilsNeighborMode",
 		"envUtilsReflectionProbeAmbientContributionMode",
@@ -725,6 +737,7 @@ __all__ = [
 		"gameEEquipmentManagerState",
 		"gameEHotkey",
 		"gameEInventoryFlags",
+		"gameEItemDynamicTags",
 		"gameEItemIDFlag",
 		"gameELootGenerationType",
 		"gameEMaterialZone",
@@ -768,6 +781,7 @@ __all__ = [
 		"gameKillType",
 		"gameLoSMode",
 		"gameLootItemType",
+		"gameLootSlotState",
 		"gameMessageSender",
 		"gameMountDescriptorMountType",
 		"gameMountingObjectSubType",
@@ -982,6 +996,8 @@ __all__ = [
 		"gamedataWorkspotCategory",
 		"gamedataWorkspotReactionType",
 		"gamedataWorldMapFilter",
+		"gamedeviceActionPropertyFlags",
+		"gamedeviceRequestType",
 		"gameeventsDeathDirection",
 		"gameinfluenceCollisionTestOutcome",
 		"gameinfluenceEBoundingBoxType",
@@ -1003,6 +1019,9 @@ __all__ = [
 		"gameinteractionsEPredicateType",
 		"gameinteractionsEUnaryOperator",
 		"gameinteractionsReactionState",
+		"gameinteractionsvisEVisualizerActivityState",
+		"gameinteractionsvisEVisualizerDefinitionFlags",
+		"gameinteractionsvisEVisualizerRuntimeFlags",
 		"gameinteractionsvisEVisualizerType",
 		"gameinteractionsvisInteractionType",
 		"gamemappinsMappinTargetType",
@@ -1011,6 +1030,7 @@ __all__ = [
 		"gameprojectileParabolicUnknownVariable",
 		"gamesmartGunTargetState",
 		"gamestateMachineParameterAspect",
+		"gametargetingSystemAimAssistFilter",
 		"gametargetingSystemETargetFilterStatus",
 		"gametargetingSystemScriptFilter",
 		"gametargetingSystemSearchFilterMaskValue",
@@ -1023,6 +1043,7 @@ __all__ = [
 		"gameuiCharacterCustomization_BrokenNoseStage",
 		"gameuiChoiceIndicatorType",
 		"gameuiChoiceListVisualizerType",
+		"gameuiContext",
 		"gameuiCyberspaceElementType",
 		"gameuiDamageDigitsMode",
 		"gameuiDamageIndicatorMode",
@@ -1053,7 +1074,9 @@ __all__ = [
 		"genLevelRandomizerDataSource",
 		"grsDeathmatchStatus",
 		"grsHeistStatus",
+		"gsmGameDefType",
 		"gsmStateError",
+		"hitFlag",
 		"inkBrushDrawType",
 		"inkBrushMirrorType",
 		"inkBrushTileType",
@@ -1138,8 +1161,12 @@ __all__ = [
 		"navPathQueryDebugStatus",
 		"operationsMode",
 		"panzerBootupUI",
+		"physicsDestructionType",
+		"physicsEClothCollisionMaskEnum",
 		"physicsFilterDataSource",
 		"physicsFractureFieldEffect",
+		"physicsFractureFieldOptions",
+		"physicsFractureFieldType",
 		"physicsFractureFieldValueType",
 		"physicsMaterialFriction",
 		"physicsMaterialTagProjectilePenetration",
@@ -1152,6 +1179,7 @@ __all__ = [
 		"physicsPhysicsJointMotion",
 		"physicsProxyType",
 		"physicsQueryUseCase",
+		"physicsRagdollBodyPartE",
 		"physicsRagdollShapeType",
 		"physicsShapeType",
 		"physicsSimulationType",
@@ -1250,6 +1278,7 @@ __all__ = [
 		"rendGIGroup",
 		"rendGIVolume",
 		"rendLightAttenuation",
+		"rendLightChannel",
 		"rendLightGroup",
 		"rendPostFx_ScanningState",
 		"rendRayTracedShadowsPlatform",
@@ -1272,13 +1301,16 @@ __all__ = [
 		"scnBraindanceLayer",
 		"scnBraindancePerspective",
 		"scnBraindanceSpeed",
+		"scnChoiceNodeNsChoiceNodeBitFlags",
 		"scnChoiceNodeNsChoiceNodeFlags",
+		"scnChoiceNodeNsMappinLocation",
 		"scnChoiceNodeNsOperationMode",
 		"scnChoiceNodeNsSizePreset",
 		"scnChoiceNodeNsTimedAction",
 		"scnChoiceNodeNsVisualizerStyle",
 		"scnContextualActorName",
 		"scnDialogLineLanguage",
+		"scnDialogLineType",
 		"scnDialogLineVisualStyle",
 		"scnDistractedConditionTarget",
 		"scnEasingType",
@@ -1287,6 +1319,7 @@ __all__ = [
 		"scnEventType",
 		"scnFastForwardMode",
 		"scnFastForwardStrategy",
+		"scnInterruptCapability",
 		"scnInterruptReturnLinesBehavior",
 		"scnInterruptionPhase",
 		"scnLookAtTargetType",
@@ -1369,6 +1402,7 @@ __all__ = [
 		"workPropAttachMethod",
 		"workWeaponType",
 		"workWorkspotDebugMode",
+		"workWorkspotItemPolicy",
 		"workWorkspotLogic",
 		"worldCommunityRegistryItemAreaNodeType",
 		"worldEClusteringModel",
@@ -1415,7 +1449,8 @@ __all__ = [
 		"worldgeometryDescriptionQueryFlags",
 		"worldgeometryDescriptionQueryStatus",
 		"worldgeometryaverageNormalDetectionHelperQueryStatus",
-		"worlduiEntryVisibility"
+		"worlduiContextVisisibility",
+		"worlduiEntryVisibility",
 		]
 
 
@@ -1983,16 +2018,18 @@ class CasinoTableState(REDEnum):
 	Game = 1
 
 
-# TODO: Flags
-# class CensorshipFlags(REDEnum):
-# 	Censor_Nudity = 1 << 0
-# 	Censor_OverSexualised = 1 << 1
-# 	Censor_Suggestive = 1 << 2
-# 	Censor_Homosexuality = 1 << 3
-# 	Censor_Gore = 1 << 4
-# 	Censor_Drugs = 1 << 5
-# 	Censor_Religion = 1 << 6
-# 	Censor_Chinese = 1 << 7
+# TODO: Lookup function
+class CensorshipFlags(IntFlag):
+	Censor_Nudity = 1 << 0
+	Censor_OverSexualised = 1 << 1
+	Censor_Suggestive = 1 << 2
+	Censor_Homosexuality = 1 << 3
+	Censor_Gore = 1 << 4
+	Censor_Drugs = 1 << 5
+	Censor_Religion = 1 << 6
+	Censor_Chinese = 1 << 7
+
+
 class CharacterScreenType(REDEnum):
 	Attributes = 0
 	Perks = 1
@@ -2468,13 +2505,14 @@ class EAITicketStatus(REDEnum):
 	OrderRevoked = 4
 
 
-# TODO: (None)
-# class EActionContext(REDEnum):
-# 	None = -1
-# 	Direct = 0
-# 	QHack = 1
-# 	Master = 2
-# 	Spiderbot = 3
+class EActionContext(REDEnum):
+	_None = -1  # TODO
+	Direct = 0
+	QHack = 1
+	Master = 2
+	Spiderbot = 3
+
+
 class EActionInactivityReson(REDEnum):
 	Ready = 0
 	Locked = 1
@@ -2497,11 +2535,12 @@ class EActionsSequencerMode(REDEnum):
 	AT_THE_SAME_TIME_TODO = 4
 
 
-# TODO: (None)
-# class EActivationState(REDEnum):
-# 	NONE = 0
-# 	ACTIVATED = 1
-# 	DEACTIVATED = 2
+class EActivationState(REDEnum):
+	NONE = 0
+	ACTIVATED = 1
+	DEACTIVATED = 2
+
+
 class EAimAssistLevel(REDEnum):
 	Off = 0
 	Light = 1
@@ -4061,28 +4100,32 @@ class EMenuType(REDEnum):
 	All = 2
 
 
-# TODO: Flags
-# class EMeshChunkFlags(REDEnum):
-# 	MCF_RenderInScene = 1 << 0
-# 	MCF_RenderInShadows = 1 << 1
-# 	MCF_IsTwoSided = 1 << 2
-# 	MCF_IsRayTracedEmissive = 1 << 3
-# 	MCF_IsPrefabProxy = 1 << 6
-# 	MCF_ConsoleLOD0 = 1 << 9
-# 	MCF_SkipDynamicDecalGeneration = 1 << 10
-# TODO: Flags
-# class EMeshChunkRenderMask(REDEnum):
-# 	MCR_Scene = 1 << 0
-# 	MCR_Cascade1 = 1 << 1
-# 	MCR_Cascade2 = 1 << 2
-# 	MCR_Cascade3 = 1 << 3
-# 	MCR_Cascade4 = 1 << 4
-# 	MCR_LocalShadows = 1 << 5
-# 	MCR_IsTwoSided = 1 << 6
-# 	MCR_DistantShadows = 1 << 7
-# 	MCR_IsRayTracedEmissive = 1 << 8
-# 	MCR_PrefabProxy = 1 << 11
-# 	MCR_Cascades = 1 << 12
+# TODO: Lookup function
+class EMeshChunkFlags(IntFlag):
+	MCF_RenderInScene = 1 << 0
+	MCF_RenderInShadows = 1 << 1
+	MCF_IsTwoSided = 1 << 2
+	MCF_IsRayTracedEmissive = 1 << 3
+	MCF_IsPrefabProxy = 1 << 6
+	MCF_ConsoleLOD0 = 1 << 9
+	MCF_SkipDynamicDecalGeneration = 1 << 10
+
+
+# TODO: Lookup function
+class EMeshChunkRenderMaIntFlag(REDEnum):
+	MCR_Scene = 1 << 0
+	MCR_Cascade1 = 1 << 1
+	MCR_Cascade2 = 1 << 2
+	MCR_Cascade3 = 1 << 3
+	MCR_Cascade4 = 1 << 4
+	MCR_LocalShadows = 1 << 5
+	MCR_IsTwoSided = 1 << 6
+	MCR_DistantShadows = 1 << 7
+	MCR_IsRayTracedEmissive = 1 << 8
+	MCR_PrefabProxy = 1 << 11
+	MCR_Cascades = 1 << 12
+
+
 class EMeshParticleOrientationMode(REDEnum):
 	MPOM_Normal = 0
 	MPOM_MovementDirection = 1
@@ -4876,12 +4919,14 @@ class ETextureAnimationMode(REDEnum):
 	TAM_LifeTime = 1
 
 
-# TODO: Flags
-# class ETextureChannel(REDEnum):
-# 	TextureChannel_R = 1 << 0
-# 	TextureChannel_G = 1 << 1
-# 	TextureChannel_B = 1 << 2
-# 	TextureChannel_A = 1 << 3
+# TODO: Lookup function
+class ETextureChannel(IntFlag):
+	TextureChannel_R = 1 << 0
+	TextureChannel_G = 1 << 1
+	TextureChannel_B = 1 << 2
+	TextureChannel_A = 1 << 3
+
+
 class ETextureComparisonFunction(REDEnum):
 	TCF_None = 0
 	TCF_Less = 1
@@ -6452,11 +6497,13 @@ class RenderSceneLayer(REDEnum):
 	WorldMap = 2
 
 
-# TODO: Flags
-# class RenderSceneLayerMask(REDEnum):
-# 	Default = 1 << 0
-# 	Cyberspace = 1 << 1
-# 	WorldMap = 1 << 2
+# TODO: Lookup function
+class RenderSceneLayerMask(IntFlag):
+	Default = 1 << 0
+	Cyberspace = 1 << 1
+	WorldMap = 1 << 2
+
+
 class RequestType(REDEnum):
 	INSTANTLY_TRIGGER = 0
 	MANUALLY_TRIGGERED = 1
@@ -6725,8 +6772,8 @@ class TransmogSlots(REDEnum):
 	Feet = 5
 
 
-# TODO: Flags
-# class TriggerChannel(REDEnum):
+# TODO: Lookup function
+# class TriggerChannel(REDIntFlag):
 # 	TC_Default = 1 << 0
 # 	TC_Player = 1 << 1
 # 	TC_Camera = 1 << 2
@@ -7511,10 +7558,12 @@ class animMotionTag(REDEnum):
 	Sprint = 3
 
 
-# TODO: Flags
-# class animMuteAnimEvents(REDEnum):
-# 	STANDARD = 1 << 0
-# 	FACE_ANIMS = 1 << 1
+# TODO: Lookup function
+class animMuteAnimEvents(IntFlag):
+	STANDARD = 1 << 0
+	FACE_ANIMS = 1 << 1
+
+
 class animNPCVehicleDeathType(REDEnum):
 	Default = 0
 	Relaxed = 1
@@ -8375,17 +8424,21 @@ class entVisibilityParamSource(REDEnum):
 	PhantomEntitySystem = 7
 
 
-# TODO: Flags
-# class entdismembermentGoreTypeE(REDEnum):
-# 	FLESH = 1 << 2
-# 	CYBER = 1 << 3
-# TODO: Flags
-# class entdismembermentPlacementE(REDEnum):
-# 	MAIN_MESH = 1 << 4
-# 	DISM_MESH = 1 << 5
-# 	RAGDOLL_CONTACT = 1 << 8
-# 	RAGDOLL_CONTACT_SLIDE = 1 << 9
-# 	RAGDOLL_SLEEP = 1 << 10
+# TODO: Lookup function
+class entdismembermentGoreTypeE(IntFlag):
+	FLESH = 1 << 2
+	CYBER = 1 << 3
+
+
+# TODO: Lookup function
+class entdismembermentPlacementE(IntFlag):
+	MAIN_MESH = 1 << 4
+	DISM_MESH = 1 << 5
+	RAGDOLL_CONTACT = 1 << 8
+	RAGDOLL_CONTACT_SLIDE = 1 << 9
+	RAGDOLL_SLEEP = 1 << 10
+
+
 class entdismembermentResourceSetE(REDEnum):
 	NONE = 16
 	BARE = 0
@@ -8406,34 +8459,38 @@ class entdismembermentResourceSetE(REDEnum):
 	MIXED3 = 15
 
 
-# TODO: Flags
-# class entdismembermentResourceSetMask(REDEnum):
-# 	BARE = 1 << 0
-# 	BARE1 = 1 << 1
-# 	BARE2 = 1 << 2
-# 	BARE3 = 1 << 3
-# 	GARMENT = 1 << 4
-# 	GARMENT1 = 1 << 5
-# 	GARMENT2 = 1 << 6
-# 	GARMENT3 = 1 << 7
-# 	CYBER = 1 << 8
-# 	CYBER1 = 1 << 9
-# 	CYBER2 = 1 << 10
-# 	CYBER3 = 1 << 11
-# 	MIXED = 1 << 12
-# 	MIXED1 = 1 << 13
-# 	MIXED2 = 1 << 14
-# 	MIXED3 = 1 << 15
+# TODO: Lookup function
+class entdismembermentResourceSetMask(IntFlag):
+	BARE = 1 << 0
+	BARE1 = 1 << 1
+	BARE2 = 1 << 2
+	BARE3 = 1 << 3
+	GARMENT = 1 << 4
+	GARMENT1 = 1 << 5
+	GARMENT2 = 1 << 6
+	GARMENT3 = 1 << 7
+	CYBER = 1 << 8
+	CYBER1 = 1 << 9
+	CYBER2 = 1 << 10
+	CYBER3 = 1 << 11
+	MIXED = 1 << 12
+	MIXED1 = 1 << 13
+	MIXED2 = 1 << 14
+	MIXED3 = 1 << 15
+
+
 class entdismembermentSimulationTypeE(REDEnum):
 	NONE = 0
 	DANGLE = 128
 
 
-# TODO: Flags
-# class entdismembermentWoundTypeE(REDEnum):
-# 	CLEAN = 1 << 0
-# 	COARSE = 1 << 1
-# 	HOLE = 1 << 6
+# TODO: Lookup function
+class entdismembermentWoundTypeE(IntFlag):
+	CLEAN = 1 << 0
+	COARSE = 1 << 1
+	HOLE = 1 << 6
+
+
 class entragdollActivationRequestType(REDEnum):
 	Default = 0
 	Animated = 1
@@ -8707,12 +8764,14 @@ class gameEInventoryFlags(REDEnum):
 	MustSave = 1
 
 
-# TODO: Flags
-# class gameEItemDynamicTags(REDEnum):
-# 	Quest = 1 << 0
-# 	UnequipBlocked = 1 << 1
-# 	DLCAdded = 1 << 2
-# 	TransmogBlocked = 1 << 3
+# TODO: Lookup function
+class gameEItemDynamicTags(IntFlag):
+	Quest = 1 << 0
+	UnequipBlocked = 1 << 1
+	DLCAdded = 1 << 2
+	TransmogBlocked = 1 << 3
+
+
 class gameEItemIDFlag(REDEnum):
 	Preview = 1
 
@@ -9093,10 +9152,12 @@ class gameLootItemType(REDEnum):
 	Shard = 2
 
 
-# TODO: Flags
-# class gameLootSlotState(REDEnum):
-# 	Looted = 1 << 0
-# 	Unavailable = 1 << 1
+# TODO: Lookup function
+class gameLootSlotState(IntFlag):
+	Looted = 1 << 0
+	Unavailable = 1 << 1
+
+
 class gameMessageSender(REDEnum):
 	NPC = 0
 	Player = 1
@@ -15634,17 +15695,19 @@ class gamedataWorldMapFilter(REDEnum):
 	Invalid = 22
 
 
-# TODO: (None)
-# class gamedeviceActionPropertyFlags(REDEnum):
-# 	None = 0
-# 	IsUsedByQuest = 1
-# TODO: (None)
-# class gamedeviceRequestType(REDEnum):
-# 	None = 0
-# 	External = 1
-# 	Remote = 2
-# 	Direct = 3
-# 	Internal = 4
+class gamedeviceActionPropertyFlags(REDEnum):
+	_None = 0  # TODO
+	IsUsedByQuest = 1
+
+
+class gamedeviceRequestType(REDEnum):
+	_None = 0  # TODO
+	External = 1
+	Remote = 2
+	Direct = 3
+	Internal = 4
+
+
 class gameeventsDeathDirection(REDEnum):
 	Undefined = 0
 	Left = 1
@@ -15793,25 +15856,28 @@ class gameinteractionsReactionState(REDEnum):
 	Canceling = 4
 
 
-# TODO: (None)
-# class gameinteractionsvisEVisualizerActivityState(REDEnum):
-# 	None = 0
-# 	Visible = 1
-# 	Available = 2
-# 	Active = 3
-# TODO: (None)
-# class gameinteractionsvisEVisualizerDefinitionFlags(REDEnum):
-# 	None = 0
-# 	Fading = 1
-# 	HeadlineSelection = 2
-# 	QuestImportant = 8
-# 	CPO_Mode = 16
-# TODO: (None)
-# class gameinteractionsvisEVisualizerRuntimeFlags(REDEnum):
-# 	None = 0
-# 	Locked = 1
-# 	Failsafe = 2
-# 	Dbg_Active = 4
+class gameinteractionsvisEVisualizerActivityState(REDEnum):
+	_None = 0  # TODO
+	Visible = 1
+	Available = 2
+	Active = 3
+
+
+class gameinteractionsvisEVisualizerDefinitionFlags(REDEnum):
+	_None = 0  # TODO
+	Fading = 1
+	HeadlineSelection = 2
+	QuestImportant = 8
+	CPO_Mode = 16
+
+
+class gameinteractionsvisEVisualizerRuntimeFlags(REDEnum):
+	_None = 0  # TODO
+	Locked = 1
+	Failsafe = 2
+	Dbg_Active = 4
+
+
 class gameinteractionsvisEVisualizerType(REDEnum):
 	Device = 0
 	Dialog = 1
@@ -15870,18 +15936,20 @@ class gamestateMachineParameterAspect(REDEnum):
 	Conditional = 2
 
 
-# TODO: Flags
-# class gametargetingSystemAimAssistFilter(REDEnum):
-# 	Melee = 1 << 0
-# 	Shooting = 1 << 1
-# 	Scanning = 1 << 2
-# 	QuickHack = 1 << 3
-# 	ShootingLimbCyber = 1 << 4
-# 	HeadTarget = 1 << 5
-# 	LegTarget = 1 << 6
-# 	MechanicalTarget = 1 << 7
-# 	DriverCombat = 1 << 8
-# 	BreachTarget = 1 << 9
+# TODO: Lookup function
+class gametargetingSystemAimAssistFilter(IntFlag):
+	Melee = 1 << 0
+	Shooting = 1 << 1
+	Scanning = 1 << 2
+	QuickHack = 1 << 3
+	ShootingLimbCyber = 1 << 4
+	HeadTarget = 1 << 5
+	LegTarget = 1 << 6
+	MechanicalTarget = 1 << 7
+	DriverCombat = 1 << 8
+	BreachTarget = 1 << 9
+
+
 class gametargetingSystemETargetFilterStatus(REDEnum):
 	Stop = 0
 	Continue = 1
@@ -15999,23 +16067,25 @@ class gameuiChoiceListVisualizerType(REDEnum):
 	Dialog = 1
 
 
-# TODO: Flags
-# class gameuiContext(REDEnum):
-# 	Default = 1 << 0
-# 	QuickHack = 1 << 1
-# 	Scanning = 1 << 2
-# 	DeviceZoom = 1 << 3
-# 	BraindanceEditor = 1 << 4
-# 	BraindancePlayback = 1 << 5
-# 	VehicleMounted = 1 << 6
-# 	ModalPopup = 1 << 7
-# 	RadialWheel = 1 << 8
-# 	VehicleRace = 1 << 9
-# 	Berserk = 1 << 10
-# 	CinematicCamera = 1 << 11
-# 	Empty = 1 << 12
-# 	DelamainTaxi = 1 << 13
-# 	MAX = 1 << 31
+# TODO: Lookup function
+class gameuiContext(IntFlag):
+	Default = 1 << 0
+	QuickHack = 1 << 1
+	Scanning = 1 << 2
+	DeviceZoom = 1 << 3
+	BraindanceEditor = 1 << 4
+	BraindancePlayback = 1 << 5
+	VehicleMounted = 1 << 6
+	ModalPopup = 1 << 7
+	RadialWheel = 1 << 8
+	VehicleRace = 1 << 9
+	Berserk = 1 << 10
+	CinematicCamera = 1 << 11
+	Empty = 1 << 12
+	DelamainTaxi = 1 << 13
+	MAX = 1 << 31
+
+
 class gameuiCyberspaceElementType(REDEnum):
 	CyberspaceNPC = 0
 	CyberspaceFakeObject = 1
@@ -16248,11 +16318,13 @@ class grsHeistStatus(REDEnum):
 	Failure = 6
 
 
-# TODO: Flags
-# class gsmGameDefType(REDEnum):
-# 	BASE = 1 << 0
-# 	EP1 = 1 << 1
-# 	OTHER = 1 << 2
+# TODO: Lookup function
+class gsmGameDefType(IntFlag):
+	BASE = 1 << 0
+	EP1 = 1 << 1
+	OTHER = 1 << 2
+
+
 class gsmStateError(REDEnum):
 	StateError_OK = 0
 	StateError_SettingsCorrupted = 1
@@ -16274,111 +16346,112 @@ class gsmStateError(REDEnum):
 	StateError_CantLoadSave_AdditionalContentIDsMismatch = 17
 
 
-# TODO: (None)
-# class hitFlag(REDEnum):
-# 	None = 0
-# 	IgnoreImmortalityModes = 1
-# 	FriendlyFire = 2
-# 	DisableSounds = 3
-# 	DisableVFX = 4
-# 	CannotReturnDamage = 5
-# 	CanParry = 6
-# 	CanCounter = 7
-# 	CanDodge = 8
-# 	WasBlocked = 9
-# 	WasDeflected = 10
-# 	WasDodged = 11
-# 	WasEvaded = 12
-# 	WasMitigated = 13
-# 	Kill = 14
-# 	DontShowDamageFloater = 15
-# 	DealNoDamage = 16
-# 	CannotModifyDamage = 17
-# 	Headshot = 18
-# 	CriticalHit = 19
-# 	FinisherTriggered = 20
-# 	DamageNullified = 21
-# 	Nonlethal = 22
-# 	WasKillingBlow = 23
-# 	ProcessDefeated = 24
-# 	Defeated = 25
-# 	SilentKillModifier = 26
-# 	DeterministicDamage = 27
-# 	WeakspotHit = 28
-# 	StealthHit = 29
-# 	DoNotTriggerFinisher = 30
-# 	DealtDamage = 31
-# 	ImmortalTarget = 32
-# 	CanDamageSelf = 33
-# 	SuccessfulAttack = 34
-# 	WeaponFullyCharged = 35
-# 	DisableNPCHitReaction = 36
-# 	VehicleDamage = 37
-# 	VehicleImpact = 38
-# 	VehicleImpactWithPlayer = 39
-# 	RagdollImpact = 40
-# 	IgnoreDifficulty = 41
-# 	QuickHack = 42
-# 	IgnoreVehicles = 43
-# 	DamageOverTime = 44
-# 	DotApplied = 45
-# 	OverridePlayerDamageWithFixedPercentage = 46
-# 	DeviceExplosionAttack = 47
-# 	NPCPassengerVehicleCollision = 48
-# 	TargetWasAlreadyDeadNoStatPool = 49
-# 	PROJECT_SPECIFIC_FLAGS = 100000
-# 	UsedKerenzikov = 100001
-# 	FragmentationSplinter = 100002
-# 	DetonateGrenades = 100003
-# 	WeakExplosion = 100004
-# 	BulletExplosion = 100005
-# 	GrenadeQuickhackExplosion = 100006
-# 	FriendlyFireIgnored = 100007
-# 	ForceNoCrit = 100008
-# 	ReduceDamage = 100009
-# 	ForceDismember = 100010
-# 	SaburoKatana = 100011
-# 	SaburoTanto = 100012
-# 	WasBulletParried = 100013
-# 	WasBulletDeflected = 100014
-# 	WasBulletBlocked = 100015
-# 	HauntedCyberdeck = 100016
-# 	HauntedGun = 100017
-# 	HauntedKill = 100018
-# 	BreachHit = 100019
-# 	OnePunch = 100020
-# 	GrandFinale = 100021
-# 	BleedingDot = 100022
-# 	AirDropBurningDoT = 100023
-# 	BreachExplosion = 100024
-# 	RevengeActivatingHit = 100025
-# 	GroundSlam = 100026
-# 	PerfectlyCharged = 100027
-# 	ChainLightning = 100028
-# 	CWExplosion = 100029
-# 	RelicGoldenNumbers = 100030
-# 	CannotKillPlayer = 100031
-# 	ExplosionOverride = 100032
-# 	Overheat = 100033
-# 	HighSpeedMelee = 100034
-# 	PlayerWallImpact = 100035
-# 	Explosion = 100036
-# 	StunApplied = 100037
-# 	IgnoreStatPoolCustomLimit = 100038
-# 	ForceKnockdown = 100039
-# 	DisablePlayerHitReaction = 100040
-# 	ReflexesMasterPerk1 = 100041
-# 	BodyPerksMeleeAttack = 100042
-# 	CriticalHitNoDamageModifier = 100043
-# 	Special = 100044
-# 	CWMalfunctionEMPExplosion = 100045
-# 	UltimateQuickHack = 100046
-# 	DamageBasedOnMissingMemoryBonus = 100047
-# 	ProjectileLauncherAttack = 100048
-# 	ForceHeadshotMult10 = 100049
-# 	ForceHeadshotMult25 = 100050
-# 	ForceWeakspotMult10 = 100051
-# 	ForceWeakspotMult25 = 100052
+class hitFlag(REDEnum):
+	_None = 0  # TODO
+	IgnoreImmortalityModes = 1
+	FriendlyFire = 2
+	DisableSounds = 3
+	DisableVFX = 4
+	CannotReturnDamage = 5
+	CanParry = 6
+	CanCounter = 7
+	CanDodge = 8
+	WasBlocked = 9
+	WasDeflected = 10
+	WasDodged = 11
+	WasEvaded = 12
+	WasMitigated = 13
+	Kill = 14
+	DontShowDamageFloater = 15
+	DealNoDamage = 16
+	CannotModifyDamage = 17
+	Headshot = 18
+	CriticalHit = 19
+	FinisherTriggered = 20
+	DamageNullified = 21
+	Nonlethal = 22
+	WasKillingBlow = 23
+	ProcessDefeated = 24
+	Defeated = 25
+	SilentKillModifier = 26
+	DeterministicDamage = 27
+	WeakspotHit = 28
+	StealthHit = 29
+	DoNotTriggerFinisher = 30
+	DealtDamage = 31
+	ImmortalTarget = 32
+	CanDamageSelf = 33
+	SuccessfulAttack = 34
+	WeaponFullyCharged = 35
+	DisableNPCHitReaction = 36
+	VehicleDamage = 37
+	VehicleImpact = 38
+	VehicleImpactWithPlayer = 39
+	RagdollImpact = 40
+	IgnoreDifficulty = 41
+	QuickHack = 42
+	IgnoreVehicles = 43
+	DamageOverTime = 44
+	DotApplied = 45
+	OverridePlayerDamageWithFixedPercentage = 46
+	DeviceExplosionAttack = 47
+	NPCPassengerVehicleCollision = 48
+	TargetWasAlreadyDeadNoStatPool = 49
+	PROJECT_SPECIFIC_FLAGS = 100000
+	UsedKerenzikov = 100001
+	FragmentationSplinter = 100002
+	DetonateGrenades = 100003
+	WeakExplosion = 100004
+	BulletExplosion = 100005
+	GrenadeQuickhackExplosion = 100006
+	FriendlyFireIgnored = 100007
+	ForceNoCrit = 100008
+	ReduceDamage = 100009
+	ForceDismember = 100010
+	SaburoKatana = 100011
+	SaburoTanto = 100012
+	WasBulletParried = 100013
+	WasBulletDeflected = 100014
+	WasBulletBlocked = 100015
+	HauntedCyberdeck = 100016
+	HauntedGun = 100017
+	HauntedKill = 100018
+	BreachHit = 100019
+	OnePunch = 100020
+	GrandFinale = 100021
+	BleedingDot = 100022
+	AirDropBurningDoT = 100023
+	BreachExplosion = 100024
+	RevengeActivatingHit = 100025
+	GroundSlam = 100026
+	PerfectlyCharged = 100027
+	ChainLightning = 100028
+	CWExplosion = 100029
+	RelicGoldenNumbers = 100030
+	CannotKillPlayer = 100031
+	ExplosionOverride = 100032
+	Overheat = 100033
+	HighSpeedMelee = 100034
+	PlayerWallImpact = 100035
+	Explosion = 100036
+	StunApplied = 100037
+	IgnoreStatPoolCustomLimit = 100038
+	ForceKnockdown = 100039
+	DisablePlayerHitReaction = 100040
+	ReflexesMasterPerk1 = 100041
+	BodyPerksMeleeAttack = 100042
+	CriticalHitNoDamageModifier = 100043
+	Special = 100044
+	CWMalfunctionEMPExplosion = 100045
+	UltimateQuickHack = 100046
+	DamageBasedOnMissingMemoryBonus = 100047
+	ProjectileLauncherAttack = 100048
+	ForceHeadshotMult10 = 100049
+	ForceHeadshotMult25 = 100050
+	ForceWeakspotMult10 = 100051
+	ForceWeakspotMult25 = 100052
+
+
 class inkBrushDrawType(REDEnum):
 	NoDraw = 0
 	Solid = 1
@@ -17093,23 +17166,27 @@ class panzerBootupUI(REDEnum):
 	Loop = 3
 
 
-# TODO: Flags
-# class physicsDestructionType(REDEnum):
-# 	DT_PhysicalNode = 1 << 0
-# 	DT_PhysicalComponent = 1 << 1
-# 	DT_BakedNode = 1 << 2
-# 	DT_BakedComponent = 1 << 3
-# 	DT_IDN = 1 << 4
-# 	DT_FoliageDestruction = 1 << 5
-# 	DT_QuestComponent = 1 << 6
-# 	DT_QuestNode = 1 << 7
-# TODO: Flags
-# class physicsEClothCollisionMaskEnum(REDEnum):
-# 	SPHERE = 1 << 0
-# 	BOX = 1 << 1
-# 	CONVEX = 1 << 2
-# 	TRIMESH = 1 << 3
-# 	CAPSULE = 1 << 4
+# TODO: Lookup function
+class physicsDestructionType(IntFlag):
+	DT_PhysicalNode = 1 << 0
+	DT_PhysicalComponent = 1 << 1
+	DT_BakedNode = 1 << 2
+	DT_BakedComponent = 1 << 3
+	DT_IDN = 1 << 4
+	DT_FoliageDestruction = 1 << 5
+	DT_QuestComponent = 1 << 6
+	DT_QuestNode = 1 << 7
+
+
+# TODO: Lookup function
+class physicsEClothCollisionMaskEnum(IntFlag):
+	SPHERE = 1 << 0
+	BOX = 1 << 1
+	CONVEX = 1 << 2
+	TRIMESH = 1 << 3
+	CAPSULE = 1 << 4
+
+
 class physicsFilterDataSource(REDEnum):
 	Parent = 0
 	Collider = 1
@@ -17122,18 +17199,22 @@ class physicsFractureFieldEffect(REDEnum):
 	FE_Erase = 1
 
 
-# TODO: Flags
-# class physicsFractureFieldOptions(REDEnum):
-# 	FFO_OnlyPrefractured = 1 << 0
-# 	FFO_DisableReiteration = 1 << 1
-# TODO: Flags
-# class physicsFractureFieldType(REDEnum):
-# 	FF_Default = 1 << 0
-# 	FF_Locomotion = 1 << 1
-# 	FF_TriggerDestructionEvent = 1 << 2
-# 	FF_FractureFieldNode = 1 << 3
-# 	FF_FractureFieldGameEffect = 1 << 4
-# 	FF_FractureFieldComponent = 1 << 5
+# TODO: Lookup function
+class physicsFractureFieldOptions(IntFlag):
+	FFO_OnlyPrefractured = 1 << 0
+	FFO_DisableReiteration = 1 << 1
+
+
+# TODO: Lookup function
+class physicsFractureFieldType(IntFlag):
+	FF_Default = 1 << 0
+	FF_Locomotion = 1 << 1
+	FF_TriggerDestructionEvent = 1 << 2
+	FF_FractureFieldNode = 1 << 3
+	FF_FractureFieldGameEffect = 1 << 4
+	FF_FractureFieldComponent = 1 << 5
+
+
 class physicsFractureFieldValueType(REDEnum):
 	FFVT_Impulse = 0
 	FFVT_Velocity = 1
@@ -17288,22 +17369,24 @@ class physicsQueryUseCase(REDEnum):
 	GameProjectiles = 29
 
 
-# TODO: Flags
-# class physicsRagdollBodyPartE(REDEnum):
-# 	HEAD = 1 << 0
-# 	LARM_UPPER = 1 << 1
-# 	LARM_LOWER = 1 << 2
-# 	LARM_PALM = 1 << 3
-# 	RARM_UPPER = 1 << 4
-# 	RARM_LOWER = 1 << 5
-# 	RARM_PALM = 1 << 6
-# 	LLEG_UPPER = 1 << 7
-# 	LLEG_LOWER = 1 << 8
-# 	LLEG_FOOT = 1 << 9
-# 	RLEG_UPPER = 1 << 10
-# 	RLEG_LOWER = 1 << 11
-# 	RLEG_FOOT = 1 << 12
-# 	BODY = 1 << 13
+# TODO: Lookup function
+class physicsRagdollBodyPartE(IntFlag):
+	HEAD = 1 << 0
+	LARM_UPPER = 1 << 1
+	LARM_LOWER = 1 << 2
+	LARM_PALM = 1 << 3
+	RARM_UPPER = 1 << 4
+	RARM_LOWER = 1 << 5
+	RARM_PALM = 1 << 6
+	LLEG_UPPER = 1 << 7
+	LLEG_LOWER = 1 << 8
+	LLEG_FOOT = 1 << 9
+	RLEG_UPPER = 1 << 10
+	RLEG_LOWER = 1 << 11
+	RLEG_FOOT = 1 << 12
+	BODY = 1 << 13
+
+
 class physicsRagdollShapeType(REDEnum):
 	CAPSULE = 0
 	BOX = 1
@@ -17983,20 +18066,22 @@ class rendLightAttenuation(REDEnum):
 	LA_Linear = 1
 
 
-# TODO: Flags
-# class rendLightChannel(REDEnum):
-# 	LC_Channel1 = 1 << 0
-# 	LC_Channel2 = 1 << 1
-# 	LC_Channel3 = 1 << 2
-# 	LC_Channel4 = 1 << 3
-# 	LC_Channel5 = 1 << 4
-# 	LC_Channel6 = 1 << 5
-# 	LC_Channel7 = 1 << 6
-# 	LC_Channel8 = 1 << 7
-# 	LC_ChannelWorld = 1 << 8
-# 	LC_Character = 1 << 9
-# 	LC_Player = 1 << 10
-# 	LC_Automated = 1 << 15
+# TODO: Lookup function
+class rendLightChannel(IntFlag):
+	LC_Channel1 = 1 << 0
+	LC_Channel2 = 1 << 1
+	LC_Channel3 = 1 << 2
+	LC_Channel4 = 1 << 3
+	LC_Channel5 = 1 << 4
+	LC_Channel6 = 1 << 5
+	LC_Channel7 = 1 << 6
+	LC_Channel8 = 1 << 7
+	LC_ChannelWorld = 1 << 8
+	LC_Character = 1 << 9
+	LC_Player = 1 << 10
+	LC_Automated = 1 << 15
+
+
 class rendLightGroup(REDEnum):
 	LG_Group0 = 0
 	LG_Group1 = 1
@@ -18165,21 +18250,24 @@ class scnBraindanceSpeed(REDEnum):
 	VeryFast = 4
 
 
-# TODO: Flags
-# class scnChoiceNodeNsChoiceNodeBitFlags(REDEnum):
-# 	IsFocusClue = 1 << 0
-# 	IsValidInteractionFailsafeDisabled = 1 << 1
+# TODO: Lookup function
+class scnChoiceNodeNsChoiceNodeBitFlags(IntFlag):
+	IsFocusClue = 1 << 0
+	IsValidInteractionFailsafeDisabled = 1 << 1
+
+
 class scnChoiceNodeNsChoiceNodeFlags(REDEnum):
 	IsFocusClue = 1
 	IsValidInteractionFailsafeDisabled = 2
 
 
-# TODO: (None)
-# class scnChoiceNodeNsMappinLocation(REDEnum):
-# 	None = 0
-# 	Interaction = 1
-# 	Nameplate = 2
-# 	ObjectDefault = 4
+class scnChoiceNodeNsMappinLocation(REDEnum):
+	_None = 0  # TODO
+	Interaction = 1
+	Nameplate = 2
+	ObjectDefault = 4
+
+
 class scnChoiceNodeNsOperationMode(REDEnum):
 	attachToActor = 0
 	attachToProp = 1
@@ -18231,21 +18319,22 @@ class scnDialogLineLanguage(REDEnum):
 	Polish = 12
 
 
-# TODO: (None)
-# class scnDialogLineType(REDEnum):
-# 	None = 0
-# 	Regular = 1
-# 	Holocall = 2
-# 	SceneComment = 3
-# 	OverHead = 4
-# 	Radio = 5
-# 	GlobalTV = 6
-# 	Invisible = 7
-# 	OverHeadAlwaysVisible = 9
-# 	OwnerlessRegular = 10
-# 	AlwaysCinematicNoSpeaker = 11
-# 	GlobalTVAlwaysVisible = 12
-# 	Narrator = 13
+class scnDialogLineType(REDEnum):
+	_None = 0  # TODO
+	Regular = 1
+	Holocall = 2
+	SceneComment = 3
+	OverHead = 4
+	Radio = 5
+	GlobalTV = 6
+	Invisible = 7
+	OverHeadAlwaysVisible = 9
+	OwnerlessRegular = 10
+	AlwaysCinematicNoSpeaker = 11
+	GlobalTVAlwaysVisible = 12
+	Narrator = 13
+
+
 class scnDialogLineVisualStyle(REDEnum):
 	regular = 0
 	overHead = 1
@@ -18307,11 +18396,12 @@ class scnFastForwardStrategy(REDEnum):
 	block_on_end_if_activator_matched = 6
 
 
-# TODO: (None)
-# class scnInterruptCapability(REDEnum):
-# 	None = 0
-# 	Interruptable = 1
-# 	NotInterruptable = 2
+class scnInterruptCapability(REDEnum):
+	_None = 0  # TODO
+	Interruptable = 1
+	NotInterruptable = 2
+
+
 class scnInterruptReturnLinesBehavior(REDEnum):
 	Default = 0
 	Vehicle = 1
@@ -18996,11 +19086,13 @@ class workWorkspotDebugMode(REDEnum):
 	FunctionalTests = 8192
 
 
-# TODO: Flags
-# class workWorkspotItemPolicy(REDEnum):
-# 	ItemPolicy_SpawnItemOnIdleChange = 1 << 0
-# 	ItemPolicy_DespawnItemOnIdleChange = 1 << 1
-# 	ItemPolicy_DespawnItemOnReaction = 1 << 2
+# TODO: Lookup function
+class workWorkspotItemPolicy(IntFlag):
+	ItemPolicy_SpawnItemOnIdleChange = 1 << 0
+	ItemPolicy_DespawnItemOnIdleChange = 1 << 1
+	ItemPolicy_DespawnItemOnReaction = 1 << 2
+
+
 class workWorkspotLogic(REDEnum):
 	Allow = 0
 	Deny = 1
@@ -19387,14 +19479,16 @@ class worldgeometryaverageNormalDetectionHelperQueryStatus(REDEnum):
 	NoGeometry = 1
 
 
-# TODO: Flags
-# class worlduiContextVisibility(REDEnum):
-# 	SceneDefault = 1UL << 0
-# 	SceneTier1 = 1UL << 8
-# 	SceneTier2 = 1UL << 16
-# 	SceneTier3 = 1UL << 24
-# 	SceneTier4 = 1UL << 32
-# 	SceneTier5 = 1UL << 40
+# TODO: Lookup function
+class worlduiContextVisisibility(IntFlag):
+	SceneDefault = 1 << 0
+	SceneTier1 = 1 << 8
+	SceneTier2 = 1 << 16
+	SceneTier3 = 1 << 24
+	SceneTier4 = 1 << 32
+	SceneTier5 = 1 << 40
+
+
 class worlduiEntryVisibility(REDEnum):
 	TierVisibility = 0
 	ForceShow = 1

@@ -47,7 +47,7 @@ __all__ = [
 		"CR2WProperty",
 		"CR2WPropertyInfo",
 		"CR2WTable",
-		"Struct"
+		"Struct",
 		]
 
 
