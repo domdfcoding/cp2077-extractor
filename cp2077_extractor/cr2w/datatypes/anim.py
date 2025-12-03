@@ -83,7 +83,6 @@ class animIAnimationBuffer(Chunk):
 
 @dataclass
 class animTransformInfo(Chunk):
-	pass
 	name: str = ''
 	parent_name: str = ''
 	reference_transform_ls: QsTransform = field(
@@ -320,14 +319,12 @@ class animLookAtRequestForPart(Chunk):
 
 @dataclass
 class animCompareBone(Chunk):
-	pass
 	bone_name: str = ''
 	bone_rotation_ls: Quaternion = field(default_factory=Quaternion)
 
 
 @dataclass
 class animBoneCorrection(Chunk):
-	pass
 	bone_name: str = ''
 	additive_correction: Quaternion = field(default_factory=Quaternion)
 

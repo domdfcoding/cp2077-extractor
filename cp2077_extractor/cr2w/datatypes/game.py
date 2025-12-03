@@ -2271,7 +2271,6 @@ class DeviceOperationsContainer(Chunk):
 
 @dataclass
 class gamedeviceActionProperty(Chunk):
-	pass
 	name: str = ''
 	type_name: str = ''
 	first: Any = None  # TODO: CVariant = field(default_factory=CVariant)
@@ -7667,7 +7666,6 @@ class gameShapeData(Chunk):
 
 @dataclass
 class gameQueryResult(Chunk):
-	pass
 	hit_shapes: list[gameShapeData] = field(default_factory=list)
 
 

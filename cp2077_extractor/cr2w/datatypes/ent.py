@@ -162,7 +162,6 @@ class entdismembermentFillMeshInfo(entdismembermentMeshInfo):
 
 @dataclass
 class entdismembermentWoundMeshes(Chunk):
-	pass
 	resource_set: enums.entdismembermentResourceSetE = enums.entdismembermentResourceSetE.NONE
 	meshes: list[entdismembermentMeshInfo] = field(default_factory=list)
 	fill_meshes: list[entdismembermentFillMeshInfo] = field(default_factory=list)
@@ -181,7 +180,6 @@ class entdismembermentWoundDecal(Chunk):
 
 @dataclass
 class entdismembermentWoundResource(Chunk):
-	pass
 	name: str = ''
 	wound_type: enums.entdismembermentWoundTypeE = enums.entdismembermentWoundTypeE.CLEAN | enums.entdismembermentWoundTypeE.COARSE  # TODO: CBitField
 	body_part: enums.physicsRagdollBodyPartE = enums.physicsRagdollBodyPartE.HEAD  # TODO: CBitField
@@ -199,7 +197,6 @@ class entdismembermentWoundResource(Chunk):
 
 @dataclass
 class entdismembermentEffectResource(Chunk):
-	pass
 	name: str = ''
 	appearance_names: list[str] = field(default_factory=list)
 	body_part_mask: enums.physicsRagdollBodyPartE = enums.physicsRagdollBodyPartE.HEAD  # TODO: CBitField
@@ -326,7 +323,6 @@ class entIPlacedComponent(entIComponent):
 
 @dataclass
 class entSlot(Chunk):
-	pass
 	slot_name: str = ''
 	relative_position: tuple[float, float, float] = (0.0, 0.0, 0.0)
 	relative_rotation: Quaternion = field(default_factory=Quaternion)

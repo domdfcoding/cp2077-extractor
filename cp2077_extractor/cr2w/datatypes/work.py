@@ -79,7 +79,6 @@ class workWorkspotItemOverride(Chunk):
 
 @dataclass
 class WorkspotEntryData(Chunk):
-	pass
 	workspot_ref: str = ''
 	is_enabled: bool = False
 	is_available: bool = False
@@ -103,7 +102,6 @@ class workIWorkspotItemAction(Chunk):
 
 @dataclass
 class workWorkspotGlobalProp(Chunk):
-	pass
 	id: str = ''
 	bone_name: str = ''
 	prop: entEntityTemplate = field(default_factory=entEntityTemplate)  # CResourceAsyncReference
