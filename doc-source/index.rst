@@ -21,8 +21,10 @@ cp2077-extractor
 		  - |docs| |docs_check|
 		* - Tests
 		  - |actions_linux| |actions_windows| |actions_macos|
+		* - PyPI
+		  - |pypi-version| |supported-versions| |supported-implementations| |wheel|
 		* - Activity
-		  - |commits-latest| |commits-since| |maintained|
+		  - |commits-latest| |commits-since| |maintained| |pypi-downloads|
 		* - QA
 		  - |codefactor| |actions_flake8| |actions_mypy|
 		* - Other
@@ -63,6 +65,26 @@ cp2077-extractor
 	.. |codefactor| codefactor-shield::
 		:alt: CodeFactor Grade
 
+	.. |pypi-version| pypi-shield::
+		:project: cp2077-extractor
+		:version:
+		:alt: PyPI - Package Version
+
+	.. |supported-versions| pypi-shield::
+		:project: cp2077-extractor
+		:py-versions:
+		:alt: PyPI - Supported Python Versions
+
+	.. |supported-implementations| pypi-shield::
+		:project: cp2077-extractor
+		:implementations:
+		:alt: PyPI - Supported Implementations
+
+	.. |wheel| pypi-shield::
+		:project: cp2077-extractor
+		:wheel:
+		:alt: PyPI - Wheel
+
 	.. |license| github-shield::
 		:license:
 		:alt: License
@@ -82,6 +104,11 @@ cp2077-extractor
 	.. |maintained| maintained-shield:: 2025
 		:alt: Maintenance
 
+	.. |pypi-downloads| pypi-shield::
+		:project: cp2077-extractor
+		:downloads: month
+		:alt: PyPI - Downloads
+
 .. end shields
 
 Installation
@@ -90,6 +117,7 @@ Installation
 .. start installation
 
 .. installation:: cp2077-extractor
+	:pypi:
 	:github:
 
 .. end installation

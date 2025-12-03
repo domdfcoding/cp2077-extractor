@@ -19,8 +19,10 @@ cp2077-extractor
 	  - |docs| |docs_check|
 	* - Tests
 	  - |actions_linux| |actions_windows| |actions_macos|
+	* - PyPI
+	  - |pypi-version| |supported-versions| |supported-implementations| |wheel|
 	* - Activity
-	  - |commits-latest| |commits-since| |maintained|
+	  - |commits-latest| |commits-since| |maintained| |pypi-downloads|
 	* - QA
 	  - |codefactor| |actions_flake8| |actions_mypy|
 	* - Other
@@ -62,6 +64,22 @@ cp2077-extractor
 	:target: https://www.codefactor.io/repository/github/domdfcoding/cp2077-extractor
 	:alt: CodeFactor Grade
 
+.. |pypi-version| image:: https://img.shields.io/pypi/v/cp2077-extractor
+	:target: https://pypi.org/project/cp2077-extractor/
+	:alt: PyPI - Package Version
+
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/cp2077-extractor?logo=python&logoColor=white
+	:target: https://pypi.org/project/cp2077-extractor/
+	:alt: PyPI - Supported Python Versions
+
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/cp2077-extractor
+	:target: https://pypi.org/project/cp2077-extractor/
+	:alt: PyPI - Supported Implementations
+
+.. |wheel| image:: https://img.shields.io/pypi/wheel/cp2077-extractor
+	:target: https://pypi.org/project/cp2077-extractor/
+	:alt: PyPI - Wheel
+
 .. |license| image:: https://img.shields.io/github/license/domdfcoding/cp2077-extractor
 	:target: https://github.com/domdfcoding/cp2077-extractor/blob/master/LICENSE
 	:alt: License
@@ -80,6 +98,10 @@ cp2077-extractor
 .. |maintained| image:: https://img.shields.io/maintenance/yes/2025
 	:alt: Maintenance
 
+.. |pypi-downloads| image:: https://img.shields.io/pypi/dm/cp2077-extractor
+	:target: https://pypi.org/project/cp2077-extractor/
+	:alt: PyPI - Downloads
+
 .. end shields
 
 Installation
@@ -87,12 +109,12 @@ Installation
 
 .. start installation
 
-``cp2077-extractor`` can be installed from GitHub.
+``cp2077-extractor`` can be installed from PyPI.
 
 To install with ``pip``:
 
 .. code-block:: bash
 
-	$ python -m pip install git+https://github.com/domdfcoding/cp2077-extractor
+	$ python -m pip install cp2077-extractor
 
 .. end installation
