@@ -31,12 +31,15 @@ known_third_party = [
     "domdf_python_tools",
     "fnvhash",
     "kraken_decompressor",
+    "lameenc",
+    "miniaudio",
     "mutagen",
     "networkx",
     "pillow",
     "regex",
     "sox",
     "texture2ddecoder",
+    "wem2ogg",
 ]
 known_first_party = [ "cp2077_extractor",]
 
