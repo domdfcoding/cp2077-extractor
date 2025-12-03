@@ -87,7 +87,7 @@ cp2077-extractor
 .. |language| image:: https://img.shields.io/github/languages/top/domdfcoding/cp2077-extractor
 	:alt: GitHub top language
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/domdfcoding/cp2077-extractor/v0.1.0
+.. |commits-since| image:: https://img.shields.io/github/commits-since/domdfcoding/cp2077-extractor/v0.1.1
 	:target: https://github.com/domdfcoding/cp2077-extractor/pulse
 	:alt: GitHub commits since tagged version
 
