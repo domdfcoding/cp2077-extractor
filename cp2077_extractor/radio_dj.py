@@ -52,6 +52,7 @@ if TYPE_CHECKING:
 	from matplotlib.figure import Figure  # nodep
 
 __all__ = [
+		"DJData",
 		"EventData",
 		"find_graph_entry_points",
 		"get_link_paths",
@@ -61,6 +62,28 @@ __all__ = [
 		"plot_graph",
 		"remove_intermediate_nodes",
 		]
+
+
+class DJData(NamedTuple):
+	"""
+	Data for a radio DJ's sound files.
+	"""
+
+	#: The filenames in the game files (in ``base/localization/en-us/vo`` or ``base\localization\common\vo``) for this advert all start with this string.
+	audio_filename_prefix: str
+
+	#: The name of the scene file in ``base/media/animated_billboards/scenes`` in the game files (with the suffix ``.scene``.)
+	scene_file: str
+
+	#: The name of the radio station etc.
+	station_name: str
+
+	general_audio: bool = False
+	"""
+	Whether the audio is common too all game languages.
+
+	:py:obj:`False` for localised audio, :py:obj:`True` for files in ``audio_1_general.archive``.
+	"""
 
 
 class EventData(NamedTuple):

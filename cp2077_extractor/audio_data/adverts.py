@@ -37,11 +37,18 @@ class AdvertData(NamedTuple):
 	Data for an advert's sound files.
 	"""
 
-	#: The filenames in the game files (in ``base/localization/en-us/vo``) for this advert all start with this string.
+	#: The filenames in the game files (in ``base/localization/en-us/vo`` or ``base\localization\common\vo``) for this advert all start with this string.
 	audio_filename_prefix: str
 
 	#: The name of the scene file in ``base/media/animated_billboards/scenes`` in the game files (with the suffix ``.scene``.)
 	scene_file: str
+
+	general_audio: bool = False
+	"""
+	Whether the audio is common too all game languages.
+
+	:py:obj:`False` for localised audio, :py:obj:`True` for files in ``audio_1_general.archive``.
+	"""
 
 
 #: Data for audio for adverts that play on animated billboards.

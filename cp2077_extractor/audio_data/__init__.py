@@ -28,6 +28,10 @@ Audio files are located in ``audio_2_soundbanks.archive`` at ``base\sound\soundb
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# stdlib
+from collections.abc import Iterator
+from typing import Any, Protocol, SupportsIndex, overload
+
 # this package
 from .radio_stations import (
 		CLOUDS_MUSIC,
@@ -42,6 +46,7 @@ from .radio_stations import (
 		)
 
 __all__ = [
+		"SceneAudioData",
 		"intro_ids",
 		"nomad_bard_ids",
 		"clouds_music_ids",
@@ -166,3 +171,26 @@ for station, station_data in radio_stations.items():
 				pass  # TODO
 			else:
 				raise NotImplementedError(use)
+
+
+class SceneAudioData(Protocol):
+	"""
+	Protocol for classes such as :class:`~.AdvertData` and :class:`~.DJData`.
+	"""
+
+	@property
+	def audio_filename_prefix(self) -> str: ...
+
+	@property
+	def scene_file(self) -> str: ...
+
+	@property
+	def general_audio(self) -> bool: ...
+
+	@overload
+	def __getitem__(self, __key: SupportsIndex) -> str | bool: ...
+
+	@overload
+	def __getitem__(self, __key: slice[Any, Any, Any]) -> tuple[str | bool, ...]: ...
+
+	def __iter__(self) -> Iterator: ...
