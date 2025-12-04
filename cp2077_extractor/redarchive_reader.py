@@ -36,7 +36,9 @@ from typing import IO
 # 3rd party
 from domdf_python_tools.typing import PathLike
 from fnvhash import fnv1a_64  # type: ignore[import-untyped]
-from kraken_decompressor import decompress
+
+# this package
+from cp2077_extractor.utils import decompress
 
 __all__ = ["FileList", "FileRecord", "FileSegment", "REDArchive"]
 

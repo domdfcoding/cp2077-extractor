@@ -37,11 +37,11 @@ from typing import IO, Any, NamedTuple, TypeVar
 # 3rd party
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.typing import PathLike
-from kraken_decompressor import decompress
 
 # this package
 from cp2077_extractor.cr2w.datatypes import Chunk, lookup_type
 from cp2077_extractor.cr2w.utils import get_names_list
+from cp2077_extractor.utils import decompress
 
 # this package
 from .header_structs import (

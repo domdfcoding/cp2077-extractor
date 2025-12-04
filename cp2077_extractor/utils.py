@@ -42,6 +42,16 @@ from wem2ogg import wem_to_ogg
 
 __all__ = ["InfiniteList", "StringReader", "to_snake_case", "transcode_file"]
 
+try:
+	# 3rd party
+	from kraken_decompressor import decompress
+except ImportError:
+
+	def decompress(src: bytes, dst_len) -> bytes:
+		raise NotImplementedError(
+				"Kraken decompression unavailable ('kraken-decompressor' not installed or unsupported platform)"
+				)
+
 
 def transcode_file(
 		wem_filename: PathPlus,
