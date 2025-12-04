@@ -33,15 +33,27 @@ from dataclasses import dataclass, field
 from cp2077_extractor.cr2w import enums
 from cp2077_extractor.cr2w.datatypes.base import Chunk
 from cp2077_extractor.cr2w.datatypes.game import gameTier3CameraSettings
-from cp2077_extractor.cr2w.datatypes.graph import graphGraphNodeDefinition
+from cp2077_extractor.cr2w.datatypes.graph import graphGraphNodeDefinition, graphGraphSocketDefinition
 from cp2077_extractor.cr2w.datatypes.work import workWorkEntryId
 
 __all__ = [
 		"graphIGraphNodeCondition",
 		"questAICommandParams",
+		"questDisableableNodeDefinition",
+		"questFactsDBManagerNodeDefinition",
 		"questIBaseCondition",
+		"questIConditionType",
+		"questIFactsDBManagerNodeType",
 		"questISceneConditionType",
+		"questITimeConditionType",
 		"questNodeDefinition",
+		"questPauseConditionNodeDefinition",
+		"questRealtimeDelay_ConditionType",
+		"questSetVar_NodeType",
+		"questSignalStoppingNodeDefinition",
+		"questSocketDefinition",
+		"questTimeCondition",
+		"questTypedCondition",
 		"questUseWorkspotParamsV1",
 		"questUseWorkspotPlayerParams",
 		"scnAICommandFactory",
@@ -114,3 +126,69 @@ class questNodeDefinition(graphGraphNodeDefinition):
 
 class questISceneConditionType(Chunk):
 	pass
+
+
+@dataclass
+class questDisableableNodeDefinition(questNodeDefinition):
+	pass
+
+
+@dataclass
+class questIFactsDBManagerNodeType(Chunk):
+	pass
+
+
+@dataclass
+class questFactsDBManagerNodeDefinition(questDisableableNodeDefinition):
+	# TODO: Id = sys.maxsize
+	type: questIFactsDBManagerNodeType = field(default_factory=questIFactsDBManagerNodeType)
+
+
+@dataclass
+class questSocketDefinition(graphGraphSocketDefinition):
+	type: enums.questSocketType = enums.questSocketType.Undefined
+
+
+@dataclass
+class questSetVar_NodeType(questIFactsDBManagerNodeType):
+	fact_name: str = ''
+	value: int = 1
+	set_exact_value: bool = False
+
+
+@dataclass
+class questSignalStoppingNodeDefinition(questDisableableNodeDefinition):
+	pass
+
+
+@dataclass
+class questPauseConditionNodeDefinition(questSignalStoppingNodeDefinition):
+	# TODO: id = sys.maxsize
+	condition: questIBaseCondition = field(default_factory=questIBaseCondition)
+
+
+@dataclass
+class questTypedCondition(questIBaseCondition):
+	pass
+
+
+class questIConditionType(Chunk):
+	pass
+
+
+@dataclass
+class questITimeConditionType(questIConditionType):
+	pass
+
+
+@dataclass
+class questRealtimeDelay_ConditionType(questITimeConditionType):
+	hours: int = 0
+	minutes: int = 0
+	seconds: int = 0
+	miliseconds: int = 0
+
+
+@dataclass
+class questTimeCondition(questTypedCondition):
+	type: questITimeConditionType = field(default_factory=questITimeConditionType)

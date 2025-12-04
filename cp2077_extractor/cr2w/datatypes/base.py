@@ -62,6 +62,7 @@ __all__ = [
 		"lookup_type",
 		"parse_array",
 		"parse_chunk",
+		"parse_cname_array",
 		"parse_handle_array",
 		"parse_string",
 		"parse_string_array",
@@ -124,6 +125,9 @@ class Array:
 		:param value:
 		:param parsing_data:
 		"""
+
+		if self.value_red_type_name == b"CName":
+			return parse_cname_array(value, parsing_data)
 
 		array_value_type = lookup_type(self.value_red_type_name)
 		if inspect.isclass(array_value_type) and issubclass(array_value_type, Chunk):
@@ -296,6 +300,21 @@ def parse_string_array(data: bytes) -> list[str]:
 	return [string_reader.parse_string() for _ in range(array_size)]
 
 
+def parse_cname_array(data: bytes, parsing_data: "ParsingData") -> list[bytes]:
+	"""
+	Parse an array of c names.
+
+	:param data:
+	"""
+
+	# this package
+	from cp2077_extractor.cr2w.io import read_c_name
+
+	array_size = int.from_bytes(data[:4], "little")
+	buffer = BytesIO(data[4:])
+	return [read_c_name(buffer, parsing_data.names_list) for _ in range(array_size)]
+
+
 def parse_handle_array(data: bytes, parsing_data: "ParsingData") -> list[HandleData]:
 	"""
 	Parse an array of handles (each 4 bytes long).
@@ -345,6 +364,8 @@ _red_type_lookup.update({
 		b"handle": handle,
 		b"raRef:animAnimSet": bytes,  # TODO
 		b"serializationDeferredDataBuffer": serialization_deferred_data_buffer,
+		b"NodeRef": bytes,
+		b"[32]Uint8": bytes,
 		})
 
 
