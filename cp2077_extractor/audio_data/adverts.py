@@ -69,6 +69,7 @@ adverts: dict[str, AdvertData] = {
 		"vargas": AdvertData("ad_vargas_ab_ad_vargas", "ab_ad_vargas"),
 		"watson_whore": AdvertData("ad_watson_whore_ab_ad_caliente", "ab_ad_watson_whore"),
 		"us_cracks": AdvertData("civ_mid_f_60_jap_25_ab_ad_caliente", "ab_sq017_01_us_cracks_ad"),
+		"crystal_palace": AdvertData("ziggy_q_q203_01_crystal_palace_info", "q203_01_crystal_palace_info"),
 		"delamain": AdvertData("delamain_ab_ad_caliente", "ab_sq025_01_delamain_ad"),  #
 		# TODO: 'jefferson_peralez': AdvertData('jefferson_peralez_jefferson_peralez_ad', ),
 		}
