@@ -42,10 +42,10 @@ always = [
     "cp2077_extractor.audio_data",
     "cp2077_extractor.cr2w",
     "cp2077_extractor.radio_dj",
-    "cp2077_extractor.redarchive_reader",
     "cp2077_extractor.track",
     "cp2077_extractor.utils",
 ]
+"sys_platform != 'darwin'" = [ "cp2077_extractor.redarchive_reader",]
 
 [tool.mypy]
 python_version = "3.10"
