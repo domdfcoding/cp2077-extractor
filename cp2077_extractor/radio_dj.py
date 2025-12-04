@@ -35,6 +35,18 @@ from typing import TYPE_CHECKING, Any, NamedTuple
 import networkx  # type: ignore[import-untyped]
 from networkx import Graph, all_simple_paths
 
+# this package
+from cp2077_extractor.cr2w.datatypes.base import HandleData
+from cp2077_extractor.cr2w.datatypes.scn import (
+		scnDialogLineEvent,
+		scnRewindableSectionNode,
+		scnSceneGraph,
+		scnSceneResource,
+		scnscreenplayDialogLine,
+		scnSectionNode
+		)
+from cp2077_extractor.cr2w.header_structs import CR2WFile
+
 if TYPE_CHECKING:
 	# 3rd party
 	from matplotlib.figure import Figure  # nodep
@@ -166,7 +178,22 @@ def parse_subtitles(scene_json: dict[str, Any]) -> dict[str, str]:
 	return subtitles
 
 
-def parse_radio_scene_graph(scene_json: dict[str, Any]) -> tuple[Graph, dict[int, list[EventData]]]:
+def parse_radio_scene_graph(data: dict[str, Any] | CR2WFile) -> tuple[Graph, dict[int, list[EventData]]]:
+	"""
+	Partial parsing of scene graph.
+
+	Only finds dialogue events and the paths between them; no conditional logic.
+
+	:param data: A REDengine ``.scene`` file, either as a JSON representation as parsed by Wolvenkit, or as a :class:`~.CR2WFile` instance.
+	"""
+
+	if isinstance(data, CR2WFile):
+		return _parse_radio_scene_graph_crw2file(data)
+	else:
+		return _parse_radio_scene_graph_json(data)
+
+
+def _parse_radio_scene_graph_json(scene_json: dict[str, Any]) -> tuple[Graph, dict[int, list[EventData]]]:
 	"""
 	Partial parsing of scene graph.
 
@@ -177,7 +204,7 @@ def parse_radio_scene_graph(scene_json: dict[str, Any]) -> tuple[Graph, dict[int
 
 	root_chunk = scene_json["Data"]["RootChunk"]
 
-	screenplay_store_dict = {}
+	screenplay_store_dict: dict[int, tuple[str, str]] = {}
 
 	for line in root_chunk["screenplayStore"]["lines"]:
 		line_data = (line["femaleLipsyncAnimationName"]["$value"], line["locstringId"]["ruid"])
@@ -215,6 +242,66 @@ def parse_radio_scene_graph(scene_json: dict[str, Any]) -> tuple[Graph, dict[int
 		if events:
 			# print(">>>", node["Data"]["nodeId"]["id"], pprint.pformat(events ))
 			node_id = node["Data"]["nodeId"]["id"]
+			audio_nodes.add(node_id)
+			audio_events[node_id] = events
+		# else:
+		# 	print(node)
+
+	remove_intermediate_nodes(graph, audio_nodes)
+
+	return graph, audio_events
+
+
+def _parse_radio_scene_graph_crw2file(crw2_file: CR2WFile) -> tuple[Graph, dict[int, list[EventData]]]:
+	"""
+	Partial parsing of scene graph.
+
+	Only finds dialogue events and the paths between them; no conditional logic.
+
+	:param crw2_file: Parsed REDengine ``.scene`` file.
+	"""
+
+	assert isinstance(crw2_file.root_chunk, scnSceneResource)
+	root_chunk: scnSceneResource = crw2_file.root_chunk
+
+	screenplay_store_dict: dict[int, tuple[str, str]] = {}
+
+	line: scnscreenplayDialogLine
+	for line in root_chunk.screenplay_store.lines:
+		line_data = (line.female_lipsync_animation_name.decode("UTF-8"), str(line.locstring_id.ruid))
+		screenplay_store_dict[line.item_id.id] = line_data
+
+	scene_graph: HandleData[scnSceneGraph] = root_chunk.scene_graph
+	graph = networkx.DiGraph()
+	audio_nodes: set[int] = set()
+	audio_events: dict[int, list[EventData]] = {}
+
+	for node in scene_graph["data"].graph:
+		# pprint.pprint(node)
+		destinations = []
+		for socket in node["data"].output_sockets:
+			for destination in socket.destinations:
+				destinations.append(destination.node_id.id)
+				graph.add_edge(node["data"].node_id.id, destination.node_id.id)
+
+		if not isinstance(node["data"], (scnSectionNode, scnRewindableSectionNode)):  # TODO: other valid types
+			continue
+
+		events = []
+		for event in node["data"].events:
+			if isinstance(event["data"], scnDialogLineEvent):
+				# events.append(event)
+				events.append(
+						EventData(
+								str(event["data"].id.id),
+								event["data"].screenplay_line_id.id,
+								*screenplay_store_dict[event["data"].screenplay_line_id.id],
+								)
+						)
+			# else:
+			# 	print(event)
+		if events:
+			node_id = node["data"].node_id.id
 			audio_nodes.add(node_id)
 			audio_events[node_id] = events
 		# else:

@@ -32,7 +32,10 @@ import inspect
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from io import BytesIO
-from typing import TYPE_CHECKING, Any, TypedDict, cast
+from typing import TYPE_CHECKING, Any, Generic, TypeVar, cast
+
+# 3rd party
+from typing_extensions import TypedDict
 
 # this package
 from cp2077_extractor.cr2w import enums
@@ -228,16 +231,19 @@ def instantiate_type(red_type_name: bytes, value: bytes, parsing_data: "ParsingD
 		return var_type(value)
 
 
-class HandleData(TypedDict):
+HandleVarType = TypeVar("HandleVarType", bound=Chunk)
+
+
+class HandleData(TypedDict, Generic[HandleVarType]):
 	"""
 	Return type of :func:`~.handle`.
 	"""
 
 	handle_id: int
-	data: Chunk
+	data: HandleVarType
 
 
-def handle(handle: bytes, parsing_data: "ParsingData") -> HandleData:
+def handle(handle: bytes, parsing_data: "ParsingData") -> HandleData[Chunk]:
 	"""
 	A handle points to the data in another chunk. Read that chunk and return the resulting data.
 
@@ -315,7 +321,7 @@ def parse_cname_array(data: bytes, parsing_data: "ParsingData") -> list[bytes]:
 	return [read_c_name(buffer, parsing_data.names_list) for _ in range(array_size)]
 
 
-def parse_handle_array(data: bytes, parsing_data: "ParsingData") -> list[HandleData]:
+def parse_handle_array(data: bytes, parsing_data: "ParsingData") -> list[HandleData[Chunk]]:
 	"""
 	Parse an array of handles (each 4 bytes long).
 

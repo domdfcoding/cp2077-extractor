@@ -8,4 +8,5 @@ networkx>=3.4.2
 pillow>=11.0.0
 regex>=2025.11.3
 texture2ddecoder>=1.0.5
+typing-extensions>=4.15.0
 wem2ogg>=0.1.0

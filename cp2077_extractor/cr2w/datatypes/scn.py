@@ -46,7 +46,7 @@ from cp2077_extractor.cr2w.datatypes.anim import (
 		animLookAtRequestForPart,
 		animPoseCorrectionGroup
 		)
-from cp2077_extractor.cr2w.datatypes.base import Chunk, EulerAngles, Quaternion, Transform
+from cp2077_extractor.cr2w.datatypes.base import Chunk, EulerAngles, HandleData, Quaternion, Transform
 from cp2077_extractor.cr2w.datatypes.ent import entVoicesetInputToBlock
 from cp2077_extractor.cr2w.datatypes.game import (
 		gameComponent,
@@ -2093,7 +2093,7 @@ class scnSectionInternalsActorBehavior(Chunk):
 
 @dataclass
 class scnRewindableSectionNode(scnSceneGraphNode):
-	events: list[scnSceneEvent] = field(default_factory=list)
+	events: list[HandleData[scnSceneEvent]] = field(default_factory=list)
 	section_duration: scnSceneTime = field(default_factory=scnSceneTime)
 	actor_behaviors: list[scnSectionInternalsActorBehavior] = field(default_factory=list)
 	play_speed_modifiers: scnRewindableSectionPlaySpeedModifiers = field(
@@ -2103,7 +2103,7 @@ class scnRewindableSectionNode(scnSceneGraphNode):
 
 @dataclass
 class scnSectionNode(scnSceneGraphNode):
-	events: list[scnSceneEvent] = field(default_factory=list)
+	events: list[HandleData[scnSceneEvent]] = field(default_factory=list)
 	section_duration: scnSceneTime = field(default_factory=scnSceneTime)
 	actor_behaviors: list[scnSectionInternalsActorBehavior] = field(default_factory=list)
 	is_focus_clue: bool = False
@@ -2111,7 +2111,7 @@ class scnSectionNode(scnSceneGraphNode):
 
 @dataclass
 class scnSceneGraph(Chunk):
-	graph: list[scnSceneGraphNode] = field(default_factory=list)
+	graph: list[HandleData[scnSceneGraphNode]] = field(default_factory=list)
 	start_nodes: list[scnNodeId] = field(default_factory=list)
 	end_nodes: list[scnNodeId] = field(default_factory=list)
 
@@ -2485,8 +2485,8 @@ class scnscreenplayDialogLine(Chunk):
 	addressee: scnActorId = field(default_factory=scnActorId)
 	usage: scnscreenplayLineUsage = field(default_factory=scnscreenplayLineUsage)
 	locstring_id: scnlocLocstringId = field(default_factory=scnlocLocstringId)
-	male_lipsync_animation_name: str = ''
-	female_lipsync_animation_name: str = ''
+	male_lipsync_animation_name: bytes = b''
+	female_lipsync_animation_name: bytes = b''
 
 
 @dataclass
@@ -2746,7 +2746,7 @@ class scnSceneResource(Chunk):
 	execution_tag_entries: list[scnExecutionTagEntry] = field(default_factory=list)
 	actors: list[scnActorDef] = field(default_factory=list)
 	player_actors: list[scnPlayerActorDef] = field(default_factory=list)
-	scene_graph: scnSceneGraph = field(default_factory=scnSceneGraph)
+	scene_graph: HandleData[scnSceneGraph] = field(default_factory=dict)  # type: ignore[assignment]
 	local_markers: list[scnLocalMarker] = field(default_factory=list)
 	props: list[scnPropDef] = field(default_factory=list)
 	rid_resources: list[scnRidResourceHandler] = field(default_factory=list)

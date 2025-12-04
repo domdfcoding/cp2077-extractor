@@ -90,7 +90,9 @@ class rendRenderTextureBlobPC(Chunk):
 
 @dataclass
 class rendRenderTextureResource(Chunk):
-	render_resource_blob_pc: HandleData = field(default_factory=dict)  # type: ignore[assignment]  # CHandle
+	render_resource_blob_pc: HandleData[Chunk] = field(
+			default_factory=dict
+			)  # type: ignore[assignment] # TODO: handle inner type # CHandle
 
 
 @dataclass
