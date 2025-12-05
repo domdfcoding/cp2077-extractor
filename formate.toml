@@ -39,6 +39,7 @@ known_third_party = [
     "regex",
     "sox",
     "texture2ddecoder",
+    "typing_extensions",
     "wem2ogg",
 ]
 known_first_party = [ "cp2077_extractor",]
