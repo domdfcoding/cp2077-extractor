@@ -325,11 +325,11 @@ ritual_fm: list[Track] = [
 body_heat_radio: list[Track] = [
 		Track(
 				"Clockwork Venus",
-				"SLIME",
+				"BM",
 				1017973036,
 				"SOPHIE; Shygirl; Sega Bodega; Kai Whiston",
 				"SOPHIE; Shygirl",
-				),  # Also called BM - TODO: check which in game
+				),  # Also called SLIME in the game credits and outside the game.
 		Track("Neon Haze", "Circus Minimus", 903009003, "Jazelle Rodriguez; Deryk Mitchell; Erika Nuri", "Jvzel"),
 		Track(
 				"Window Weather",
