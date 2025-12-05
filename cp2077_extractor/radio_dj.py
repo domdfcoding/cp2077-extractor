@@ -182,14 +182,27 @@ def find_graph_entry_points(graph: Graph) -> tuple[list[int], list[int], list[in
 	return lone_nodes, start_nodes, end_nodes
 
 
-def parse_subtitles(scene_json: dict[str, Any]) -> dict[str, str]:
+def parse_subtitles(data: dict[str, Any] | CR2WFile) -> dict[str, str]:
+	"""
+	Parse subtitle data.
+
+	:param data: A REDengine ``.scene`` file, either as a JSON representation as parsed by Wolvenkit, or as a :class:`~.CR2WFile` instance.
+	"""
+
+	# TODO: handle non-localised scene files with separate subtitles file.
+
+	if isinstance(data, CR2WFile):
+		return _parse_subtitles_cr2wfile(data)
+	else:
+		return _parse_subtitles_json(data)
+
+
+def _parse_subtitles_json(scene_json: dict[str, Any]) -> dict[str, str]:
 	"""
 	Parse subtitle data.
 
 	:param scene_json: JSON representation of a REDengine ``.scene`` file (as parsed by Wolvenkit).
 	"""
-
-	# TODO: handle non-localised scene files with separate subtitles file.
 
 	vp_entries = {}
 	subtitles = {}
@@ -197,6 +210,26 @@ def parse_subtitles(scene_json: dict[str, Any]) -> dict[str, str]:
 		vp_entries[entry["variantId"]["ruid"]] = entry["content"]
 	for entry in scene_json["Data"]["RootChunk"]["locStore"]["vdEntries"]:
 		subtitles[entry["locstringId"]["ruid"]] = vp_entries[entry["variantId"]["ruid"]]
+
+	return subtitles
+
+
+def _parse_subtitles_cr2wfile(cr2w_file: CR2WFile) -> dict[str, str]:
+	"""
+	Parse subtitle data.
+
+	:param cr2w_file: Parsed REDengine ``.scene`` file.
+	"""
+
+	assert isinstance(cr2w_file.root_chunk, scnSceneResource)
+	root_chunk: scnSceneResource = cr2w_file.root_chunk
+
+	vp_entries = {}
+	subtitles = {}
+	for vp_entry in root_chunk.loc_store.vp_entries:
+		vp_entries[str(vp_entry.variant_id.ruid)] = vp_entry.content
+	for vd_entry in root_chunk.loc_store.vd_entries:
+		subtitles[str(vd_entry.locstring_id.ruid)] = vp_entries[str(vd_entry.variant_id.ruid)]
 
 	return subtitles
 
@@ -211,7 +244,7 @@ def parse_radio_scene_graph(data: dict[str, Any] | CR2WFile) -> tuple[Graph, dic
 	"""
 
 	if isinstance(data, CR2WFile):
-		return _parse_radio_scene_graph_crw2file(data)
+		return _parse_radio_scene_graph_cr2wfile(data)
 	else:
 		return _parse_radio_scene_graph_json(data)
 
@@ -275,17 +308,17 @@ def _parse_radio_scene_graph_json(scene_json: dict[str, Any]) -> tuple[Graph, di
 	return graph, audio_events
 
 
-def _parse_radio_scene_graph_crw2file(crw2_file: CR2WFile) -> tuple[Graph, dict[int, list[EventData]]]:
+def _parse_radio_scene_graph_cr2wfile(cr2w_file: CR2WFile) -> tuple[Graph, dict[int, list[EventData]]]:
 	"""
 	Partial parsing of scene graph.
 
 	Only finds dialogue events and the paths between them; no conditional logic.
 
-	:param crw2_file: Parsed REDengine ``.scene`` file.
+	:param cr2w_file: Parsed REDengine ``.scene`` file.
 	"""
 
-	assert isinstance(crw2_file.root_chunk, scnSceneResource)
-	root_chunk: scnSceneResource = crw2_file.root_chunk
+	assert isinstance(cr2w_file.root_chunk, scnSceneResource)
+	root_chunk: scnSceneResource = cr2w_file.root_chunk
 
 	screenplay_store_dict: dict[int, tuple[str, str]] = {}
 

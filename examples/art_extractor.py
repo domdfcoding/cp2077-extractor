@@ -28,8 +28,8 @@ with archive_file.open("rb") as fp:
 	for filename in target_files:
 		file = archive.file_list.find_filename(filename)
 		segments = archive.file_list.get_segments(file)
-		crw2_file = parse_cr2w_buffer(BytesIO(archive.extract_file(fp, file)))
-		img = texture_to_image(crw2_file.root_chunk)
+		cr2w_file = parse_cr2w_buffer(BytesIO(archive.extract_file(fp, file)))
+		img = texture_to_image(cr2w_file.root_chunk)
 
 		output_filename = output_dir / PureWindowsPath(filename).with_suffix(".png").name
 		img.save(output_filename)
