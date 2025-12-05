@@ -47,7 +47,7 @@ try:
 	from kraken_decompressor import decompress
 except ImportError:
 
-	def decompress(src: bytes, dst_len) -> bytes:
+	def decompress(src: bytes, dst_len: int) -> bytes:
 		raise NotImplementedError(
 				"Kraken decompression unavailable ('kraken-decompressor' not installed or unsupported platform)"
 				)
