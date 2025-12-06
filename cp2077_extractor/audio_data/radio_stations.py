@@ -392,23 +392,29 @@ body_heat_radio: list[Track] = [
 		Track("IBDY", "Here's a Thought", 575003013, "Rat Boy", "Rat Boy", {825809386: JOHNNY_KERRY}),
 		]
 
-# #: 99.9 Impulse
-# impulse: list[Track] = {
-# 		'': Track("Mr. Kipper", "Walk Of Shame", 0, "Idris Elba", "Idris Elba"),
-# 		'': Track("Private Press", "Dreamy", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "DEEEEEEP", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "Black Labyrinth", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "Feed Your Soul", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "Liquid Disco", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "Sleepy Dust", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "Sparkling Frequency", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "Undeniably Changes", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "Void", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "Woozee", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "GREEEEEENHOUSE", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "BESTPL", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		'': Track("Private Press", "ENERGEEHOUSE", 0, "Adam Brocki; Jan Wóycicki", "Private Press"),
-# 		}
+#: 99.9 Impulse
+impulse: list[Track] = [
+		# TODO: songs list.
+		Track(
+				"Mr. Kipper",
+				"DJ Set",
+				424884909,
+				),  # mus_radio_14_impulse_djset, also mus_radio_14impls_djset_pyramid_edit
+		# Track("Mr. Kipper", "Walk Of Shame", 0, "Idris Elba", "Idris Elba"),
+		# Track("Private Press", "Dreamy", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "DEEEEEEP", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "Black Labyrinth", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "Feed Your Soul", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "Liquid Disco", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "Sleepy Dust", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "Sparkling Frequency", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "Undeniably Changes", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "Void", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "Woozee", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "GREEEEEENHOUSE", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "BESTPL", 0, "Adam Brocki; Jan Wóycicki"),
+		# Track("Private Press", "ENERGEEHOUSE", 0, "Adam Brocki; Jan Wóycicki"),
+		]
 
 # TODO: or is it 101.0 like in the credits data
 #: 101.9 The Dirge
@@ -783,11 +789,6 @@ misc: list[Track] = [
 				718643010,
 				),  # TODO: find which station these play on (with copyrighted music disabled)
 		Track(
-				"Mr. Kipper",
-				"99.9 Impulse DJ Set",
-				424884909,
-				),  # TODO: songs list.  # mus_radio_14_impulse_djset, also mus_radio_14impls_djset_pyramid_edit
-		Track(
 				"CD Projekt Red",
 				"mus_radio_03_electind_ppgame18",
 				176501448,
@@ -829,8 +830,8 @@ radio_stations: dict[str, list[Track]] = {
 		"92.9 Night FM": night_fm,
 		"95.2 Samizdat Radio": samizdat_radio,
 		"96.1 Ritual FM": ritual_fm,
-		"98.7 Body Heat Radio": body_heat_radio,  #
-		# "99.9 Impulse": impulse,
+		"98.7 Body Heat Radio": body_heat_radio,
+		"99.9 Impulse": impulse,
 		"101.9 The Dirge": the_dirge,
 		"103.5 Radio PEBKAC": radio_pebkac,
 		"106.9 30 Principales": principales,
