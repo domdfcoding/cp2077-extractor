@@ -110,7 +110,6 @@ class Track(NamedTuple):
 
 		if "COMM::XXX" not in tags or str(tags["COMM::XXX"]) != "From Cyberpunk 2077":
 			tags.add(COMM(encoding=Encoding.UTF8, text="From Cyberpunk 2077"))
-			# print("COMM changed")
 			tags_changed = True
 
 		if album_art:

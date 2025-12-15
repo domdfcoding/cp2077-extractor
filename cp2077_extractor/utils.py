@@ -132,7 +132,7 @@ class InfiniteList(Generic[_T]):
 		Repopulate the list with a new random order, avoiding recent items occuring soon.
 		"""
 
-		print("Starting repopulate")
+		# print("Starting repopulate")
 		self._working_items = []
 		remaining_items = self._items[:]
 		while remaining_items:
