@@ -76,7 +76,8 @@ class Track(NamedTuple):
 		Track filename (without suffix), comprising the artist and track title and made filename safe.
 		"""
 
-		return f"{self.artist} - {self.title}".replace('/', ' ')
+		transmap = {ord(k): ord("_ ") for k in '\\?%*:|"<>'}
+		return f"{self.artist} - {self.title}".replace('/', ' ').translate(transmap)
 
 	def set_id3_metadata(
 			self,
