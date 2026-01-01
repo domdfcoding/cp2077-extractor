@@ -1881,7 +1881,8 @@ class scnCheckPlayerCombatReturnCondition(scnIReturnCondition):
 class scnCheckPlayerTargetEntityDistanceReturnCondition(scnIReturnCondition):
 	params: scnCheckPlayerTargetEntityDistanceReturnConditionParams = field(
 			default_factory=lambda: scnCheckPlayerTargetEntityDistanceReturnConditionParams(
-					distance=5.0, comparison_type=enums.EComparisonType.Less
+					distance=5.0,
+					comparison_type=enums.EComparisonType.Less,
 					)
 			)
 
@@ -1890,7 +1891,8 @@ class scnCheckPlayerTargetEntityDistanceReturnCondition(scnIReturnCondition):
 class scnCheckPlayerTargetNodeDistanceReturnCondition(scnIReturnCondition):
 	params: scnCheckPlayerTargetNodeDistanceReturnConditionParams = field(
 			default_factory=lambda: scnCheckPlayerTargetNodeDistanceReturnConditionParams(
-					distance=5.0, comparison_type=enums.EComparisonType.Less
+					distance=5.0,
+					comparison_type=enums.EComparisonType.Less,
 					)
 			)
 

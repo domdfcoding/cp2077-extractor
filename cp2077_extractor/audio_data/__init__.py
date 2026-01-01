@@ -166,7 +166,7 @@ for station, station_data in radio_stations.items():
 					"Parade and Wako's briefing",
 					"Konpeki Plaza Braindance",
 					"mus_q105_fingers_01_source",
-					"mus_q000_corpo_standoff_source"
+					"mus_q000_corpo_standoff_source",
 					}:
 				pass  # TODO
 			else:

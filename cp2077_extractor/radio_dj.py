@@ -290,7 +290,7 @@ def _parse_radio_scene_graph_json(scene_json: dict[str, Any]) -> tuple[Graph, di
 						EventData(
 								event["Data"]["id"]["id"],
 								event["Data"]["screenplayLineId"]["id"],
-								*screenplay_store_dict[event["Data"]["screenplayLineId"]["id"]]
+								*screenplay_store_dict[event["Data"]["screenplayLineId"]["id"]],
 								)
 						)
 			# else:
@@ -371,6 +371,8 @@ def _parse_radio_scene_graph_cr2wfile(cr2w_file: CR2WFile) -> tuple[Graph, dict[
 def get_link_paths(graph: Graph) -> Iterator[list[int]]:
 	"""
 	Returns an iterator over possible paths through the various link segments.
+
+	:param graph:
 	"""
 
 	lone_nodes, start_nodes, end_nodes = find_graph_entry_points(graph)

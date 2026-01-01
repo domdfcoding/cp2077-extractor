@@ -48,9 +48,8 @@ try:
 except ImportError:
 
 	def decompress(src: bytes, dst_len: int) -> bytes:
-		raise NotImplementedError(
-				"Kraken decompression unavailable ('kraken-decompressor' not installed or unsupported platform)"
-				)
+		msg = "Kraken decompression unavailable ('kraken-decompressor' not installed or unsupported platform)"
+		raise NotImplementedError(msg)
 
 
 def transcode_file(
@@ -111,6 +110,8 @@ _T = TypeVar("_T")
 class InfiniteList(Generic[_T]):
 	"""
 	List-like object that refills with a random order once empty.
+
+	:param items: Values to loop through.
 	"""
 
 	_items: list[_T]
@@ -202,8 +203,6 @@ class StringReader(BytesIO):
 		"""
 		Parse a length-prefixed string (as bytes) to a Python string.
 
-		:param value: The string with a VLQ i32 length prefix.
-
 		:returns: Tuple of length prefix and the string.
 		"""
 
@@ -226,8 +225,6 @@ class StringReader(BytesIO):
 	def parse_string(self) -> str:
 		"""
 		Parse a length-prefixed string (as bytes) to a Python string.
-
-		:param value: The string with a VLQ i32 length prefix.
 		"""
 
 		return self.parse_string_and_size()[1]

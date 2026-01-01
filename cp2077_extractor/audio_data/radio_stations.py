@@ -76,7 +76,8 @@ pacific_dreams: list[Track] = [
 				"Real Window",
 				1005242856,
 				"Brian Aspey",
-				"Brian Aspey", {895217420: HANGOUT_QUEST}
+				"Brian Aspey",
+				{895217420: HANGOUT_QUEST},
 				),
 		Track(
 				"Pacific Avenue",
@@ -91,7 +92,8 @@ pacific_dreams: list[Track] = [
 				"Simple Pleasures",
 				803750564,
 				"Elena Charbila; Dimitris Mann",
-				"Kid Moxie", {880346021: HANGOUT_QUEST}
+				"Kid Moxie",
+				{880346021: HANGOUT_QUEST},
 				),
 		Track("Flatlander Woman", "Lithium", 770891476, "SLG", "SLG"),
 		Track("Flatlander Woman", "Slag", 1044871022, "SLG", "SLG"),
@@ -100,7 +102,8 @@ pacific_dreams: list[Track] = [
 				"Chodze",
 				1066343217,
 				"Mchy i Porosty",
-				"Mchy i Porosty", {443457920: "Parade and Wako's briefing"}
+				"Mchy i Porosty",
+				{443457920: "Parade and Wako's briefing"},
 				),
 		Track("Lick Switch", "Midnight Eye", 928920080, "Earth Trax", "Earth Trax"),
 		Track("Lick Switch", "Blurred", 285910393, "Earth Trax", "Earth Trax"),
@@ -146,20 +149,21 @@ growl_fm: list[Track] = [
 				"Let The Stars Die",
 				444314240,
 				'Jeremy Ghanassia, Maxime "Paka" Marin',
-				other_uses={959192573: SOMEWHAT_DAMAGED_FLASHBACK_REED}
+				other_uses={959192573: SOMEWHAT_DAMAGED_FLASHBACK_REED},
 				),
 		Track(
 				"Red Dead Roadkill",
 				"Flatline",
 				694001176,
 				"Julien Röttger",
-				"Red Dead Roadkill, Dee Wolf", {896635379: MUS_OW_PHONE}
+				"Red Dead Roadkill, Dee Wolf",
+				{896635379: MUS_OW_PHONE},
 				),
 		Track(
 				"Spirit Machines",
 				"Candy Shell",
 				945083955,
-				"Jessica McCombs, Dave Crespo, Michael Collins, Sergio Marticorena"
+				"Jessica McCombs, Dave Crespo, Michael Collins, Sergio Marticorena",
 				),
 		Track("NoWorld", "Do or Die", 807725976, "NoWorld"),
 		Track("Entolim", "LIT", 265573485, "Entolim"),
@@ -169,14 +173,14 @@ growl_fm: list[Track] = [
 				"Killshot",
 				116162799,
 				"Frost, Justtjokay, Dubbygotbars, Knyvez",
-				other_uses={316992516: MUS_OW_PHONE, 608799802: SOMEWHAT_DAMAGED_FLASHBACK}
+				other_uses={316992516: MUS_OW_PHONE, 608799802: SOMEWHAT_DAMAGED_FLASHBACK},
 				),
 		Track(
 				"Haru Nemuri",
 				"さまよえるままゆけ (Samayoeru mama yuke) / Let It Go As If You Wander",
 				214475991,
 				"春ねむり (Haru Nemuri)",
-				"春ねむり (Haru Nemuri)"
+				"春ねむり (Haru Nemuri)",
 				),
 		Track("Kiba", "Slipstream", 581037122, "Kiba"),
 		Track("Aleyna Moon, Shrinjay Ghosh", "FUMES", 252703137, "Aleyna Moon, Shrinjay Ghosh"),
@@ -185,7 +189,7 @@ growl_fm: list[Track] = [
 				"Look Through My Kiroshis (The Solo Life)",
 				606235279,
 				"D.O.H. Dollahz Ova Hoez",
-				other_uses={328723041: MUS_OW_PHONE, 1009571067: SOMEWHAT_DAMAGED_FLASHBACK}
+				other_uses={328723041: MUS_OW_PHONE, 1009571067: SOMEWHAT_DAMAGED_FLASHBACK},
 				),
 		Track("St. Aurora", "Going to Heaven", 816183854, "St. Aurora", other_uses={254921013: MUS_OW_PHONE}),
 		Track(
@@ -193,7 +197,8 @@ growl_fm: list[Track] = [
 				"Afterlife",
 				900442762,
 				"Thai McGrath; JustCosplaySings",
-				"Thai McGrath; JustCosplaySings", {740594675: MUS_OW_PHONE}
+				"Thai McGrath; JustCosplaySings",
+				{740594675: MUS_OW_PHONE},
 				),
 		]
 
@@ -206,7 +211,7 @@ royal_blue_radio: list[Track] = [
 				"Générique (from Ascenseur pour L'échafaud)",
 				143859087,
 				"Miles Davis",
-				other_uses={987597831: HANGOUT_QUEST}
+				other_uses={987597831: HANGOUT_QUEST},
 				),
 		Track("John Coltrane", "Impressions", 230077180, "John Coltrane"),
 		Track(
@@ -221,7 +226,7 @@ royal_blue_radio: list[Track] = [
 				"You Don't Know What Love Is",
 				400388835,
 				"Gene Depaul; Don Raye",
-				other_uses={187092121: HANGOUT_QUEST, 397320180: "Konpeki Plaza Braindance"}
+				other_uses={187092121: HANGOUT_QUEST, 397320180: "Konpeki Plaza Braindance"},
 				),
 		Track("Thelonious Monk", "Round Midnight", 487426870, "Thelonious Monk; Bernie Hanighen; Cootie Williams"),
 		Track("Trio of Doom", "Dark Prince", 449864253, "John Mclaughlin", other_uses={395786567: RACES}),
@@ -235,7 +240,7 @@ night_fm: list[Track] = [
 				"Worlds",
 				188143271,
 				"Sebastian Robertson, Daniel Davies",
-				"SRDD (Sebastian Daniel)"
+				"SRDD (Sebastian Daniel)",
 				),
 		Track("The Unresolved", 'X', 52108015, "Sebastian Robertson; Daniel Davies", "SRDD (Sebastian Daniel)"),
 		Track("Doctor Berserk", "Maniak", 592937823, "Fabian Velazquez", "Picasso"),
@@ -250,7 +255,7 @@ night_fm: list[Track] = [
 				"Flying Heads",
 				710361138,
 				"Ivan Iusco; Elena Charbila",
-				"Kid Moxie; Ivan Iusco; Elena Charbila"
+				"Kid Moxie; Ivan Iusco; Elena Charbila",
 				),
 		Track("Yards of the Moon", "Volcano the Sailor", 783271344, "Połoz", "Połoz"),
 		Track("Cyber Coorayber", "Brain-Damaged", 239254618, "Nikola Nikita Jeremic", "Nikola Nikita Jeremic"),
@@ -263,7 +268,8 @@ samizdat_radio: list[Track] = [
 				"Piling in my Head",
 				185138126,
 				"Nina Kraviz",
-				"Nina Kraviz", {892337963: CLOUDS_MUSIC}
+				"Nina Kraviz",
+				{892337963: CLOUDS_MUSIC},
 				),
 		Track(
 				"Bara Nova",
@@ -271,7 +277,7 @@ samizdat_radio: list[Track] = [
 				625219838,
 				"Nina Kraviz",
 				"Nina Kraviz",
-				{900420316: "mus_sq027_panam_csex_01_pre_sex", 439311782: "mus_sq027_panam_csex_01_pre_sex"}
+				{900420316: "mus_sq027_panam_csex_01_pre_sex", 439311782: "mus_sq027_panam_csex_01_pre_sex"},
 				),
 		Track("Bara Nova", "Harm Sweaty Pit", 928983117, "Nina Kraviz", "Nina Kraviz", {655028819: CLOUDS_MUSIC}),
 		Track(
@@ -309,14 +315,14 @@ ritual_fm: list[Track] = [
 				"Abandoned Land",
 				957306104,
 				"Artur Rumiński; Haldor Grunberg",
-				"Artur Rumiński; Haldor Grunberg"
+				"Artur Rumiński; Haldor Grunberg",
 				),
 		Track(
 				"Fist of Satan",
 				"Black Concrete",
 				114092930,
 				"Artur Rumiński; Haldor Grunberg",
-				"Artur Rumiński; Haldor Grunberg"
+				"Artur Rumiński; Haldor Grunberg",
 				),
 		Track("Shattered Void", "I Won't Let You Go", 643641585, "Converge", "Converge"),
 		]
@@ -337,7 +343,7 @@ body_heat_radio: list[Track] = [
 				688260506,
 				"Jake Duzsik; John Famiglietti; Lars Stalfors",
 				"HEALTH",
-				{41444121: DARK_MATTER}  # Also for Shy Delamain quest
+				{41444121: DARK_MATTER},  # Also for Shy Delamain quest
 				),
 		Track("Artemis Delta", "Night City", 862539357, "Arielle Sitrick; Bill Burke", "R E L"),
 		Track(
@@ -346,14 +352,14 @@ body_heat_radio: list[Track] = [
 				717186759,
 				"Rosa Walton",
 				"Rosa Walton (Let's Eat Grandma)",
-				{670626837: HANGOUT_QUEST, 881817538: "mus_q105_fingers_01_source", 890846657: DARK_MATTER}
+				{670626837: HANGOUT_QUEST, 881817538: "mus_q105_fingers_01_source", 890846657: DARK_MATTER},
 				),
 		Track(
 				"Point Break Candy",
 				"Hole In The Sun",
 				698612311,
 				"Raney Shockne",
-				"Raney Shockne feat. COS, Conway"
+				"Raney Shockne feat. COS, Conway",
 				),
 		# TODO: Track("American Medical Association", "Bliind", 0, "Raney Shockne", "Raney Shockne"),
 		Track(
@@ -361,7 +367,8 @@ body_heat_radio: list[Track] = [
 				"History",
 				941358832,
 				"Gazelle Twin",
-				"Gazelle Twin", {986982905: "mus_q000_corpo_standoff_source"}
+				"Gazelle Twin",
+				{986982905: "mus_q000_corpo_standoff_source"},
 				),
 		Track("Lizzy Wizzy", "4ÆM", 5020242, "Grimes", "Grimes"),
 		Track(
@@ -369,7 +376,8 @@ body_heat_radio: list[Track] = [
 				"Delicate Weapon",
 				726229946,
 				"Grimes",
-				"Grimes", {670923974: "Phantom Liberty Black Sapphire performance"}
+				"Grimes",
+				{670923974: "Phantom Liberty Black Sapphire performance"},
 				),
 		Track("Us Cracks", "Ponpon Shit", 259328250, "Yuki Kawamura", "Namakopuri", {180075549: DARK_MATTER}),
 		Track(
@@ -424,14 +432,14 @@ the_dirge: list[Track] = [
 				"The God Machines",
 				660406395,
 				"Sebastian Robertson; Daniel Davies; Tristan Calder; Brandon Hale; Michael Garcia",
-				"Sebastian Robertson, Kill The Computer & Indijinouz"
+				"Sebastian Robertson, Kill The Computer & Indijinouz",
 				),
 		Track(
 				"NC3",
 				"Blouses Blue",
 				777673336,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Cidro Onetoo, Perry Porter"
+				"Konrad OldMoney feat. Cidro Onetoo, Perry Porter",
 				),
 		Track("Young Kenny", "Problem Kids", 422374976, "Konrad Abramowicz", "Konrad OldMoney feat. Taelor Yung"),
 		Track("Droox", "Bigger Man", 305730733, "Konrad Abramowicz", "Konrad OldMoney feat. Taelor Yung"),
@@ -440,7 +448,7 @@ the_dirge: list[Track] = [
 				"Go Blaze",
 				216704447,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Chanarah, Cidro Onetoo"
+				"Konrad OldMoney feat. Chanarah, Cidro Onetoo",
 				),
 		Track("ICHIBANCHI", "Dishonor", 495804559, "Konrad Abramowicz", "Konrad OldMoney feat. Brevner"),
 		Track("Yamete", "Frost", 433713094, "Konrad Abramowicz", "Konrad OldMoney feat. Frawst"),
@@ -449,14 +457,14 @@ the_dirge: list[Track] = [
 				"High School Bully",
 				384046700,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Cidro Onetoo, Perry Porter"
+				"Konrad OldMoney feat. Cidro Onetoo, Perry Porter",
 				),
 		Track(
 				"DAPxFLEM",
 				"NBOM",
 				749562071,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Cidro Onetoo, Perry Porter"
+				"Konrad OldMoney feat. Cidro Onetoo, Perry Porter",
 				),
 		Track("Code 137", "Suicide", 706423871, "Geno Lenardo", "Geno Lenardo feat. Zeale"),
 		Track("HAPS", "Day of Dead", 279160746, "Konrad Abramowicz", "Konrad OldMoney feat. Taelor Yung"),
@@ -466,14 +474,14 @@ the_dirge: list[Track] = [
 				"Clip Boss",
 				101795579,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Johnny GR4VES"
+				"Konrad OldMoney feat. Johnny GR4VES",
 				),
 		Track(
 				"Triple-B feat. Gun-Fu",
 				"PLUCK U",
 				921768250,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Ded Stark"
+				"Konrad OldMoney feat. Ded Stark",
 				),
 		Track("Pazoozu", "Hello Good Morning", 466119236, "Konrad Abramowicz", "Konrad OldMoney feat. S-God"),
 		Track(
@@ -481,7 +489,7 @@ the_dirge: list[Track] = [
 				"Run The Block",
 				39020019,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Taelor Yung"
+				"Konrad OldMoney feat. Taelor Yung",
 				),
 		Track(
 				"Kyubik",
@@ -495,7 +503,7 @@ the_dirge: list[Track] = [
 				"Warning Shots",
 				761987513,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Perry Porter, Cidro Onetoo"
+				"Konrad OldMoney feat. Perry Porter, Cidro Onetoo",
 				),
 		Track("Gorgon Madonna", "Metamorphosis", 274367834, "Yugen Blakrok", "Yugen Blakrok"),
 		Track(
@@ -538,7 +546,7 @@ radio_pebkac: list[Track] = [
 				"Follow the White Crow",
 				903459303,
 				"Ivan Iusco; Elena Charbila",
-				"Kid Moxie; Ivan Iusco; Elena Charbila"
+				"Kid Moxie; Ivan Iusco; Elena Charbila",
 				),
 		Track("IOshrine", "Fake Spook", 854232133, "Kuba Sojka", "Poly Face"),
 		Track("[flesh]reactor", "Move Dat", 472230949, "Kuba Sojka", "Poly Face"),
@@ -569,7 +577,7 @@ principales: list[Track] = [
 				"Dagga",
 				507913744,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Cerbeus, Johnny GR4VES"
+				"Konrad OldMoney feat. Cerbeus, Johnny GR4VES",
 				),  # TODO: Check 3807
 		Track("7 Facas", "Dinero", 7556210, "Konrad Abramowicz", "Konrad OldMoney feat. Cerbeus"),
 		Track(
@@ -577,14 +585,14 @@ principales: list[Track] = [
 				"Serpant",
 				200129727,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. Cerbeus, Johnny GR4VES"
+				"Konrad OldMoney feat. Cerbeus, Johnny GR4VES",
 				),
 		Track(
 				"Don Mara",
 				"Tatted On My Face",
 				626364837,
 				"Konrad Abramowicz",
-				"Konrad OldMoney feat. 37 Heartbreak"
+				"Konrad OldMoney feat. 37 Heartbreak",
 				),
 		Track("Big Machete", "Barrio", 973916952, "Konrad Abramowicz", "Konrad OldMoney"),
 		Track("ChickyChickas", "Hood", 328370557, "Konrad Abramowicz", "Konrad OldMoney feat. Awrath"),
@@ -612,7 +620,8 @@ morro_rock_radio: list[Track] = [
 				"Friday Night Fire Fight",
 				534318699,
 				"Jacques Barbot",
-				"Aligns", {950011967: SOMEWHAT_DAMAGED_FLASHBACK}
+				"Aligns",
+				{950011967: SOMEWHAT_DAMAGED_FLASHBACK},
 				),
 		Track("Rubicones", "Trauma", 146627573, "Jacques Barbot", "Aligns"),
 		Track(
@@ -659,8 +668,8 @@ morro_rock_radio: list[Track] = [
 						460511222: "mus_e3demo_end",
 						350111750: "mus_q115_chippin_in",
 						28560079: "mus_q001_v_apartment_chippin_in",
-						961827496: "mus_q110_chippinin"
-						}
+						961827496: "mus_q110_chippinin",
+						},
 				),
 		Track(
 				"SAMURAI",
@@ -684,8 +693,8 @@ dark_star: list[Track] = [
 				{
 						938547930: MUS_OW_PHONE,
 						527795061: "mus_mq301_car_cmb_source",
-						904203946: "mus_mq301_car_cmb_source"
-						}
+						904203946: "mus_mq301_car_cmb_source",
+						},
 				),
 		Track("BADPANNINI", "Headrush", 661309522, '', "Backxwash"),
 		Track(
@@ -693,7 +702,8 @@ dark_star: list[Track] = [
 				"Orbital Insertion",
 				747444235,
 				'',
-				"Hagop Tchaparian", {150643485: "mus_q303_restaurant_01"}
+				"Hagop Tchaparian",
+				{150643485: "mus_q303_restaurant_01"},
 				),
 		Track("Bwana Mungu", "Cyko Arctic", 750285308, '', "Lord Spikeheart, Chrisman"),
 		Track("OLO Y", "Pierwszy raz naprawdę", 22550244, '', "27.Fuckdemons", {211308495: MUS_OW_PHONE}),
@@ -734,14 +744,14 @@ misc: list[Track] = [
 				"Chippin' In",
 				750744602,
 				"Borys Pugacz-Muraszkiewicz; P.T. Adamczyk",
-				"Damian Ukeje; P.T. Adamczyk"
+				"Damian Ukeje; P.T. Adamczyk",
 				),
 		Track(
 				"Footage Missing",
 				"When It's War",
 				925140962,
 				"Trevor Samuels & Marek Walaszek",
-				"Deadly Hunta & Maro Music"
+				"Deadly Hunta & Maro Music",
 				),  # TODO: check IDs; had extra ID but it was rain sounds
 		Track("Erik Satie", "Gymnopédie No. 1", 776355648, "Erik Satie"),
 		Track("Frédéric Chopin", "Nocturne Op. 55 No. 1", 768869823, "Frédéric Chopin"),
@@ -760,7 +770,7 @@ misc: list[Track] = [
 				"RATATATA",
 				198353675,
 				"Marek Aureliusz Teodoruk & Baron Black",
-				"Baron Black & Auer"
+				"Baron Black & Auer",
 				),  # mus_custom_radio_ratatata and mus_q110_voodooboys_market; plays on radio in Pacifica  # TODO: credits
 		# TODO: Track("Guilt Code", "Neuron", 0, "Marek Aureliusz Teodoruk", "Auer"),
 		Track(

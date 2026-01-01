@@ -93,7 +93,10 @@ class Chunk:
 	def from_cr2w_kwargs(cls, kwargs: dict[bytes, Any]) -> "Chunk":
 		"""
 		Construct from a mapping of REDengine variable names and values (as Python types).
+
+		:param kwargs:
 		"""
+
 		new_kwargs: dict[str, Any] = {
 				to_snake_case(arg_name.decode("UTF-8")): arg_value
 				for arg_name, arg_value in kwargs.items()
@@ -288,7 +291,7 @@ def parse_string(data: bytes) -> str:
 	"""
 	Parse a bytes string (which has a VLQ i32 size prefix) to a Python string.
 
-	:param
+	:param data:
 	"""
 
 	return StringReader(data).parse_string()
@@ -311,6 +314,7 @@ def parse_cname_array(data: bytes, parsing_data: "ParsingData") -> list[bytes]:
 	Parse an array of c names.
 
 	:param data:
+	:param parsing_data:
 	"""
 
 	# this package
@@ -326,6 +330,7 @@ def parse_handle_array(data: bytes, parsing_data: "ParsingData") -> list[HandleD
 	Parse an array of handles (each 4 bytes long).
 
 	:param data:
+	:param parsing_data:
 	"""
 
 	array_size = int.from_bytes(data[:4], "little")
