@@ -95,7 +95,7 @@ cp2077-extractor
 	:target: https://github.com/domdfcoding/cp2077-extractor/commit/master
 	:alt: GitHub last commit
 
-.. |maintained| image:: https://img.shields.io/maintenance/yes/2025
+.. |maintained| image:: https://img.shields.io/maintenance/yes/2026
 	:alt: Maintenance
 
 .. |pypi-downloads| image:: https://img.shields.io/pypi/dm/cp2077-extractor
