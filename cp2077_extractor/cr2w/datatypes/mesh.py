@@ -110,7 +110,7 @@ class CMesh(Chunk):
 	object_type: enums.ERenderObjectType = enums.ERenderObjectType.ROT_Static
 	render_resource_blob: HandleData[Chunk] = field(  # TODO: Handle inner type
 		default_factory=dict,
-		)  # type: ignore[assignment]  # IRenderResourceBlob
+	)  # type: ignore[assignment]  # IRenderResourceBlob
 	lod_level_info: list[float] = field(default_factory=list)
 	float_track_names: list[str] = field(default_factory=list)
 	bone_names: list[str] = field(default_factory=list)
