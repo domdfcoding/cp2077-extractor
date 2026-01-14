@@ -99,7 +99,7 @@ cp2077-extractor
 	:alt: Maintenance
 
 .. |pypi-downloads| image:: https://img.shields.io/pypi/dm/cp2077-extractor
-	:target: https://pypi.org/project/cp2077-extractor/
+	:target: https://pypistats.org/packages/cp2077-extractor
 	:alt: PyPI - Downloads
 
 .. end shields
