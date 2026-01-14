@@ -205,7 +205,7 @@ class entdismembermentEffectResource(Chunk):
 	resource_sets: enums.entdismembermentResourceSetMask = enums.entdismembermentResourceSetMask.BARE | enums.entdismembermentResourceSetMask.BARE1 | enums.entdismembermentResourceSetMask.BARE2 | enums.entdismembermentResourceSetMask.BARE3 | enums.entdismembermentResourceSetMask.GARMENT | enums.entdismembermentResourceSetMask.GARMENT1 | enums.entdismembermentResourceSetMask.GARMENT2 | enums.entdismembermentResourceSetMask.GARMENT3  # TODO: CBitField
 	wound_type: enums.entdismembermentWoundTypeE = enums.entdismembermentWoundTypeE.COARSE  # TODO: CBitField
 	effect: "worldEffect" = field(
-			default_factory=lambda: worldEffect()
+			default_factory=lambda: worldEffect(),
 			)  # TODO: resolve default class (circular import)    # TODO: CResourceAsyncReference
 	match_to_wound_by_name: bool = False
 
@@ -274,7 +274,7 @@ class entEntityTemplate(Chunk):
 class entTemplateAppearance(Chunk):
 	name: str = ''
 	appearance_resource: appearanceAppearanceResource = field(
-			default_factory=appearanceAppearanceResource
+			default_factory=appearanceAppearanceResource,
 			)  # TODO: CResourceAsyncReference
 	appearance_name: str = ''
 
@@ -316,7 +316,7 @@ class entITransformBinding(entISourceBinding):
 @dataclass
 class entIPlacedComponent(entIComponent):
 	local_transform: "WorldTransform" = field(
-			default_factory=lambda: WorldTransform()
+			default_factory=lambda: WorldTransform(),
 			)  # TODO: resolve default class (circular import)
 	parent_transform: entITransformBinding = field(default_factory=entITransformBinding)
 

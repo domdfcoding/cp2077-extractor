@@ -634,7 +634,7 @@ class scnActorDef(Chunk):
 	voicetag_id: scnVoicetagId = field(default_factory=scnVoicetagId)
 	acquisition_plan: enums.scnEntityAcquisitionPlan = enums.scnEntityAcquisitionPlan.findInContext
 	find_actor_in_context_params: scnFindEntityInContextParams = field(
-			default_factory=scnFindEntityInContextParams
+			default_factory=scnFindEntityInContextParams,
 			)
 	find_actor_in_world_params: scnFindEntityInWorldParams = field(default_factory=scnFindEntityInWorldParams)
 	spawn_despawn_params: scnSpawnDespawnEntityParams = field(default_factory=scnSpawnDespawnEntityParams)
@@ -852,7 +852,7 @@ class scneventsAttachPropToPerformerCachedFallbackBone(Chunk):
 class scneventsAttachPropToPerformerFallbackData(Chunk):
 	owner: scnPerformerId = field(default_factory=scnPerformerId)
 	fallback_cached_bones: scneventsAttachPropToPerformerCachedFallbackBone = field(
-			default_factory=scneventsAttachPropToPerformerCachedFallbackBone
+			default_factory=scneventsAttachPropToPerformerCachedFallbackBone,
 			)
 	fallback_animset: animAnimSet = field(default_factory=animAnimSet)  # TODO: CResourceReference
 	fallback_animation_name: str = ''
@@ -869,7 +869,7 @@ class scneventsAttachPropToWorldCachedFallbackBone(Chunk):
 class scneventsAttachPropToWorldFallbackData(Chunk):
 	owner: scnPerformerId = field(default_factory=scnPerformerId)
 	fallback_cached_bones: scneventsAttachPropToWorldCachedFallbackBone = field(
-			default_factory=scneventsAttachPropToWorldCachedFallbackBone
+			default_factory=scneventsAttachPropToWorldCachedFallbackBone,
 			)
 	fallback_animset: animAnimSet = field(default_factory=animAnimSet)  # CResourceReference
 	fallback_animation_name: str = ''
@@ -934,7 +934,7 @@ class scneventsSpawnEntityEventCachedFallbackBone(Chunk):
 class scneventsSpawnEntityEventFallbackData(Chunk):
 	owner: scnPerformerId = field(default_factory=scnPerformerId)
 	fallback_cached_bones: scneventsSpawnEntityEventCachedFallbackBone = field(
-			default_factory=scneventsSpawnEntityEventCachedFallbackBone
+			default_factory=scneventsSpawnEntityEventCachedFallbackBone,
 			)
 	fallback_animset: animAnimSet = field(default_factory=animAnimSet)  # TODO: CResourceReference
 	fallback_animation_name: str = ''
@@ -1026,7 +1026,7 @@ class scnlocLangId(Chunk):
 class scnLookAtAdvancedEventData(Chunk):
 	basic: scnAnimTargetBasicData = field(default_factory=scnAnimTargetBasicData)
 	requests: list[animLookAtRequestForPart] = field(
-			default_factory=list
+			default_factory=list,
 			)  # TODO: new() { new animLookAtRequestForPart { BodyPart = "RightHand", Request = new animLookAtRequest { TransitionSpeed = 60.000000F, OutTransitionSpeed = 60.000000F, FollowingSpeedFactorOverride = -1.000000F, Limits = new animLookAtLimits { SoftLimitDegrees = 360.000000F, HardLimitDegrees = 360.000000F, HardLimitDistance = 1000000.000000F, BackLimitDegrees = 180.000000F }, Suppress = 1.000000F, Mode = 1, Priority = -1, AdditionalParts = new(0) } } };
 
 
@@ -1035,7 +1035,7 @@ class scnLookAtBasicEventData(Chunk):
 	basic: scnAnimTargetBasicData = field(default_factory=scnAnimTargetBasicData)
 	remove_previous_advanced_look_ats: bool = True
 	requests: list[animLookAtRequestForPart] = field(
-			default_factory=list
+			default_factory=list,
 			)  # TODO: new() { new animLookAtRequestForPart { BodyPart = "Eyes", Request = new animLookAtRequest { TransitionSpeed = 60.000000F, OutTransitionSpeed = 60.000000F, FollowingSpeedFactorOverride = -1.000000F, Limits = new animLookAtLimits { SoftLimitDegrees = 360.000000F, HardLimitDegrees = 270.000000F, HardLimitDistance = 1000000.000000F, BackLimitDegrees = 210.000000F }, Priority = -1, AdditionalParts = new(2) }, AttachLeftHandToRightHand = -1, AttachRightHandToLeftHand = -1 } };
 
 
@@ -1371,7 +1371,7 @@ class scnPlayerActorDef(Chunk):
 	acquisition_plan: enums.scnEntityAcquisitionPlan = enums.scnEntityAcquisitionPlan.findInContext
 	find_network_player_params: scnFindNetworkPlayerParams = field(default_factory=scnFindNetworkPlayerParams)
 	find_actor_in_context_params: scnFindEntityInContextParams = field(
-			default_factory=scnFindEntityInContextParams
+			default_factory=scnFindEntityInContextParams,
 			)
 	player_name: str = ''
 
@@ -1522,7 +1522,7 @@ class scneventsCameraParamsEvent(scnSceneEvent):
 	use_far_plane: bool = True
 	is_player_camera: bool = False
 	camera_override_settings: scneventsCameraOverrideSettings = field(
-			default_factory=scneventsCameraOverrideSettings
+			default_factory=scneventsCameraOverrideSettings,
 			)
 	target_actor: scnPerformerId = field(default_factory=scnPerformerId)
 	target_slot: str = ''
@@ -1663,8 +1663,8 @@ class scnLookAtAdvancedEvent(scnSceneEvent):
 class scnLookAtEvent(scnSceneEvent):
 	# TODO: duration: int = 1000
 	basic_data: scnLookAtBasicEventData = field(
-			default_factory=scnLookAtBasicEventData
-			)  # TODO: new scnLookAtBasicEventData { Basic = new scnAnimTargetBasicData { PerformerId, IsStart = true, TargetPerformerId, TargetSlot = "pla_default_tgt", StaticTarget = new Vector4 { W = 1.000000F }, }, RemovePreviousAdvancedLookAts = true, Requests = new() { new animLookAtRequestForPart { BodyPart = "Eyes", Request = new animLookAtRequest { TransitionSpeed = 60.000000F, OutTransitionSpeed = 60.000000F, FollowingSpeedFactorOverride = -1.000000F, Priority = -1,  }, AttachLeftHandToRightHand = -1, AttachRightHandToLeftHand = -1 } } };
+			default_factory=scnLookAtBasicEventData,
+			)  # TODO: new scnLookAtBasicEventData { Basic = new scnAnimTargetBasicData { PerformerId, IsStart = true, TargetPerformerId, TargetSlot = "pla_default_tgt", StaticTarget = new Vector4 { W = 1.000000F }}, RemovePreviousAdvancedLookAts = true, Requests = new() { new animLookAtRequestForPart { BodyPart = "Eyes", Request = new animLookAtRequest { TransitionSpeed = 60.000000F, OutTransitionSpeed = 60.000000F, FollowingSpeedFactorOverride = -1.000000F, Priority = -1,  }, AttachLeftHandToRightHand = -1, AttachRightHandToLeftHand = -1 } } };
 
 
 @dataclass
@@ -1698,7 +1698,7 @@ class scnChangeIdleAnimEvent(scnPlayAnimEvent):
 	is_enabled: bool = True
 	anim_name: str = ''
 	baked_facial_transition: animFacialEmotionTransitionBaked = field(
-			default_factory=animFacialEmotionTransitionBaked
+			default_factory=animFacialEmotionTransitionBaked,
 			)
 	facial_instant_transition: bool = False
 
@@ -1770,14 +1770,14 @@ class scnVarComparison_FactConditionTypeParams(Chunk):
 @dataclass
 class scnVarComparison_FactConditionType(scnInterruptFactConditionType):
 	params: scnVarComparison_FactConditionTypeParams = field(
-			default_factory=scnVarComparison_FactConditionTypeParams
+			default_factory=scnVarComparison_FactConditionTypeParams,
 			)
 
 
 @dataclass
 class scnVarVsVarComparison_FactConditionType(scnInterruptFactConditionType):
 	params: scnVarVsVarComparison_FactConditionTypeParams = field(
-			default_factory=scnVarVsVarComparison_FactConditionTypeParams
+			default_factory=scnVarVsVarComparison_FactConditionTypeParams,
 			)
 
 
@@ -1809,21 +1809,21 @@ class scnCheckMountedVehicleImpactInterruptCondition(scnIInterruptCondition):
 @dataclass
 class scnCheckPlayerCombatInterruptCondition(scnIInterruptCondition):
 	params: scnCheckPlayerCombatInterruptConditionParams = field(
-			default_factory=scnCheckPlayerCombatInterruptConditionParams
+			default_factory=scnCheckPlayerCombatInterruptConditionParams,
 			)
 
 
 @dataclass
 class scnCheckPlayerTargetEntityDistanceInterruptCondition(scnIInterruptCondition):
 	params: scnCheckPlayerTargetEntityDistanceInterruptConditionParams = field(
-			default_factory=lambda: scnCheckPlayerTargetEntityDistanceInterruptConditionParams(distance=6.0)
+			default_factory=lambda: scnCheckPlayerTargetEntityDistanceInterruptConditionParams(distance=6.0),
 			)
 
 
 @dataclass
 class scnCheckPlayerTargetNodeDistanceInterruptCondition(scnIInterruptCondition):
 	params: scnCheckPlayerTargetNodeDistanceInterruptConditionParams = field(
-			default_factory=lambda: scnCheckPlayerTargetNodeDistanceInterruptConditionParams(distance=6.0)
+			default_factory=lambda: scnCheckPlayerTargetNodeDistanceInterruptConditionParams(distance=6.0),
 			)
 
 
@@ -1840,7 +1840,7 @@ class scnCheckSpeakerOrAddressDistractedInterruptCondition(scnIInterruptConditio
 @dataclass
 class scnCheckTriggerInterruptCondition(scnIInterruptCondition):
 	params: scnCheckTriggerInterruptConditionParams = field(
-			default_factory=scnCheckTriggerInterruptConditionParams
+			default_factory=scnCheckTriggerInterruptConditionParams,
 			)
 
 
@@ -1861,7 +1861,7 @@ class scnIReturnCondition(Chunk):
 @dataclass
 class scnCheckDistractedReturnCondition(scnIReturnCondition):
 	params: scnCheckDistractedReturnConditionParams = field(
-			default_factory=scnCheckDistractedReturnConditionParams
+			default_factory=scnCheckDistractedReturnConditionParams,
 			)
 
 
@@ -1873,7 +1873,7 @@ class scnCheckFactReturnCondition(scnIReturnCondition):
 @dataclass
 class scnCheckPlayerCombatReturnCondition(scnIReturnCondition):
 	params: scnCheckPlayerCombatReturnConditionParams = field(
-			default_factory=scnCheckPlayerCombatReturnConditionParams
+			default_factory=scnCheckPlayerCombatReturnConditionParams,
 			)
 
 
@@ -1883,7 +1883,7 @@ class scnCheckPlayerTargetEntityDistanceReturnCondition(scnIReturnCondition):
 			default_factory=lambda: scnCheckPlayerTargetEntityDistanceReturnConditionParams(
 					distance=5.0,
 					comparison_type=enums.EComparisonType.Less,
-					)
+					),
 			)
 
 
@@ -1893,7 +1893,7 @@ class scnCheckPlayerTargetNodeDistanceReturnCondition(scnIReturnCondition):
 			default_factory=lambda: scnCheckPlayerTargetNodeDistanceReturnConditionParams(
 					distance=5.0,
 					comparison_type=enums.EComparisonType.Less,
-					)
+					),
 			)
 
 
@@ -1931,10 +1931,10 @@ class scnInterruptionScenario(Chunk):
 	post_interrupt_signal_time_delay: float = 0.0
 	post_return_signal_time_delay: float = 0.0
 	post_interrupt_signal_fact_condition: scnInterruptFactConditionType = field(
-			default_factory=scnInterruptFactConditionType
+			default_factory=scnInterruptFactConditionType,
 			)
 	post_return_signal_fact_condition: scnInterruptFactConditionType = field(
-			default_factory=scnInterruptFactConditionType
+			default_factory=scnInterruptFactConditionType,
 			)
 	interrupt_conditions: list[scnIInterruptCondition] = field(default_factory=list)
 	return_conditions: list[scnIReturnCondition] = field(default_factory=list)
@@ -2099,7 +2099,7 @@ class scnRewindableSectionNode(scnSceneGraphNode):
 	section_duration: scnSceneTime = field(default_factory=scnSceneTime)
 	actor_behaviors: list[scnSectionInternalsActorBehavior] = field(default_factory=list)
 	play_speed_modifiers: scnRewindableSectionPlaySpeedModifiers = field(
-			default_factory=scnRewindableSectionPlaySpeedModifiers
+			default_factory=scnRewindableSectionPlaySpeedModifiers,
 			)
 
 
@@ -2139,7 +2139,7 @@ class scnFindEntityInEntityParams(Chunk):
 	slot_id: int = 0
 	force_max_visibility: bool = False
 	ownership_transfer_options: scnPropOwnershipTransferOptions = field(
-			default_factory=scnPropOwnershipTransferOptions
+			default_factory=scnPropOwnershipTransferOptions,
 			)
 
 
@@ -2417,7 +2417,7 @@ class scnPlayRidAnimEvent(scnPlayFPPControlAnimEvent):
 class scnPlaySkAnimEvent(scnPlayFPPControlAnimEvent):
 	anim_name: scnAnimName = field(default_factory=scnAnimName)
 	pose_blend_out_workspot: scnEventBlendWorkspotSetupParameters = field(
-			default_factory=scnEventBlendWorkspotSetupParameters
+			default_factory=scnEventBlendWorkspotSetupParameters,
 			)
 	root_motion_data: scnPlaySkAnimRootMotionData = field(default_factory=scnPlaySkAnimRootMotionData)
 	player_data: scnPlayerAnimData = field(default_factory=scnPlayerAnimData)
@@ -2432,7 +2432,7 @@ class scnRidAnimationContainerSRRefAnimContainerContext(Chunk):
 class scnRidAnimationContainerSRRefAnimContainer(Chunk):
 	animation: scnRidAnimationSRRefId = field(default_factory=scnRidAnimationSRRefId)
 	context: scnRidAnimationContainerSRRefAnimContainerContext = field(
-			default_factory=scnRidAnimationContainerSRRefAnimContainerContext
+			default_factory=scnRidAnimationContainerSRRefAnimContainerContext,
 			)
 
 
@@ -2707,7 +2707,7 @@ class scnChoiceNode(scnSceneGraphNode):
 	ata_params: scnChoiceNodeNsAttachToActorParams = field(default_factory=scnChoiceNodeNsAttachToActorParams)
 	atp_params: scnChoiceNodeNsAttachToPropParams = field(default_factory=scnChoiceNodeNsAttachToPropParams)
 	atgo_params: scnChoiceNodeNsAttachToGameObjectParams = field(
-			default_factory=scnChoiceNodeNsAttachToGameObjectParams
+			default_factory=scnChoiceNodeNsAttachToGameObjectParams,
 			)
 	ats_params: scnChoiceNodeNsAttachToScreenParams = field(default_factory=scnChoiceNodeNsAttachToScreenParams)
 	atw_params: scnChoiceNodeNsAttachToWorldParams = field(default_factory=scnChoiceNodeNsAttachToWorldParams)
@@ -2843,7 +2843,7 @@ class scnInterestingConversationsResource(Chunk):
 class scnScenesVersionsChangedRecord(Chunk):
 	change_in_version: int = 0
 	scene_before_change: scnSceneResource = field(
-			default_factory=scnSceneResource
+			default_factory=scnSceneResource,
 			)  # TODO: CResourceAsyncReference
 
 
@@ -2868,12 +2868,12 @@ class scnCheckSpeakersDistanceReturnConditionParams(Chunk):
 @dataclass
 class scnCheckSpeakersDistanceInterruptCondition(scnIInterruptCondition):
 	params: scnCheckSpeakersDistanceInterruptConditionParams = field(
-			default_factory=lambda: scnCheckSpeakersDistanceInterruptConditionParams(distance=6.0)
+			default_factory=lambda: scnCheckSpeakersDistanceInterruptConditionParams(distance=6.0),
 			)
 
 
 @dataclass
 class scnCheckSpeakersDistanceReturnCondition(scnIReturnCondition):
 	params: scnCheckSpeakersDistanceReturnConditionParams = field(
-			default_factory=scnCheckSpeakersDistanceReturnConditionParams
+			default_factory=scnCheckSpeakersDistanceReturnConditionParams,
 			)

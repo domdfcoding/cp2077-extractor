@@ -94,14 +94,14 @@ class appearanceCookedAppearanceData(Chunk):
 @dataclass
 class appearanceAppearancePart(Chunk):
 	resource: "entEntityTemplate" = field(
-			default_factory=lambda: entEntityTemplate()
+			default_factory=lambda: entEntityTemplate(),
 			)  # TODO: resolve default class (circular import)  # TODO: CResourceAsyncReference
 
 
 @dataclass
 class appearanceAppearancePartOverrides(Chunk):
 	part_resource: "entEntityTemplate" = field(
-			default_factory=lambda: entEntityTemplate()
+			default_factory=lambda: entEntityTemplate(),
 			)  # TODO: resolve default class (circular import)    # TODO: CResourceAsyncReference
 	components_overrides: list[appearancePartComponentOverrides] = field(default_factory=list)
 
@@ -118,7 +118,7 @@ class appearanceAppearanceDefinition(Chunk):
 	proxy_mesh_appearance: str = ''
 	cooked_data_path_override: Chunk = field(default_factory=Chunk)  # TODO: CResourceAsyncReference
 	parameters_buffer: "entEntityParametersBuffer" = field(
-			default_factory=lambda: entEntityParametersBuffer()
+			default_factory=lambda: entEntityParametersBuffer(),
 			)  # TODO: resolve default class (circular import)
 	visual_tags: redTagList = field(default_factory=redTagList)
 	inherited_visual_tags: redTagList = field(default_factory=redTagList)
@@ -138,18 +138,18 @@ class appearanceAppearanceResource(Chunk):
 	wounds: list["entdismembermentWoundResource"] = field(default_factory=list)
 	dism_effects: list["entdismembermentEffectResource"] = field(default_factory=list)
 	dism_wound_config: "entdismembermentWoundsConfigSet" = field(
-			default_factory=lambda: entdismembermentWoundsConfigSet()
+			default_factory=lambda: entdismembermentWoundsConfigSet(),
 			)  # TODO: resolve default class (circular import)
 	base_type: str = ''
 	base_entity_type: str = ''
 	base_entity: "entEntityTemplate" = field(
-			default_factory=lambda: entEntityTemplate()
+			default_factory=lambda: entEntityTemplate(),
 			)  # TODO: resolve default class (circular import)   # TODO: CResourceAsyncReference
 	part_type: str = ''
 	preset: str = ''
 	appearances: list[appearanceAppearanceDefinition] = field(default_factory=list)
 	common_cook_data: appearanceCookedAppearanceData = field(
-			default_factory=appearanceCookedAppearanceData
+			default_factory=appearanceCookedAppearanceData,
 			)  # TODO: CResourceAsyncReference
 	proxy_poly_count: int = 1400
 	force_compile_proxy: bool = False

@@ -108,7 +108,7 @@ class questUseWorkspotParamsV1(questAICommandParams):
 	is_workspot_infinite: bool = True
 	is_player: bool = False
 	player_params: questUseWorkspotPlayerParams = field(
-			default_factory=questUseWorkspotPlayerParams
+			default_factory=questUseWorkspotPlayerParams,
 			)  # TODO: new questUseWorkspotPlayerParams { CameraSettings = new gameTier3CameraSettings { YawLeftLimit = 60.000000F, YawRightLimit = 60.000000F, PitchTopLimit = 60.000000F, PitchBottomLimit = 45.000000F, PitchSpeedMultiplier = 1.000000F, YawSpeedMultiplier = 1.000000F }, CameraUseTrajectorySpace = true, VehicleProceduralCameraWeight = 1.000000F, ParallaxWeight = 1.000000F };
 	repeat_command_on_interrupt: bool = True
 	work_excluded_gestures: list[workWorkEntryId] = field(default_factory=list)

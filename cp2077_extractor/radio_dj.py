@@ -291,7 +291,7 @@ def _parse_radio_scene_graph_json(scene_json: dict[str, Any]) -> tuple[Graph, di
 								event["Data"]["id"]["id"],
 								event["Data"]["screenplayLineId"]["id"],
 								*screenplay_store_dict[event["Data"]["screenplayLineId"]["id"]],
-								)
+								),
 						)
 			# else:
 			# 	print(event)
@@ -352,7 +352,7 @@ def _parse_radio_scene_graph_cr2wfile(cr2w_file: CR2WFile) -> tuple[Graph, dict[
 								str(event["data"].id.id),
 								event["data"].screenplay_line_id.id,
 								*screenplay_store_dict[event["data"].screenplay_line_id.id],
-								)
+								),
 						)
 			# else:
 			# 	print(event)

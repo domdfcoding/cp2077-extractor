@@ -209,7 +209,7 @@ class REDArchive:
 								res_deps_start=res_deps_start,
 								res_deps_end=res_deps_end,
 								sha1_hash=sha1_hash,
-								)
+								),
 						)
 
 			for _ in range(file_segment_count):

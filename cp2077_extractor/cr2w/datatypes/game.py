@@ -2324,7 +2324,7 @@ class gameinteractionsChoice(Chunk):
 	data: list[Any] = field(default_factory=list)  # TODO: CVariant
 	choice_meta_data: gameinteractionsChoiceMetaData = field(default_factory=gameinteractionsChoiceMetaData)
 	look_at_descriptor: gameinteractionsChoiceLookAtDescriptor = field(
-			default_factory=gameinteractionsChoiceLookAtDescriptor
+			default_factory=gameinteractionsChoiceLookAtDescriptor,
 			)
 	do_not_turn_off_prevention_system: bool = False
 
@@ -5080,7 +5080,7 @@ class gameEffectObjectProvider_ProjectileHitEvent(gameEffectObjectProvider):
 class gameEffectObjectProvider_QueryCapsule(gameEffectObjectProvider):
 	gather_only_puppets: bool = False
 	query_preset: "physicsQueryPreset" = field(
-			default_factory=lambda: physicsQueryPreset()
+			default_factory=lambda: physicsQueryPreset(),
 			)  # TODO: resolve default class (circular import)
 
 
@@ -5093,10 +5093,10 @@ class gameEffectObjectProvider_QueryCapsule_GrowOverTime(gameEffectObjectProvide
 class gameEffectObjectProvider_QuerySphere(gameEffectObjectProvider):
 	gather_only_puppets: bool = False
 	filter_data: "physicsFilterData" = field(
-			default_factory=lambda: physicsFilterData()
+			default_factory=lambda: physicsFilterData(),
 			)  # TODO: resolve default class (circular import)
 	query_preset: "physicsQueryPreset" = field(
-			default_factory=lambda: physicsQueryPreset()
+			default_factory=lambda: physicsQueryPreset(),
 			)  # TODO: resolve default class (circular import)
 
 
@@ -5128,10 +5128,10 @@ class gameEffectObjectProvider_Stimuli_EntitiesInRange(gameEffectObjectProvider)
 @dataclass
 class gameEffectObjectProvider_SweepOverTime(gameEffectObjectProvider):
 	filter_data: "physicsFilterData" = field(
-			default_factory=lambda: physicsFilterData()
+			default_factory=lambda: physicsFilterData(),
 			)  # TODO: resolve default class (circular import)
 	query_preset: "physicsQueryPreset" = field(
-			default_factory=lambda: physicsQueryPreset()
+			default_factory=lambda: physicsQueryPreset(),
 			)  # TODO: resolve default class (circular import)
 
 
@@ -6677,7 +6677,7 @@ class AuthorizationData(Chunk):
 	is_authorization_module_on: bool = True
 	always_expose_actions: bool = False
 	authorization_data_entry: SecurityAccessLevelEntryClient = field(
-			default_factory=SecurityAccessLevelEntryClient
+			default_factory=SecurityAccessLevelEntryClient,
 			)
 
 
@@ -7428,7 +7428,7 @@ class gamedataDataNode(Chunk):
 	node_type: enums.gamedataDataNodeType = enums.gamedataDataNodeType.File
 	file_name: str = ''
 	parent: "gamedataDataNode" = field(
-			default_factory=lambda: gamedataDataNode()
+			default_factory=lambda: gamedataDataNode(),
 			)  # TODO: resolve default class (circular import)
 
 
@@ -7493,7 +7493,7 @@ class gameObject(entGameEntity):
 	mark_as_quest: bool = False
 	e3object_revealed: bool = False
 	workspot_mapper: "WorkspotMapperComponent" = field(
-			default_factory=lambda: WorkspotMapperComponent()
+			default_factory=lambda: WorkspotMapperComponent(),
 			)  # TODO: resolve default class (circular import)
 	stim_broadcaster: Any = None  # TODO: StimBroadcasterComponent = field(default_factory=StimBroadcasterComponent)
 	squad_member_component: Any = None  # TODO: SquadMemberBaseComponent = field(default_factory=SquadMemberBaseComponent)
@@ -7732,18 +7732,18 @@ class gameweaponObject(gameItemObject):
 	has_overheat: bool = False
 	overheat_effect_blackboard: worldEffectBlackboard = field(default_factory=worldEffectBlackboard)
 	overheat_listener: "OverheatStatListener" = field(
-			default_factory=lambda: OverheatStatListener()
+			default_factory=lambda: OverheatStatListener(),
 			)  # TODO: resolve default class (circular import)
 	overheat_delay_sent: bool = False
 	charge_effect_blackboard: worldEffectBlackboard = field(default_factory=worldEffectBlackboard)
 	charge_stat_listener: "WeaponChargeStatListener" = field(
-			default_factory=lambda: WeaponChargeStatListener()
+			default_factory=lambda: WeaponChargeStatListener(),
 			)  # TODO: resolve default class (circular import)
 	trigger_effect_name: str = ''
 	melee_hit_effect_blackboard: worldEffectBlackboard = field(default_factory=worldEffectBlackboard)
 	melee_hit_effect_value: float = 0.0
 	damage_type_listener: "DamageStatListener" = field(
-			default_factory=lambda: DamageStatListener()
+			default_factory=lambda: DamageStatListener(),
 			)  # TODO: resolve default class (circular import)
 	trail_name: str = ''
 	max_charge_threshold: float = 100.0
@@ -8128,13 +8128,13 @@ class gameHitShapeContainer(Chunk):
 	slot_name: str = ''
 	color: CColor = field(default_factory=CColor)
 	shape: "gameIHitShape" = field(
-			default_factory=lambda: gameIHitShape()
+			default_factory=lambda: gameIHitShape(),
 			)  # TODO: resolve default class (circular import)
 	user_data: "gameHitShapeUserData" = field(
-			default_factory=lambda: gameHitShapeUserData()
+			default_factory=lambda: gameHitShapeUserData(),
 			)  # TODO: resolve default class (circular import)
 	physics_material: "physicsMaterialReference" = field(
-			default_factory=lambda: physicsMaterialReference()
+			default_factory=lambda: physicsMaterialReference(),
 			)  # TODO: resolve default class (circular import)
 
 

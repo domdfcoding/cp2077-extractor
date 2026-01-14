@@ -170,19 +170,19 @@ def read_file_info(fp: IO) -> CR2WFileInfo:
 	# Read the other tables
 	name_info: list[CR2WNameInfo] = list(read_tables(fp, CR2WNameInfo, table_headers[1]))  # type: ignore[type-var]
 	import_info: list[CR2WImportInfo] = list(
-			read_tables(fp, CR2WImportInfo, table_headers[2])  # type: ignore[type-var]
+			read_tables(fp, CR2WImportInfo, table_headers[2]),  # type: ignore[type-var]
 			)
 	property_info: list[CR2WPropertyInfo] = list(
-			read_tables(fp, CR2WPropertyInfo, table_headers[3])  # type: ignore[type-var]
+			read_tables(fp, CR2WPropertyInfo, table_headers[3]),  # type: ignore[type-var]
 			)
 	export_info: list[CR2WExportInfo] = list(
-			read_tables(fp, CR2WExportInfo, table_headers[4])  # type: ignore[type-var]
+			read_tables(fp, CR2WExportInfo, table_headers[4]),  # type: ignore[type-var]
 			)
 	buffer_info: list[CR2WBufferInfo] = list(
-			read_tables(fp, CR2WBufferInfo, table_headers[5])  # type: ignore[type-var]
+			read_tables(fp, CR2WBufferInfo, table_headers[5]),  # type: ignore[type-var]
 			)
 	embedded_info: list[CR2WEmbeddedInfo] = list(
-			read_tables(fp, CR2WEmbeddedInfo, table_headers[6])  # type: ignore[type-var]
+			read_tables(fp, CR2WEmbeddedInfo, table_headers[6]),  # type: ignore[type-var]
 			)
 
 	_names_list: list[bytes] = []

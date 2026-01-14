@@ -141,7 +141,7 @@ class worldNode(Chunk):
 @dataclass
 class AreaShapeOutline(Chunk):
 	points: list[tuple[float, float, float]] = field(
-			default_factory=lambda: list(((-1.0, -1.0, 0.0), (1.0, -1.0, 0.0), (1.0, 1.0, 0.0), (-1.0, 1.0, 0.0)))
+			default_factory=lambda: list(((-1.0, -1.0, 0.0), (1.0, -1.0, 0.0), (1.0, 1.0, 0.0), (-1.0, 1.0, 0.0))),
 			)
 	height: float = 2.0
 

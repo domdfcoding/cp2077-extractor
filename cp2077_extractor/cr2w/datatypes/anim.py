@@ -86,7 +86,7 @@ class animTransformInfo(Chunk):
 	name: str = ''
 	parent_name: str = ''
 	reference_transform_ls: QsTransform = field(
-			default_factory=lambda: QsTransform(translation=(0.0, 0.0, 0.0, 1.0))
+			default_factory=lambda: QsTransform(translation=(0.0, 0.0, 0.0, 1.0)),
 			)
 
 
@@ -132,7 +132,7 @@ class animAnimation(Chunk):
 	animation_type: enums.animAnimationType = enums.animAnimationType.Normal
 	anim_buffer: animIAnimationBuffer = field(default_factory=animIAnimationBuffer)
 	additional_transforms: animAdditionalTransformContainer = field(
-			default_factory=animAdditionalTransformContainer
+			default_factory=animAdditionalTransformContainer,
 			)
 	additional_tracks: animAdditionalFloatTrackContainer = field(default_factory=animAdditionalFloatTrackContainer)
 	motion_extraction: animIMotionExtraction = field(default_factory=animIMotionExtraction)

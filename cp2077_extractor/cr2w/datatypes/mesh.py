@@ -95,7 +95,7 @@ class CMesh(Chunk):
 	# Missing ordinal 1
 	parameters: list[meshMeshParameter] = field(default_factory=list)
 	bounding_box: Box = field(
-			default_factory=Box
+			default_factory=Box,
 			)  # TODO: Box { Min = new Vector4 { X = float.MaxValue, Y = float.MaxValue, Z = float.MaxValue, W = float.MaxValue }, Max = new Vector4 { X = float.MinValue, Y = float.MinValue, Z = float.MinValue, W = float.MinValue } };
 	surface_area_per_axis: tuple[float, float, float] = (-1.0, -1.0, -1.0)
 	# Missing ordinal 5
@@ -109,7 +109,7 @@ class CMesh(Chunk):
 	appearances: list[meshMeshAppearance] = field(default_factory=list)
 	object_type: enums.ERenderObjectType = enums.ERenderObjectType.ROT_Static
 	render_resource_blob: HandleData[Chunk] = field(  # TODO: Handle inner type
-		default_factory=dict
+		default_factory=dict,
 		)  # type: ignore[assignment]  # IRenderResourceBlob
 	lod_level_info: list[float] = field(default_factory=list)
 	float_track_names: list[str] = field(default_factory=list)
